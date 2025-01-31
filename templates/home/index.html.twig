@@ -1,0 +1,216 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<body class="bg-white dark:bg-slate-950 overflow-x-hidden">
+ 
+    <!-- header -->
+
+
+
+    <main class="md:mt-10 -mt-8 pt-8">
+
+        <div class="relative md:mb-44">
+            <div class="max-w-5xl mx-auto space-y-32 max-md:p-8">
+          
+                <!-- hero -->
+                <section id="home">
+                    
+                    <div class="flex flex-col justify-center mt-6 text-center gap-6">
+                        <div>
+                            <img src="assets/images/logos/logo TYPO orange.svg" alt="" class="h-40 w-auto max-md:w-24  mx-auto" >
+                        </div>
+                        <p class="mt-8 max-w-2xl mx-auto text-gray-500 sm:text-lg text-sm leading-relaxed dark:text-white"> Professional and elegant template for creating a social network , designed with a clean, customizable and modern</p>
+                    </div>
+           
+                    <div class="md:flex justify-center items-center gap-4 mt-8 font-semibold text-sm hidden">
+                        <a href="{{ url('categories.index') }}" class="flex items-center gap-2 bg-slate-100 rounded-lg px-5 py-3 text-black dark:bg-slate-900 dark:text-white">
+                            connectez-vous
+                        </a>
+                        <a class="flex items-center gap-3 rounded-lg px-5 py-2.5 bg-black text-white shadow dark:bg-white/90 dark:text-black" href="{{ url('categories.index') }}">
+                            inscrivez-vous
+                        </a>
+                    </div>
+    
+                    <!-- hero -->
+                    <div class="flex items-center justify-center relative md:mt-32 mt-20" >
+        
+                        <div class="lg:rounded-xl rounded-md shadow-xl z-10 scale-125 overflow-hidden relative w-1/2">
+                            <img src="assets/images/demos/home.png" alt="" class="">
+                        </div>
+        
+                        <div class="w-1/2 absolute left-0 delay-500 uk-animation-slide-right-medium">
+                            <div class="lg:rounded-xl rounded-md shadow-md overflow-hidden -skew-x-6">
+                                <img src="assets/images/demos/messages.png" alt="">
+                            </div>
+                        </div>
+                        <div class="w-1/2 absolute right-0 duration-50 uk-animation-slide-left-medium">
+                            <div class="lg:rounded-xl rounded-md shadow-md overflow-hidden skew-x-6">
+                                <img src="assets/images/demos/timeline.png" alt="">
+                            </div>
+                        </div>
+     
+                    </div>
+                    
+                   
+                </section>
+                
+                <!-- features -->
+                <section>
+                    
+                    <div class="grid md:grid-cols-3 grid-cols-2 gap-5 md:gap-y-10 md:mt-8 -mt-6 md:text-xl text-sm font-medium" id="features" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100">
+    
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-pink-200 md:p-1.5 p-1 inline-flex ring right-2 ring-pink-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="reader" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div>  User Friendly  <br> Design  </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-yellow-200 md:p-1.5 p-1 inline-flex ring right-2 ring-yellow-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="cog" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Modern Features   </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-emerald-200 md:p-1.5 p-1 inline-flex ring right-2 ring-emerald-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="leaf" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div>  Clean Markup </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-sky-200 md:p-1.5 p-1 inline-flex ring ring-sky-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="albums" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Pixel Perfect </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-purple-200 md:p-1.5 p-1 inline-flex ring right-2 ring-purple-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="moon" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Dark and Light  <br> Schemes  </div>
+                        </div>
+                        <div class="space-x-4 flex items-center">
+                            <div class="rounded-full  bg-pink-200 md:p-1.5 p-1 inline-flex ring right-2 ring-pink-50 ring-offset-1 dark:ring-slate-600">
+                                <ion-icon name="layers" class="md:text-4xl text-2xl text-white drop-shadow-md"></ion-icon>
+                            </div>
+                            <div> Customizable   <br> Components  </div>
+                        </div>
+    
+                    </div>
+    
+                </section>
+    
+            </div>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" class="absolute -bottom-44 w-full max-lg:hidden rotate-3">
+                <path fill="#ff6f00" d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" class="fill-current text-slate-50 dark:text-slate-800/60"></path>
+            </svg>
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" class="absolute -bottom-40 w-full max-lg:hidden -rotate-6">
+                <path fill="#ff6f00" d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" class="fill-current text-slate-50/80 dark:text-slate-800/40"></path>
+            </svg>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" class="absolute -bottom-44 w-full max-lg:hidden">
+                <path fill="#ff6f00" d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" class="fill-current text-slate-100 dark:text-slate-800"></path>
+            </svg>
+
+        </div>
+
+        
+        <div class="relative max-lg:hidden">
+            <svg class="absolute -mt-20 fill-current text-slate-100 dark:text-slate-800/40 invisible lg:visible rotate-180 scale-x-[-1]" width="100%" height="100px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 2560 100" style="enable-background:new 0 0 2560 100" xml:space="preserve">
+                <polygon points="2560 0 2560 100 0 100"></polygon>
+            </svg>
+        </div>
+
+        <!-- Faq -->
+        <div class="max-w-5xl mx-auto md:space-y-32 max-md:p-8 relative lg:mt-36">
+
+            <section class="max-md:my-20">
+
+                <div class="text- center space-y-3" id="faq">
+                    <div class="p-1 text-sm text-yellow-500 bg-yellow-100 px-2 inline-block rounded-md -rotate-3 dark:bg-yellow-400/20"> Support</div>
+                    <div class="lg:text-3xl text-lg md:font-bold font-semibold text-black dark:text-white"> Any Question?</div>
+                </div>
+
+                <ul class="relative space-y-3 mt-10 max-w-3xl mx-auto hidden" uk-accordion="active: 0">
+                    <li class="uk-open">
+                        <a class="flex items-center justify-between py-4 px-5 text-lg bg-slate-100 rounded-md font-semibold group dark:text-white dark:bg-gray-800 uk-accordion-title" href="#">
+                            Can i use this for WordPress
+                            <svg class="w-6 h-6 duration-200 group-aria-expanded:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" style="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </a>
+                        <div class="p-2 dark:text-white/80 uk-accordion-content text-base">
+                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="flex items-center justify-between py-4 px-5 text-lg bg-slate-100 rounded-md font-semibold group dark:text-white dark:bg-gray-800 uk-accordion-title" href="#">
+                            Can i use this for WordPress
+                            <svg class="w-6 h-6 duration-200 group-aria-expanded:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" style="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </a>
+                        <div class="p-2 dark:text-white/80 uk-accordion-content text-base">
+                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="flex items-center justify-between py-4 px-5 text-lg bg-slate-100 rounded-md font-semibold group dark:text-white dark:bg-gray-800 uk-accordion-title" href="#">
+                            Can i use this for WordPress
+                            <svg class="w-6 h-6 duration-200 group-aria-expanded:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" style="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </a>
+                        <div class="p-2 dark:text-white/80 uk-accordion-content text-base">
+                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                        </div>
+                    </li>
+                </ul>  
+                
+                <div class="grid lg:grid-cols-2 lg:gap-10 mt-16 gap-4 text-sm">
+                    <div>
+                    <h1 class="md:text-xl text-base font-semibold mb-2 text-black dark:text-white"> Can I use Socialite For React , Vue or Larval ? </h1>
+                    <p class="lg:text-lg"> absolutely yes. Socialite Built <a href="https://tailwindcss.com/" class="underline">tailwindcss</a> Rapidly build modern websites without ever leaving your HTML</p>
+                    </div>
+                    <div>
+                    <h1 class="md:text-xl text-base font-semibold mb-2 text-black dark:text-white"> Is this Wordpress theme ? </h1>
+                    <p class="lg:text-lg"> No. This is n't Wordpress theme is just HTML template. You can integrate any platform you want</p>
+                    </div>
+                    <div>
+                    <h1 class="md:text-xl text-base font-semibold mb-2 text-black dark:text-white"> Is Socialite working fully ? </h1>
+                    <p class="lg:text-lg">  No. is just HTML template . hire backend developer on <a href="https://www.freelancer.com/" class="underline">Freelancer</a> or <a href="https://www.upwork.com/" class="underline">Upwork</a></p>
+                    </div>
+                </div>
+              
+            </section>
+
+        </div> 
+   
+
+    </main>
+{% endblock body %}
+{% block last %}
+    <!-- Uikit js you can use cdn  https://getuikit.com/docs/installation  or fine the latest  https://getuikit.com/docs/installation -->
+    <script src="assets/js/uikit.min.js"></script>
+    <script src="assets/js/script.js"></script>
+
+    <!-- Ion icon -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+ 
+
+    <!-- Dark mode -->
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+        } else {
+        document.documentElement.classList.remove('dark')
+        }
+
+        // Whenever the user explicitly chooses light mode
+        localStorage.theme = 'light'
+
+        // Whenever the user explicitly chooses dark mode
+        localStorage.theme = 'dark'
+
+        // Whenever the user explicitly chooses to respect the OS preference
+        localStorage.removeItem('theme')
+    </script>
+{% endblock last %}

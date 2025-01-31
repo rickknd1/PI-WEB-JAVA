@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Toutes les categories{% endblock title %}
+
+{% block  body %}
+<h1>
+    Voici Notre Categories
+</h1>
+    <ul>
+        {% for cat in categories %}
+            <li>
+                <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><h2>{{ cat.nom}}</h2></a>
+            </li>
+            <li>
+                <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><img src="{{ cat.cover}}" class="w-40"></a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock  body %}
