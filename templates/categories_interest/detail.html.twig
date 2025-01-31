@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Toutes les categories{% endblock title %}
+
+{% block  body %}
+    <h1>
+        {{ cat.nom }}
+    </h1>
+    <img class="w-[300px]" src="{{ cat.cover}}">
+    <ul class="mt-2">
+        <li>
+            {{ cat.description}}
+        </li>
+        <li>
+            <h4>{{ cat.dateCreation|date('d-m-Y') }}</h4>
+        </li>
+    </ul>
+{% endblock  body %}

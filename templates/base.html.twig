@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}SyncYLinkY{% endblock %}</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../public/assets/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <!-- Favicon -->
+        <link href="assets/images/favicon-32x32.png" rel="icon" type="image/png">
+    
+        <!-- title and description-->
+        <meta name="description" content="SyncYLinkY - community platform">
+
+        <!-- css files -->
+        <link rel="stylesheet" href="../assets/css/tailwind.css">
+        <link rel="stylesheet" href="../assets/css/style.css">
+        
+        <!-- google font -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+     
+        <!-- custom style -->
+        <style> 
+            #header-nav nav a.uk-active         { color:rgb(59, 130, 246)}
+            .dark #header-nav nav a.uk-active   { color:#fff !important}
+        </style>
+    </head>
+    <body class="bg-white dark:bg-slate-950 overflow-x-hidden">
+        {% block body %}{% endblock %}
+        <footer>
+            <div class="max-w-5xl mx-auto mb-6 mt-32 pt-6 border-t dark:border-slate-800">
+                <div class="flex justify-center text-sm dark:to-white">
+                    Made with ❤️ by WebNaan
+                </div>
+            </div>
+        </footer>
+        {% block last %}{% endblock %}
+    </body>
+</html>
