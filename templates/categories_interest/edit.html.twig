@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ cat.nom|upper }}{% endblock title %}
+
+{% block  body %}
+    <h1>{{ cat.nom }}</h1>
+
+    {{ form(form) }}
+
+{% endblock  body %}

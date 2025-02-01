@@ -6,14 +6,33 @@
 <h1>
     Voici Notre Categories
 </h1>
-    <ul>
-        {% for cat in categories %}
-            <li>
-                <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><h2>{{ cat.nom}}</h2></a>
-            </li>
-            <li>
-                <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><img src="{{ cat.cover}}" class="w-40"></a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right">
+            <thead>
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Categories
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Action
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cat in categories %}
+                <tr class="border-b dark:border-gray-700 border-gray-200">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><h2>{{ cat.nom}}</h2></a>
+                        <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><img src="{{ cat.cover}}" class="w-40"></a>
+                    </th>
+                    <td class="px-6 py-4">
+                        <a href="{{ path('categories.edit' , {id: cat.id } ) }}">Edit</a>
+                        <a class="bg-red-700 ml-4" href="{{ path('categories.del' , {id: cat.id } ) }}">Delete</a>
+                    </td>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
 {% endblock  body %}
