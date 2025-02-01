@@ -38,7 +38,7 @@ final class CategoriesInterestController extends AbstractController{
         $form = $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            $this->addFlash('succes' , 'cat modified');
+            $this->addFlash('success' , 'Categorie modified');
             return $this->redirectToRoute('categories.index');
         }
 
@@ -53,32 +53,26 @@ final class CategoriesInterestController extends AbstractController{
 
         $em->remove($cat);
         $em->flush();
+        $this->addFlash('success' , 'Categorie deleted');
         return $this->redirectToRoute('categories.index');
     }
-
-
-    /**
     #[Route('/categories/add', name: 'categories.add')]
-    public function addCat(Request $request , CategoriesRepository $repository ,EntityManagerInterface $em): Response
+    public function add(Request $request ,EntityManagerInterface $em): Response
     {
-        $categories = $repository->findAll();
+        $cat=new Categories();
+        $form = $this->createForm(CategoriesType::class, $cat );
+        $form = $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cat->setDateCreation(new \DateTime());
+            $em->persist($cat);
+            $em->flush();
+            $this->addFlash('success' , 'Categorie Added');
+            return $this->redirectToRoute('categories.index');
+        }
 
-        $categorie = new Categories();
-        $categorie->setNom('Dance')
-            ->setCover('https://www.clistudios.com/wp-content/uploads/2021/08/jaquel-knight-hip-hop-1024x683.jpeg')
-            ->setDescription('La danse est un art du mouvement qui exprime des émotions, des idées ou des histoires à travers des gestes et des enchaînements corporels, souvent synchronisés avec de la musique. Elle peut être pratiquée comme une discipline artistique, un loisir ou un rituel culturel. Il existe de nombreux styles de danse, tels que la danse classique (ballet), la danse contemporaine, le hip-hop, la salsa, le tango ou encore les danses traditionnelles. La danse allie créativité, expression personnelle et technique, tout en étant une forme de communication universelle.')
-            ->setDateCreation(new \DateTime());
-        $em->persist($categorie);
-        $em->flush();
-        return $this->redirectToRoute('categories.index');
+        return $this->render('categories_interest/add.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
-    #[Route('/categories/del', name: 'categories.del')]
-    public function delCat(Request $request , CategoriesRepository $repository ,EntityManagerInterface $em): Response
-    {
-        $categories = $repository->findAll();
-        $em->remove($categories[2]);
-        $em->flush();
-        return $this->redirectToRoute('categories.index');
-    }
-     */
+
 }

@@ -1,38 +1,41 @@
-{% extends "base.html.twig" %}
+{% extends "admin.html.twig" %}
 
-{% block title %}Toutes les categories{% endblock title %}
-
-{% block  body %}
-<h1>
-    Voici Notre Categories
-</h1>
+{% block titleCat %}Categories{% endblock %}
+{% block  cat %}
     <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right">
+        <table class="table table-head-bg-primary mt-4">
             <thead>
             <tr>
-                <th scope="col" class="px-6 py-3">
-                    Categories
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Action
-                </th>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Cover</th>
+                <th scope="col" class="col-4" >Description</th>
+                <th scope="col" class="col-2">Date de creation</th>
+                <th scope="col" >Actions</th>
             </tr>
             </thead>
             <tbody>
             {% for cat in categories %}
-                <tr class="border-b dark:border-gray-700 border-gray-200">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><h2>{{ cat.nom}}</h2></a>
-                        <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><img src="{{ cat.cover}}" class="w-40"></a>
-                    </th>
-                    <td class="px-6 py-4">
-                        <a href="{{ path('categories.edit' , {id: cat.id } ) }}">Edit</a>
-                        <a class="bg-red-700 ml-4" href="{{ path('categories.del' , {id: cat.id } ) }}">Delete</a>
+                <tr>
+                    <td>{{ cat.id }}</td>
+                    <td>{{ cat.nom }}</td>
+                    <td><img class="img-thumbnail" src="{{ cat.cover }}"></td>
+                    <td>Description</td>
+                    <td class="">{{ cat.dateCreation |date('d-m-Y')}}</td>
+                    <td>
+                        <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                            <i class="la la-edit"></i>
+                        </button>
+                        <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                            <i class="la la-times"></i>
+                        </button>
                     </td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>
+            {% for cat in categories %}
+
+            {% endfor %}
     </div>
-
-
-{% endblock  body %}
+{% endblock cat %}
