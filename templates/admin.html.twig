@@ -185,7 +185,7 @@
                 </li>
                 <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' %}active{% endif %}">
                     <a href="{{ path('categories.index') }}">
-                        <i class="la la-keyboard-o"></i>
+                        <i class="las la-users"></i>
                         <p>Community</p>
                         <span class="badge badge-count">3</span>
                     </a>
@@ -222,56 +222,8 @@
         </div>
     </div>
     {% block body %}{% endblock %}
+    {% block  catAdmin %}{% endblock %}
 
-    <div class="main-panel">
-
-        <div class="content">
-
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">{% block titleCat %}{% endblock %}</div>
-                                <p class="card-category">{% block nbrcat %}{% endblock %}</p>
-                            </div>
-                            <div class="card-body">
-                                {% block  catEdit %}{% endblock %}
-                                {% block cat %}{% endblock %}
-                            </div>
-                            <div class="card-footer">
-                                <div class="legend">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Add categorie</h4>
-                            </div>
-                            <div class="card-body">
-                                {% block addcat %}{% endblock %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
