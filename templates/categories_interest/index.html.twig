@@ -1,6 +1,7 @@
 {% extends "admin.html.twig" %}
 
-{% block titleCat %}Categories{% endblock %}
+{% block titleCat %}Categories {% endblock %}
+{% block nbrcat %}( {{ categories|length}} ){% endblock %}
 {% block  cat %}
     <div class="relative overflow-x-auto">
         <table class="table table-head-bg-primary mt-4">
@@ -23,19 +24,24 @@
                     <td>Description</td>
                     <td class="">{{ cat.dateCreation |date('d-m-Y')}}</td>
                     <td>
+                        <a href="{{ path('categories.edit' , {id: cat.id } ) }}">
                         <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
                             <i class="la la-edit"></i>
                         </button>
+                        </a>
+                        <a href="{{ path('categories.del' , {id: cat.id } ) }}">
                         <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
                             <i class="la la-times"></i>
                         </button>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-            {% for cat in categories %}
-
-            {% endfor %}
     </div>
 {% endblock cat %}
+{% block addcat %}
+    {{ form(form) }}
+{% endblock %}
+

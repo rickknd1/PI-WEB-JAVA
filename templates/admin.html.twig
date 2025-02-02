@@ -4,12 +4,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>SyncyLinky - Admin</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="assets/css/ready.css">
-    <link rel="stylesheet" href="assets/css/demo.css">
+    <link rel="stylesheet" href="/assets/css/ready.css">
+    <link rel="stylesheet" href="/assets/css/demo.css">
     <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" >
-    <link href="assets/images/favicon-32x32.png" rel="icon" type="image/png">
+    <link href="/assets/images/favicon-32x32.png" rel="icon" type="image/png">
 </head>
 <body>
 <div class="wrapper">
@@ -79,7 +79,7 @@
                                     </a>
                                     <a href="#">
                                         <div class="notif-img">
-                                            <img src="assets/images/profile2.jpg" alt="Img Profile">
+                                            <img src="/assets/images/profile2.jpg" alt="Img Profile">
                                         </div>
                                         <div class="notif-content">
 												<span class="block">
@@ -105,11 +105,11 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="assets/images/profile.jpg" alt="user-img" width="36" class="img-circle"><span >Hizrian</span></span> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="/assets/images/profile.jpg" alt="user-img" width="36" class="img-circle"><span >Hizrian</span></span> </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li>
                                 <div class="user-box">
-                                    <div class="u-img"><img src="assets/images/profile.jpg" alt="user"></div>
+                                    <div class="u-img"><img src="/assets/images/profile.jpg" alt="user"></div>
                                     <div class="u-text">
                                         <h4>Hizrian</h4>
                                         <p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
@@ -135,7 +135,7 @@
         <div class="scrollbar-inner sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="assets/images/profile.jpg">
+                    <img src="/assets/images/profile.jpg">
                 </div>
                 <div class="info">
                     <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
@@ -169,46 +169,46 @@
                 </div>
             </div>
             <ul class="nav">
-                <li class="nav-item active">
-                    <a href="index.html">
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'app_admin' %}active{% endif %}">
+                    <a href="{{ path('app_admin') }}">
                         <i class="la la-dashboard"></i>
                         <p>Dashboard</p>
-                        <span class="badge badge-count">5</span>
+                        <span class="badge badge-count"></span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="components.html">
                         <i class="la la-table"></i>
                         <p>Users</p>
-                        <span class="badge badge-count">14</span>
+                        <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' %}active{% endif %}">
                     <a href="{{ path('categories.index') }}">
                         <i class="la la-keyboard-o"></i>
                         <p>Community</p>
-                        <span class="badge badge-count">50</span>
+                        <span class="badge badge-count">3</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="tables.html">
                         <i class="la la-th"></i>
                         <p>Tables</p>
-                        <span class="badge badge-count">6</span>
+                        <span class="badge badge-count"></span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="notifications.html">
                         <i class="la la-bell"></i>
                         <p>Notifications</p>
-                        <span class="badge badge-success">3</span>
+                        <span class="badge badge-success"></span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="typography.html">
                         <i class="la la-font"></i>
                         <p>Typography</p>
-                        <span class="badge badge-danger">25</span>
+                        <span class="badge badge-danger"></span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -221,16 +221,51 @@
 
         </div>
     </div>
+    {% block body %}{% endblock %}
+
     <div class="main-panel">
+
         <div class="content">
+
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">{% block titleCat %}{% endblock %}</div>
+                                <p class="card-category">{% block nbrcat %}{% endblock %}</p>
                             </div>
-                            {% block cat %}{% endblock %}
+                            <div class="card-body">
+                                {% block  catEdit %}{% endblock %}
+                                {% block cat %}{% endblock %}
+                            </div>
+                            <div class="card-footer">
+                                <div class="legend">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Add categorie</h4>
+                            </div>
+                            <div class="card-body">
+                                {% block addcat %}{% endblock %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -239,18 +274,18 @@
     </div>
 </div>
 </body>
-<script src="assets/js/core/jquery.3.2.1.min.js"></script>
-<script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
-<script src="assets/js/plugin/chartist/chartist.min.js"></script>
-<script src="assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
-<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
-<script src="assets/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
-<script src="assets/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
-<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
-<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-<script src="assets/js/ready.min.js"></script>
-<script src="assets/js/demo.js"></script>
+<script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/core/bootstrap.min.js"></script>
+<script src="/assets/js/plugin/chartist/chartist.min.js"></script>
+<script src="/assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+<script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="/assets/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="/assets/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
+<script src="/assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/assets/js/ready.min.js"></script>
+<script src="/assets/js/demo.js"></script>
 </html>

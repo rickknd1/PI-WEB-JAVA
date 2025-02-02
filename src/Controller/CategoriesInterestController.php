@@ -14,10 +14,28 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class CategoriesInterestController extends AbstractController{
     #[Route('/categories', name: 'categories.index')]
-    public function index(Request $request , CategoriesRepository $repository ,EntityManagerInterface $em): Response
+    public function index(Request $request, CategoriesRepository $repository, EntityManagerInterface $em): Response
     {
+
         $categories = $repository->findAll();
-        return $this->render('categories_interest/index.html.twig' , ['categories' => $categories]);
+
+        $cat = new Categories();
+        $form = $this->createForm(CategoriesType::class, $cat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cat->setDateCreation(new \DateTime());
+            $em->persist($cat);
+            $em->flush();
+            $this->addFlash('success', 'Category Added');
+            return $this->redirectToRoute('categories.index');
+        }
+
+        // Render the template with both the categories and the form
+        return $this->render('categories_interest/index.html.twig', [
+            'categories' => $categories,
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/categories/{slug}-{id}', name: 'categories.detail' ,  requirements:['id' => '\d+' , 'slug' => '[a-zA-Z0-9-]+'])]
@@ -55,24 +73,6 @@ final class CategoriesInterestController extends AbstractController{
         $em->flush();
         $this->addFlash('success' , 'Categorie deleted');
         return $this->redirectToRoute('categories.index');
-    }
-    #[Route('/categories/add', name: 'categories.add')]
-    public function add(Request $request ,EntityManagerInterface $em): Response
-    {
-        $cat=new Categories();
-        $form = $this->createForm(CategoriesType::class, $cat );
-        $form = $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $cat->setDateCreation(new \DateTime());
-            $em->persist($cat);
-            $em->flush();
-            $this->addFlash('success' , 'Categorie Added');
-            return $this->redirectToRoute('categories.index');
-        }
-
-        return $this->render('categories_interest/add.html.twig', [
-            'form' => $form->createView()
-        ]);
     }
 
 }

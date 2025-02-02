@@ -1,10 +1,10 @@
-{% extends "base.html.twig" %}
+{% extends "admin.html.twig" %}
 
 {% block title %}{{ cat.nom|upper }}{% endblock title %}
+{% block titleCat %}{{ cat.nom }}{% endblock %}
+{% block  catEdit %}
 
-{% block  body %}
-    <h1>{{ cat.nom }}</h1>
 
     {{ form(form) }}
 
-{% endblock  body %}
+{% endblock  catEdit %}
