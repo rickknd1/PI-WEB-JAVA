@@ -183,12 +183,37 @@
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' %}active{% endif %}">
-                    <a href="{{ path('categories.index') }}">
+                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' %}active{% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#communityCollapse" aria-expanded="false">
                         <i class="las la-users"></i>
                         <p>Community</p>
                         <span class="badge badge-count">3</span>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse" id="communityCollapse">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a href="{{ path('categories.index') }}">
+                                    <span class="link-collapse">Categories</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('community.index') }}">
+                                    <span class="link-collapse">Communities</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="">
+                                    <span class="link-collapse">Events</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="">
+                                    <span class="link-collapse">Chat Rooms</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="tables.html">
@@ -218,7 +243,6 @@
                     </a>
                 </li>
             </ul>
-
         </div>
     </div>
     {% block body %}{% endblock %}

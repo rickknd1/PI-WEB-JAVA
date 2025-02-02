@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class CategoriesInterestController extends AbstractController{
-    #[Route('/categories', name: 'categories.index')]
+    #[Route('admin/categories', name: 'categories.index')]
     public function index(Request $request, CategoriesRepository $repository, EntityManagerInterface $em): Response
     {
 
@@ -31,7 +31,6 @@ final class CategoriesInterestController extends AbstractController{
             return $this->redirectToRoute('categories.index');
         }
 
-        // Render the template with both the categories and the form
         return $this->render('categories_interest/index.html.twig', [
             'categories' => $categories,
             'form' => $form->createView()
@@ -48,10 +47,9 @@ final class CategoriesInterestController extends AbstractController{
         return $this->render('categories_interest/detail.html.twig' , ['cat' => $cat]);
     }
 
-    #[Route('/categories/{id}/edit', name: 'categories.edit', requirements: ['id' => '\d+'])]
+    #[Route('admin/categories/{id}/edit', name: 'categories.edit', requirements: ['id' => '\d+'])]
     public function edit(Request $request, Categories $cat ,EntityManagerInterface $em): Response
     {
-
         $form = $this->createForm(CategoriesType::class, $cat );
         $form = $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,7 +63,7 @@ final class CategoriesInterestController extends AbstractController{
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/categories/{id}/delete', name: 'categories.del', requirements: ['id' => '\d+'])]
+    #[Route('admin/categories/{id}/delete', name: 'categories.del', requirements: ['id' => '\d+'])]
     public function delete(Request $request, Categories $cat ,EntityManagerInterface $em): Response
     {
 
