@@ -1,0 +1,10 @@
+{% extends "admin.html.twig" %}
+
+{% block title %}{{ cat.nom|upper }}{% endblock title %}
+{% block titleCat %}{{ cat.nom }}{% endblock %}
+{% block  catEdit %}
+
+
+    {{ form(form) }}
+
+{% endblock  catEdit %}

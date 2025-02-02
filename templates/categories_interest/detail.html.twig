@@ -1,8 +1,11 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Toutes les categories{% endblock title %}
+{% block title %}{{ cat.nom }}{% endblock title %}
 
 {% block  body %}
+    <script>
+        document.documentElement.classList.add('dark');
+    </script>
     <h1>
         {{ cat.nom }}
     </h1>

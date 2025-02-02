@@ -1,19 +1,47 @@
-{% extends "base.html.twig" %}
+{% extends "admin.html.twig" %}
 
-{% block title %}Toutes les categories{% endblock title %}
+{% block titleCat %}Categories {% endblock %}
+{% block nbrcat %}( {{ categories|length}} ){% endblock %}
+{% block  cat %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Cover</th>
+                <th scope="col" class="col-4" >Description</th>
+                <th scope="col" class="col-2">Date de creation</th>
+                <th scope="col" >Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cat in categories %}
+                <tr>
+                    <td>{{ cat.id }}</td>
+                    <td>{{ cat.nom }}</td>
+                    <td><img class="img-thumbnail" src="{{ cat.cover }}"></td>
+                    <td>Description</td>
+                    <td class="">{{ cat.dateCreation |date('d-m-Y')}}</td>
+                    <td>
+                        <a href="{{ path('categories.edit' , {id: cat.id } ) }}">
+                        <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                            <i class="la la-edit"></i>
+                        </button>
+                        </a>
+                        <a href="{{ path('categories.del' , {id: cat.id } ) }}">
+                        <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                            <i class="la la-times"></i>
+                        </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock cat %}
+{% block addcat %}
+    {{ form(form) }}
+{% endblock %}
 
-{% block  body %}
-<h1>
-    Voici Notre Categories
-</h1>
-    <ul>
-        {% for cat in categories %}
-            <li>
-                <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><h2>{{ cat.nom}}</h2></a>
-            </li>
-            <li>
-                <a href="{{ path('categories.detail' , {id: cat.id , slug: cat.nom } ) }}"><img src="{{ cat.cover}}" class="w-40"></a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock  body %}
