@@ -16,8 +16,8 @@ final class HomeController extends AbstractController{
     {
 
         $visitor = $repository->findAll();
-        $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
-        $em->persist($visitor[0]);
+        //$visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
+        //$em->persist($visitor[0]);
         $em->flush();
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn-success:hover { background: #28a745; color: white; }
+        .btn-primary:hover { background: #007bff; color: white; }
+        .btn-danger:hover { background: #dc3545; color: white; }
+        .btn-info:hover { background: #17a2b8; color: white; }
+    </style>
+    <div class="button-container">
+        <button class="btn btn-success">Add</button>
+        <button class="btn btn-primary">Modify</button>
+        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-info">Show</button>
+    </div>
+{% endblock %}
