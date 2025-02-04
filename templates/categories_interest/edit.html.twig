@@ -1,9 +1,9 @@
-{% extends "admin.html.twig" %}
+{% extends "categories_interest/adminCat.html.twig" %}
 
 {% block title %}{{ cat.nom|upper }}{% endblock title %}
 {% block titleCat %}{{ cat.nom }}{% endblock %}
-{% block  catEdit %}
 
+{% block  catEdit %}
 
     {{ form(form) }}
 

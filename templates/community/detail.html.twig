@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ community.nom }}{% endblock title %}
+
+{% block  body %}
+    <script>
+        document.documentElement.classList.add('dark');
+    </script>
+    <h1>
+        {{ community.nom }}
+    </h1>
+    <img class="w-[300px]" src="{{ community.cover}}">
+    <ul class="mt-2">
+        <li>
+            {{ community.description}}
+        </li>
+        <li>
+            <h4>{{ community.createdAt|date('d-m-Y') }}</h4>
+        </li>
+    </ul>
+{% endblock  body %}
