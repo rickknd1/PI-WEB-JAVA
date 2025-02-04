@@ -1,0 +1,10 @@
+{% extends "community/adminCom.html.twig" %}
+
+{% block title %}{{ community.nom|upper }}{% endblock title %}
+{% block titlecomm %}{{ community.nom }}{% endblock %}
+
+{% block  commEdit %}
+
+    {{ form(form) }}
+
+{% endblock  commEdit %}

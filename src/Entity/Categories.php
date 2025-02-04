@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoriesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
@@ -27,6 +29,17 @@ class Categories
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_creation = null;
+
+    /**
+     * @var Collection<int, Community>
+     */
+    #[ORM\OneToMany(targetEntity: Community::class, mappedBy: 'id_categorie')]
+    private Collection $communities;
+
+    public function __construct()
+    {
+        $this->communities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,6 +90,36 @@ class Categories
     public function setDateCreation(\DateTimeInterface $date_creation): static
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Community>
+     */
+    public function getCommunities(): Collection
+    {
+        return $this->communities;
+    }
+
+    public function addCommunity(Community $community): static
+    {
+        if (!$this->communities->contains($community)) {
+            $this->communities->add($community);
+            $community->setIdCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommunity(Community $community): static
+    {
+        if ($this->communities->removeElement($community)) {
+            // set the owning side to null (unless already changed)
+            if ($community->getIdCategorie() === $this) {
+                $community->setIdCategorie(null);
+            }
+        }
 
         return $this;
     }
