@@ -15,4 +15,5 @@ final class AbonnementController extends AbstractController
             'controller_name' => 'AbonnementController',
         ]);
     }
+
 }

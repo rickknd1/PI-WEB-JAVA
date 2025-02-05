@@ -1,30 +1,50 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/abonnement.css">
+{% block title %}
+    <title>Choix d'abonnement</title>
+{% endblock title %}
+
+</head>
+{% endblock head %}
 
 {% block body %}
-    <style>
-        .button-container {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .btn-success:hover { background: #28a745; color: white; }
-        .btn-primary:hover { background: #007bff; color: white; }
-        .btn-danger:hover { background: #dc3545; color: white; }
-        .btn-info:hover { background: #17a2b8; color: white; }
-    </style>
-    <div class="button-container">
-        <button class="btn btn-success">Add</button>
-        <button class="btn btn-primary">Modify</button>
-        <button class="btn btn-danger">Delete</button>
-        <button class="btn btn-info">Show</button>
+<body>
+{% block abonnement %}
+<div class="subscription-container">
+    <!-- Abonnement Normal (Gratuit) -->
+    <div class="subscription-card">
+        <h2>Abonnement Normal</h2>
+        <ul>
+            <li>Accès gratuit</li>
+            <li>Contenu de base</li>
+            <li>Support standard</li>
+        </ul>
+        <div class="button-container">
+            <button>S'inscrire gratuitement</button>
+        </div>
     </div>
-{% endblock %}
+
+    <!-- Abonnement Premium (Payant) -->
+    <div class="subscription-card premium">
+        <h2>Abonnement Premium</h2>
+        <ul>
+            <li>Accès à tous les contenus</li>
+            <li>Support prioritaire</li>
+            <li>Avantages exclusifs</li>
+            <li>Pas de publicité</li>
+        </ul>
+        <div class="button-container">
+            <button>S'abonner maintenant</button>
+        </div>
+    </div>
+</div>
+{% endblock abonnement %}
+
+</body>
+{% endblock body %}
+</html>
