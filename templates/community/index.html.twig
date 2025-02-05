@@ -1,0 +1,51 @@
+{% extends 'community/adminCom.html.twig' %}
+
+{% block titleComm %}Communities {% endblock %}
+{% block nbrcomm %}( {{ communities|length}} ){% endblock %}
+{% block  comm %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Id_Cat</th>
+                <th scope="col">Nom_Cat</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Cover</th>
+                <th scope="col" class="col-4" >Description</th>
+                <th scope="col" class="col-2">Date de creation</th>
+                <th scope="col" >Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comm in communities %}
+                <tr>
+                    <td>{{ comm.id }}</td>
+                    <td>{{ comm.idCategorie.id }}</td>
+                    <td>{{ comm.idCategorie.nom }}</td>
+                    <td>{{ comm.nom }}</td>
+                    <td><img class="img-thumbnail" src="{{ comm.cover }}"></td>
+                    <td>Description</td>
+                    <td class="">{{ comm.createdAt | date('d-m-Y') }}</td>
+                    <td>
+                        <a href="{{ path('community.edit', {id: comm.id }) }}">
+                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                        </a>
+                            <a href="{{ path('community.del', {id: comm.id }) }}">
+                            <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                <i class="la la-times"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock comm %}
+{% block addcomm %}
+    {{ form(form) }}
+{% endblock %}
+
