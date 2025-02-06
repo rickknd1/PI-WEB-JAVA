@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="fr">
-{% block head %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/abonnement.css">
-{% block title %}
-    <title>Choix d'abonnement</title>
-{% endblock title %}
+{% extends "home/home.html.twig" %}
 
-</head>
-{% endblock head %}
-
-{% block body %}
-<body>
 {% block abonnement %}
 <div class="subscription-container">
     <!-- Abonnement Normal (Gratuit) -->
@@ -47,7 +33,3 @@
     </div>
 </div>
 {% endblock abonnement %}
-
-</body>
-{% endblock body %}
-</html>

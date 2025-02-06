@@ -11,16 +11,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController{
-    #[Route('/', name: 'home')]
+    #[Route('/welcome', name: 'home')]
     public function index(Request $request,EntityManagerInterface $em , VisitorsRepository $repository): Response
     {
 
         $visitor = $repository->findAll();
-        //$visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
-        //$em->persist($visitor[0]);
+        $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
+        $em->persist($visitor[0]);
         $em->flush();
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }
+    #[Route('/', name: 'home.index')]
+    public function home(Request $request,EntityManagerInterface $em , VisitorsRepository $repository): Response
+    {
+
+        $visitor = $repository->findAll();
+        $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
+        $em->persist($visitor[0]);
+        $em->flush();
+        return $this->render('home/home.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
 }
