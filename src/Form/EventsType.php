@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormEvent;
+use function PHPUnit\Framework\greaterThan;
 
 class EventsType extends AbstractType
 {
@@ -44,13 +45,22 @@ class EventsType extends AbstractType
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
                         'mimeTypesMessage' => 'Veuillez uploader une image valide (jpeg, png, gif, webp)',
                     ]),
+                    new Assert\NotBlank([
+                        'message' => 'Cover cannot be empty'
+                    ]),
                 ],
             ])
             ->add('startedAt', null, [
                 'widget' => 'single_text'
             ])
             ->add('finishAt', null, [
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\GreaterThan([
+                        'propertyPath' => 'parent.all[startedAt].data',
+                        'message' => 'The finish date must be after the start date.'
+                    ])
+                ]
             ])
             ->add('lieu')
             ->add('type', ChoiceType::class, [
@@ -60,13 +70,14 @@ class EventsType extends AbstractType
                 ],
                 'mapped' => true,
                 'required' => true,
-                'placeholder' => 'Sélectionner un type',
+                'label'=>'Type&nbsp&nbsp&nbsp',
+                'label_html' => true,
             ])
             ->add('id_community', EntityType::class, [
                 'class' => Community::class,
                 'choice_label' => 'nom',
-                'label' => 'Nom de la Communauté',
-                'placeholder' => 'Sélectionner une Communauté',
+                'label' => 'Nom de la Communauté&nbsp&nbsp&nbsp',
+                'label_html' => true,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -107,6 +118,7 @@ class EventsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Events::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

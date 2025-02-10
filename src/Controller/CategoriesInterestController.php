@@ -19,7 +19,10 @@ final class CategoriesInterestController extends AbstractController{
     #[Route('admin/categories', name: 'categories.index')]
     public function index(Request $request, CategoriesRepository $repository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
-        $categories = $repository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $limit = 2;
+        $categories = $repository->paginateCategories($page , $limit);
+        $maxPage = ceil($categories->count() / $limit);
 
         $cat = new Categories();
         $form = $this->createForm(CategoriesType::class, $cat);
@@ -57,6 +60,9 @@ final class CategoriesInterestController extends AbstractController{
         return $this->render('categories_interest/index.html.twig', [
             'categories' => $categories,
             'form' => $form->createView(),
+            'maxPage' => $maxPage,
+            'page' => $page,
+            'limit' => $limit,
         ]);
     }
 

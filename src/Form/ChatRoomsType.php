@@ -2,17 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Categories;
+use App\Entity\ChatRooms;
+use App\Entity\Community;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CategoriesType extends AbstractType
+class ChatRoomsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -21,12 +23,6 @@ class CategoriesType extends AbstractType
                 'constraints' => new Assert\Length([
                     'min' => 3,
                     'minMessage' => 'Votre nom est trop court ! Min 3 character',
-                ]),
-            ])
-            ->add('description', TextareaType::class,[
-                'constraints' => new Assert\Length([
-                    'min' => 3,
-                    'minMessage' => 'Votre description est trop court ! Min 3 character',
                 ]),
             ])
             ->add('cover' ,FileType::class,[
@@ -44,6 +40,22 @@ class CategoriesType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Public' => 'Public',
+                    'Private' => 'Private'
+                ],
+                'mapped' => true,
+                'required' => true,
+                'label'=>'Type&nbsp&nbsp&nbsp',
+                'label_html' => true,
+            ])
+            ->add('community', EntityType::class, [
+                'class' => Community::class,
+                'choice_label' => 'nom',
+                'label'=>'Community&nbsp&nbsp&nbsp',
+                'label_html' => true,
+            ])
             ->add("save", SubmitType::class,[
                 'label' => 'Enregistrer'
             ])
@@ -53,7 +65,7 @@ class CategoriesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Categories::class,
+            'data_class' => ChatRooms::class,
         ]);
     }
 }

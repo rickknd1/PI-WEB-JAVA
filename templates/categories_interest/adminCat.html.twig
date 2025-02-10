@@ -19,19 +19,10 @@
                         <div class="card-footer">
                             <div class="legend">
                                 <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
+                                    {% block pagination %}{% endblock %}
                                 </nav>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -39,7 +30,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Add categorie</h4>
+                                <h4 class="card-title">Add Categorie</h4>
                             </div>
                             <div class="card-body">
                                 {% block addcat %}{% endblock %}

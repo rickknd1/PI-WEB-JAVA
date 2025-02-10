@@ -37,10 +37,18 @@ class Community
     #[ORM\OneToMany(targetEntity: Events::class, mappedBy: 'id_community')]
     private Collection $events;
 
+    /**
+     * @var Collection<int, ChatRooms>
+     */
+    #[ORM\OneToMany(targetEntity: ChatRooms::class, mappedBy: 'id_community')]
+    private Collection $chatRooms;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->chatRooms = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -114,12 +122,25 @@ class Community
     {
         return $this->events;
     }
+    public function getChatrooms(): Collection
+    {
+        return $this->chatRooms;
+    }
 
     public function addEvent(Events $event): static
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
             $event->setIdCommunity($this);
+        }
+
+        return $this;
+    }
+    public function addChatrooms(ChatRooms $chatRooms): static
+    {
+        if (!$this->chatRooms->contains($chatRooms)) {
+            $this->chatRooms->add($chatRooms);
+            $chatRooms->setIdCommunity($this);
         }
 
         return $this;
@@ -131,6 +152,17 @@ class Community
             // set the owning side to null (unless already changed)
             if ($event->getIdCommunity() === $this) {
                 $event->setIdCommunity(null);
+            }
+        }
+
+        return $this;
+    }
+    public function removeChatrooms(ChatRooms $chatRooms): static
+    {
+        if ($this->events->removeElement($chatRooms)) {
+            // set the owning side to null (unless already changed)
+            if ($chatRooms->getIdCommunity() === $this) {
+                $chatRooms->setIdCommunity(null);
             }
         }
 

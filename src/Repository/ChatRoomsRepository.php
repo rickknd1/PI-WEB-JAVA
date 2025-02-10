@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Community;
+use App\Entity\ChatRooms;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Community>
+ * @extends ServiceEntityRepository<ChatRooms>
  */
-class CommunityRepository extends ServiceEntityRepository
+class ChatRoomsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Community::class);
+        parent::__construct($registry, ChatRooms::class);
     }
 
-    public function paginateCommunity(int $page , int $limit): Paginator
+    public function paginateChatRooms(int $page , int $limit): Paginator
     {
         return new Paginator($this
             ->createQueryBuilder('r')
@@ -29,7 +29,7 @@ class CommunityRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Community[] Returns an array of Community objects
+//     * @return ChatRooms[] Returns an array of ChatRooms objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -43,7 +43,7 @@ class CommunityRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Community
+//    public function findOneBySomeField($value): ?ChatRooms
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

@@ -18,7 +18,11 @@ final class CommunityController extends AbstractController{
     #[Route('admin/community', name: 'community.index')]
     public function index(Request $request,CommunityRepository $repository,EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
-        $communities = $repository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $limit = 2;
+        $communities = $repository->paginateCommunity($page , $limit);
+        $maxPage = ceil($communities->count() / $limit);
+
         $community = new Community();
         $form = $this->createForm(CommunityType::class, $community);
         $form->handleRequest($request);
@@ -50,7 +54,10 @@ final class CommunityController extends AbstractController{
 
         return $this->render('community/index.html.twig', [
             'communities' => $communities,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'maxPage' => $maxPage,
+            'page' => $page,
+            'limit' => $limit,
         ]);
     }
     #[Route('admin/community/{id}/edit', name: 'community.edit' , requirements: ['id'=>'\d+'])]

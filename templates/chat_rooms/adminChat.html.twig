@@ -6,16 +6,16 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="{% if app.request.attributes.get('_route') starts with 'community.edit' %}col-md-10{% else %}col-md-6{% endif %}">
+                    <div class="{% if app.request.attributes.get('_route') starts with 'chatrooms.edit' %}col-md-10{% else %}col-md-6{% endif %}">
 
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">{% block titleComm %}{% endblock %}</div>
-                                <p class="card-category">{% block nbrcomm %}{% endblock %}</p>
+                                <div class="card-title">{% block titleChat %}{% endblock %}</div>
+                                <p class="card-category">{% block nbrchatrooms %}{% endblock %}</p>
                             </div>
                             <div class="card-body">
-                                {% block  commEdit %}{% endblock %}
-                                {% block comm %}{% endblock %}
+                                {% block  chatroomsEdit %}{% endblock %}
+                                {% block chatrooms %}{% endblock %}
                             </div>
                             <div class="card-footer">
                                 <div class="legend">
@@ -26,14 +26,14 @@
                             </div>
                         </div>
                     </div>
-                    {% if app.request.attributes.get('_route') == 'community.index' %}
+                    {% if app.request.attributes.get('_route') == 'chatrooms.index' %}
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Add Community</h4>
+                                    <h4 class="card-title">Add Chat Rooms</h4>
                                 </div>
                                 <div class="card-body">
-                                    {% block addcomm %}{% endblock %}
+                                    {% block addchatrooms %}{% endblock %}
                                 </div>
                             </div>
                         </div>

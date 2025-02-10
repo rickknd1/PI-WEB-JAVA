@@ -18,7 +18,11 @@ final class EventController extends AbstractController{
     #[Route('admin/events', name: 'event.index')]
     public function index(Request $request,EventsRepository $repository,EntityManagerInterface $em,SluggerInterface $slugger): Response
     {
-        $events = $repository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $limit = 2;
+        $events = $repository->paginateEvents($page , $limit);
+        $maxPage = ceil($events->count() / $limit);
+
         $event = new Events();
         $form = $this->createForm(EventsType::class, $event);
         $form->handleRequest($request);
@@ -47,6 +51,9 @@ final class EventController extends AbstractController{
         return $this->render('event/index.html.twig', [
             'events' => $events,
             'form' => $form->createView(),
+            'maxPage' => $maxPage,
+            'page' => $page,
+            'limit' => $limit,
         ]);
     }
 
@@ -86,6 +93,7 @@ final class EventController extends AbstractController{
         return $this->render('event/edit.html.twig', [
             'events' => $events,
             'form' => $form->createView(),
+
         ]);
     }
 

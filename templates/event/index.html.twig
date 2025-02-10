@@ -1,7 +1,13 @@
 {% extends 'event/adminEvent.html.twig' %}
 
 {% block titleEvent %}Events {% endblock %}
-{% block nbrevent %}( {{ events|length}} ){% endblock %}
+    {% block nbrevent %}
+        {% if events|length > 1 %}
+            ( {{ limit }} )
+        {% else %}
+            ( 1 )
+        {% endif %}
+    {% endblock %}
 {% block  events %}
     <div class="relative overflow-x-auto">
         <table class="table table-head-bg-primary mt-4">
@@ -51,6 +57,32 @@
         </table>
     </div>
 {% endblock events %}
+
+{% block pagination %}
+    {% if maxPage > 1 %}
+    <ul class="pagination justify-content-center">
+        {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path('event.index', { page: page - 1 }) }}" tabindex="-1">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for p in 1..maxPage %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ path('event.index', { page: p }) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+
+        {% if page < maxPage %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path('event.index', { page: page + 1 }) }}">Next</a>
+            </li>
+        {% endif %}
+        <p class="card-category">&nbsp( {{ events|length}} ) </p>
+    </ul>
+    {% endif %}
+{% endblock pagination %}
+
 {% block addevent %}
     {{ form_start(form) }}
     {{ form_row(form.nom) }}
@@ -80,10 +112,7 @@
                 if (typeField.value === "En Ligne") {
                     if (!linkField) {
                         let div = document.createElement("div");
-                        div.innerHTML = `
-                            <label for="events_link">Lien</label>
-                            <input type="text" id="events_link" name="events[link]" required class="form-control">
-                        `;
+                        div.innerHTML = `<label for="events_link">Link</label><input type="text" id="events_link" name="events[link]" required class="form-control">`;
                         linkContainer.appendChild(div);
                     }
                 } else if (linkField) {
@@ -92,7 +121,7 @@
             }
 
             typeField.addEventListener("change", toggleLinkField);
-            toggleLinkField(); // Vérifie au chargement si "En Ligne" est déjà sélectionné
+            toggleLinkField();
         });
     </script>
 {% endblock %}

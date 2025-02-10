@@ -42,12 +42,16 @@ class CommunityType extends AbstractType
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
                         'mimeTypesMessage' => 'Please upload a valid image (jpeg, png, gif, webp)',
                     ]),
+                    new Assert\NotBlank([
+                        'message' => 'Cover cannot be empty'
+                    ]),
                 ],
             ])
             ->add('id_categorie', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => 'nom',
-                'label' => 'Catégorie'
+                'label' => 'Catégorie&nbsp&nbsp&nbsp',
+                'label_html' => true,
             ])
             ->add("save", SubmitType::class,[
                 'label' => 'Enregistrer'
