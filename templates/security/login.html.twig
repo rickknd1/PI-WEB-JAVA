@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="sm:flex">
+
+        <!-- Left Panel -->
+        <div class="relative lg:w-[580px] md:w-96 w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 dark:bg-slate-900 z-10">
+            <div class="w-full lg:max-w-sm mx-auto space-y-10" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+
+                <!-- Logo dynamique pour le dark mode -->
+                <a href="{{ path('home') }}">
+                    <img src="assets/images/logo-icon.png" class="w-28 absolute top-10 left-10 dark:hidden" alt="Logo SyncYLinkY">
+                    <img src="assets/images/logo-light.png" class="w-28 absolute top-10 left-10 hidden dark:!block" alt="Logo SyncYLinkY dark">
+                </a>
+
+                <!-- En-tête -->
+                <div>
+                    <h2 class="text-2xl font-semibold mb-1.5">Sign in to your account</h2>
+                    <p class="text-sm text-gray-700 font-normal dark:text-gray-300">
+                        If you haven't signed up yet.
+                        <a href="{{ path('app_register') }}" class="text-blue-700 hover:text-blue-900 dark:text-blue-400">Register here!</a>
+                    </p>
+                </div>
+
+                <!-- Formulaire -->
+                <form method="post" class="space-y-7 text-sm text-black font-medium dark:text-white">
+                    {% if error %}
+                        <div class="p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <div class="mb-3 text-green-800 dark:text-green-400">
+                            You are logged in as {{ app.user.userIdentifier }},
+                            <a href="{{ path('app_logout') }}" class="text-blue-700 hover:text-blue-900 dark:text-blue-400">Logout</a>
+                        </div>
+                    {% endif %}
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block mb-2">Email address</label>
+                        <input
+                                type="email"
+                                value="{{ last_username }}"
+                                name="email"
+                                id="email"
+                                autocomplete="email"
+                                required
+                                autofocus
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        >
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block mb-2">Password</label>
+                        <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                autocomplete="current-password"
+                                required
+                                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        >
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <!-- Options -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <input
+                                    type="checkbox"
+                                    id="remember_me"
+                                    name="_remember_me"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            >
+                            <label for="remember_me" class="text-sm font-normal">Remember me</label>
+                        </div>
+                        <a href="" class="text-sm text-blue-700 hover:text-blue-900 dark:text-blue-400">Forgot password?</a>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="w-full px-6 py-3.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all">
+                        Sign in
+                    </button>
+
+                    <!-- Social Login -->
+                    <div class="text-center flex items-center gap-4">
+                        <hr class="flex-1 border-slate-200 dark:border-slate-700">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Or continue with</span>
+                        <hr class="flex-1 border-slate-200 dark:border-slate-700">
+                    </div>
+
+                    <div class="flex gap-3" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 400 ;repeat: true">
+                        <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#1877F2] rounded-lg transition-all hover:bg-[#166FE5]">
+                            <ion-icon name="logo-facebook" class="text-xl"></ion-icon>
+                            Facebook
+                        </a>
+                        <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#EA4335] rounded-lg transition-all hover:bg-[#D33828]">
+                            <ion-icon name="logo-google" class="text-xl"></ion-icon>
+                            Google
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="flex-1 relative bg-primary max-md:hidden">
+            <div class="relative w-full h-full" tabindex="-1" uk-slideshow="animation: slide; autoplay: true">
+                <ul class="uk-slideshow-items w-full h-full">
+                    <li class="w-full">
+                        <img
+                                src="assets/images/post/img-3.jpg"
+                                alt="Presentation"
+                                class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left"
+                        >
+                        <div class="absolute bottom-0 w-full uk-transition-slide-bottom-small z-10">
+                            <div class="max-w-xl w-full mx-auto pb-32 px-5 z-30 relative" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                <img
+                                        src="assets/images/logo-icon.png"
+                                        class="w-12"
+                                        alt="Logo Icon"
+                                >
+                                <h4 class="!text-white text-2xl font-semibold mt-7" uk-slideshow-parallax="y: 600,0,0">
+                                    Connect With Friends
+                                </h4>
+                                <p class="!text-white text-lg mt-7 leading-8" uk-slideshow-parallax="y: 800,0,0">
+                                    Share your best moments and stay connected with your community.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full h-96 bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 left-0"></div>
+                    </li>
+                </ul>
+
+                <!-- Slideshow Navigation -->
+                <div class="flex justify-center absolute bottom-8 left-0 right-0">
+                    <ul class="inline-flex gap-2 uk-dotnav uk-slideshow-nav"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

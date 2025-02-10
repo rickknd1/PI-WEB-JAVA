@@ -1,0 +1,224 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register - SyncYLinkY{% endblock %}
+
+{% block body %}
+    <div class="sm:flex">
+
+        <!-- Left Panel -->
+        <div class="relative lg:w-[580px] md:w-96 w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 dark:bg-slate-900 z-10">
+            <div class="w-full lg:max-w-sm mx-auto space-y-10" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+
+                <!-- Logo -->
+                <a href="{{ path('home') }}">
+                    <img src="assets/images/logo.png" class="w-28 absolute top-10 left-10 dark:hidden" alt="Logo SyncYLinkY">
+                    <img src="assets/images/logo-light.png" class="w-28 absolute top-10 left-10 hidden dark:!block" alt="Logo SyncYLinkY dark">
+                </a>
+
+                <!-- Header -->
+                <div>
+                    <h2 class="text-2xl font-semibold mb-1.5">Sign up to get started</h2>
+                    <p class="text-sm text-gray-700 font-normal dark:text-gray-300">
+                        Already have an account?
+                        <a href="app_login" class="text-blue-700 hover:text-blue-900 dark:text-blue-400">Login here</a>
+                    </p>
+                </div>
+
+                <!-- Form -->
+                {{ form_start(registrationForm, {
+                    'attr': {
+                        'class': 'space-y-7 text-sm text-black font-medium dark:text-white',
+                        'uk-scrollspy': 'target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true'
+                    }
+                }) }}
+                <div class="grid grid-cols-2 gap-4 gap-y-7">
+
+                    <!-- Last Name -->
+                    <div>
+                        {{ form_label(registrationForm.name, 'Last Name', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.name, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'Doe'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.name) }}
+                    </div>
+
+                    <!-- First Name -->
+                    <div>
+                        {{ form_label(registrationForm.firstname, 'First Name', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.firstname, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'John'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.firstname) }}
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.email, 'Email Address', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'john.doe@example.com'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.email) }}
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.gender, 'Gender', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.gender, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.gender) }}
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.dateOB, 'Date of Birth', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        <div class="grid grid-cols-3 gap-4">
+                            {{ form_widget(registrationForm.dateOB.day, {
+                                'attr': {
+                                    'class': 'px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                                }
+                            }) }}
+                            {{ form_widget(registrationForm.dateOB.month, {
+                                'attr': {
+                                    'class': 'px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                                }
+                            }) }}
+                            {{ form_widget(registrationForm.dateOB.year, {
+                                'attr': {
+                                    'class': 'px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                                }
+                            }) }}
+                        </div>
+                        {{ form_errors(registrationForm.dateOB) }}
+                    </div>
+
+                    <!-- Password -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.password.first, 'Password', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.password.first, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': '••••••••'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.password.first) }}
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.password.second, 'Confirm Password', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.password.second, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': '••••••••'
+                            }
+                        }) }}
+                        {{ form_errors(registrationForm.password.second) }}
+                    </div>
+
+                    <!-- Terms Agreement -->
+                    <div class="col-span-2">
+                        <label class="inline-flex items-center">
+                            {{ form_widget(registrationForm.agreeTerms, {
+                                'attr': {'class': '!rounded-md accent-blue-600 dark:accent-blue-500'}
+                            }) }}
+                            <span class="ml-2 text-sm">
+                                I agree to the
+                                <a href="#" class="text-blue-700 hover:underline dark:text-blue-400">Terms of Service</a>
+                            </span>
+                        </label>
+                        {{ form_errors(registrationForm.agreeTerms) }}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-span-2">
+                        <button type="submit" class="w-full px-6 py-3.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Social Login Separator -->
+                <div class="text-center flex items-center gap-4">
+                    <hr class="flex-1 border-slate-200 dark:border-slate-700">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Or continue with</span>
+                    <hr class="flex-1 border-slate-200 dark:border-slate-700">
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="flex gap-3" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 400 ;repeat: true">
+                    <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#1877F2] rounded-lg transition-all hover:bg-[#166FE5]">
+                        <ion-icon name="logo-facebook" class="text-xl"></ion-icon>
+                        Facebook
+                    </a>
+                    <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#EA4335] rounded-lg transition-all hover:bg-[#D33828]">
+                        <ion-icon name="logo-google" class="text-xl"></ion-icon>
+                        Google
+                    </a>
+                </div>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+
+        <!-- Right Panel (Image Slider) -->
+        <div class="flex-1 relative bg-primary max-md:hidden">
+            <div class="relative w-full h-full" tabindex="-1" uk-slideshow="animation: slide; autoplay: true">
+                <ul class="uk-slideshow-items w-full h-full">
+                    <li class="w-full">
+                        <img
+                                src="assets/images/post/img-3.jpg"
+                                alt="Community Connection"
+                                class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left"
+                        >
+                        <div class="absolute bottom-0 w-full uk-transition-slide-bottom-small z-10">
+                            <div class="max-w-xl w-full mx-auto pb-32 px-5 z-30 relative" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                <img
+                                        src="assets/images/logo-icon.png"
+                                        class="w-12"
+                                        alt="App Icon"
+                                >
+                                <h4 class="!text-white text-2xl font-semibold mt-7" uk-slideshow-parallax="y: 600,0,0">
+                                    Join Our Community
+                                </h4>
+                                <p class="!text-white text-lg mt-7 leading-8" uk-slideshow-parallax="y: 800,0,0">
+                                    Connect with like-minded people and share your experiences in real-time.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full h-96 bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 left-0"></div>
+                    </li>
+                </ul>
+
+                <!-- Slider Navigation Dots -->
+                <div class="flex justify-center absolute bottom-8 left-0 right-0">
+                    <ul class="inline-flex gap-2 uk-dotnav uk-slideshow-nav"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
