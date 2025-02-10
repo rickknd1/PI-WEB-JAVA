@@ -8,8 +8,8 @@
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Id_Cat</th>
-                <th scope="col">Nom_Cat</th>
+                <th scope="col">Id Cat</th>
+                <th scope="col">Nom Cat</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Cover</th>
                 <th scope="col" class="col-4" >Description</th>
@@ -33,7 +33,7 @@
                                 <i class="la la-edit"></i>
                             </button>
                         </a>
-                            <a href="{{ path('community.del', {id: comm.id }) }}">
+                            <a href="{{ path('community.del', {id: comm.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet communaute ?');">>
                             <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
                                 <i class="la la-times"></i>
                             </button>

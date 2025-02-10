@@ -131,7 +131,7 @@
         </nav>
     </div>
     <!--- ---------------------------------------------------------------------------------------- -->
-    {% include 'partials/flash.html.twig' %}
+
     <div class="sidebar">
         <div class="scrollbar-inner sidebar-wrapper">
             <div class="user">
@@ -188,7 +188,7 @@
                 <a class="nav-link" data-toggle="collapse" href="#communityCollapse" aria-expanded="false">
                         <i class="las la-users"></i>
                         <p>Community</p>
-                        <span class="badge badge-count">3</span>
+                        <span class="badge badge-count">4</span>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="communityCollapse">
@@ -204,7 +204,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{ path('event.index') }}">
                                     <span class="link-collapse">Events</span>
                                 </a>
                             </li>
@@ -246,8 +246,10 @@
             </ul>
         </div>
     </div>
+    {% include 'partials/flash.html.twig' %}
     {% block body %}{% endblock %}
     {% block  catAdmin %}{% endblock %}
+    {% block  eventAdmin %}{% endblock %}
 
 </div>
 </body>

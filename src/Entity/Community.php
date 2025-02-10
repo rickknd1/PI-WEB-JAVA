@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommunityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommunityRepository::class)]
@@ -28,6 +30,17 @@ class Community
     #[ORM\ManyToOne(inversedBy: 'communities')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $id_categorie = null;
+
+    /**
+     * @var Collection<int, Events>
+     */
+    #[ORM\OneToMany(targetEntity: Events::class, mappedBy: 'id_community')]
+    private Collection $events;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +103,36 @@ class Community
     public function setIdCategorie(?Categories $id_categorie): static
     {
         $this->id_categorie = $id_categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Events>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Events $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setIdCommunity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Events $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getIdCommunity() === $this) {
+                $event->setIdCommunity(null);
+            }
+        }
 
         return $this;
     }

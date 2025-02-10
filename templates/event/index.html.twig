@@ -1,0 +1,99 @@
+{% extends 'event/adminEvent.html.twig' %}
+
+{% block titleEvent %}Events {% endblock %}
+{% block nbrevent %}( {{ events|length}} ){% endblock %}
+{% block  events %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Id Comm</th>
+                <th scope="col">Nom Comm</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Cover</th>
+                <th scope="col" class="col-4" >Description</th>
+                <th scope="col" class="col-2">Started at</th>
+                <th scope="col" class="col-2">Finish at</th>
+                <th scope="col" >Lieu</th>
+                <th scope="col" >Type</th>
+                <th scope="col" >Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ event.idCommunity.id }}</td>
+                    <td>{{ event.idCommunity.nom }}</td>
+                    <td>{{ event.nom }}</td>
+                    <td><img class="img-thumbnail" src="{{ event.cover }}"></td>
+                    <td>Description</td>
+                    <td class="">{{ event.startedAt | date('d-m-Y') }}</td>
+                    <td class="">{{ event.finishAt | date('d-m-Y') }}</td>
+                    <td class="">{{ event.lieu }}</td>
+                    <td class="">{{ event.type }}</td>
+                    <td>
+                        <a href="{{ path('event.edit', {id: event.id }) }}">
+                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                        </a>
+                        <a href="{{ path('event.del', {id: event.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
+                        <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                <i class="la la-times"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock events %}
+{% block addevent %}
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.cover) }}
+    {{ form_row(form.startedAt) }}
+    {{ form_row(form.finishAt) }}
+    {{ form_row(form.lieu) }}
+    {{ form_row(form.type) }}
+    <div id="link-container">
+        {% if form.link is defined %}
+            {{ form_row(form.link) }}
+        {% endif %}
+    </div>
+    <br>
+    {{ form_row(form.id_community) }}
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const typeField = document.querySelector("#events_type");
+            const form = typeField.closest("form");
+            const linkContainer = document.getElementById("link-container");
+
+            function toggleLinkField() {
+                let linkField = document.getElementById("events_link");
+                if (typeField.value === "En Ligne") {
+                    if (!linkField) {
+                        let div = document.createElement("div");
+                        div.innerHTML = `
+                            <label for="events_link">Lien</label>
+                            <input type="text" id="events_link" name="events[link]" required class="form-control">
+                        `;
+                        linkContainer.appendChild(div);
+                    }
+                } else if (linkField) {
+                    linkField.parentNode.remove();
+                }
+            }
+
+            typeField.addEventListener("change", toggleLinkField);
+            toggleLinkField(); // Vérifie au chargement si "En Ligne" est déjà sélectionné
+        });
+    </script>
+{% endblock %}
+
