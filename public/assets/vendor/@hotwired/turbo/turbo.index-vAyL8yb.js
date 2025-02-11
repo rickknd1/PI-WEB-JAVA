@@ -28,6 +28,3 @@
         ——
         Suppress this warning by adding a "data-turbo-suppress-warning" attribute to: %s
       `,e.outerHTML);e=e.parentElement}})(),window.Turbo=Be,Ce();export{l as FrameElement,s as FrameLoadingStyle,Q as FrameRenderer,ge as PageRenderer,Z as PageSnapshot,Ee as StreamActions,We as StreamElement,De as StreamSourceElement,Le as cache,Me as clearCache,Pe as connectStreamSource,Fe as disconnectStreamSource,Re as navigator,Te as registerAdapter,ke as renderStreamMessage,ye as session,He as setConfirmMethod,qe as setFormMode,Ie as setProgressBarDelay,Ce as start,Ae as visit};export default null;
-
-export class Turbo {
-}
