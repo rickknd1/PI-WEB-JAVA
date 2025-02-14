@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class CommunityController extends AbstractController{
-    #[Route('/communities', name: 'community.index.front')]
+    #[Route('/community', name: 'community.index.front')]
     #[Route('admin/community', name: 'community.index')]
     public function index(Request $request,CommunityRepository $repository,EntityManagerInterface $em, SluggerInterface $slugger,CategoriesRepository $categoriesRepository): Response
     {
@@ -67,7 +67,8 @@ final class CommunityController extends AbstractController{
         }
 
         if ($routeName === 'community.index.front'){
-            return $this->render('community/index_Front.html.twig', [
+            return $this->render('community/index_Front.html.twig',
+                [
                 'communities' => $communities,
                 'maxPage' => $maxPage,
                 'page' => $page,
