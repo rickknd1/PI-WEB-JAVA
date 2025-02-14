@@ -20,7 +20,13 @@
             <tbody>
             {% for user in users %}
                 <tr>
-                    <td>{{ user.roles }}</td>
+                    <td>
+                        <ul>
+                            {% for role in user.roles %}
+                                <li>{{ role }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.name }} {{ user.firstname }}</td>

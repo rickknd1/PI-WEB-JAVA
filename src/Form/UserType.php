@@ -6,6 +6,7 @@ use App\Entity\Categories;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +16,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
+            ->add('roles',CollectionType::class)
             ->add('password')
             ->add('name')
             ->add('firstname')
@@ -26,8 +27,8 @@ class UserType extends AbstractType
             ->add('gender')
             ->add('interests', EntityType::class, [
                 'class' => Categories::class,
-'choice_label' => 'id',
-'multiple' => true,
+                'choice_label' => 'id',
+                'multiple' => true,
             ])
         ;
     }
