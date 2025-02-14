@@ -1,0 +1,202 @@
+{% extends 'home/home.html.twig' %}
+
+{% block community %}
+    <!-- category title -->
+    <div class="sm:my-6 my-3 flex items-center justify-between">
+        <div>
+            <h2 class="md:text-lg text-base font-semibold text-black"> Categories </h2>
+            <p class="font-normal text-sm text-gray-500 leading-6"> Find a community by browsing top categories. </p>
+        </div>
+        <a href="#" class="text-blue-500 sm:block hidden text-sm"> See all </a>
+    </div>
+
+    <!-- group  slider -->
+    <div tabindex="-1" uk-slider="finite:true">
+
+        <div class="uk-slider-container pb-1">
+            <ul class="uk-slider-items grid-small">
+                {% for cat in cats %}
+                <li class="md:w-1/5 sm:w-1/3 w-1/2">
+                    <a href="#">
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img src="{{ cat.cover }}" alt="" class="h-36 w-full object-cover">
+                            <div class="w-full bottom-0 absolute left-0 bg-gradient-to-t from-black/60 pt-10">
+                                <div class="text-white p-5 text-lg leading-3"> {{ cat.nom }} </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- slide nav icons -->
+        <a class="nav-prev" href="#" uk-slider-item="previous"> <ion-icon name="chevron-back" class="text-2xl"></ion-icon> </a>
+        <a class="nav-next" href="#" uk-slider-item="next"> <ion-icon name="chevron-forward" class="text-2xl"></ion-icon></a>
+    </div>
+    <br>
+    <div class="page-heading">
+
+        <h1 class="page-title"> Groups </h1>
+        <nav class="nav__underline">
+            <ul class="group" uk-switcher="connect: #group-tabs ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">
+                <li> <a href="#" > Suggestions  </a> </li>
+                <li> <a href="#"> Popular </a> </li>
+                <li> <a href="#"> My groups </a> </li>
+                <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #create-story"><i class="las la-plus"></i><a href=""> Create Community</a></button>
+
+
+            </ul>
+        </nav>
+    </div>
+    <style>
+        .group {
+            display: flex;
+            align-items: center;
+        }
+
+        .create-btn {
+            margin-left: auto; /* Pousse l'élément à droite */
+        }
+    </style>
+
+    <!-- group list tabs -->
+    <div class="uk-switcher" id="group-tabs">
+
+        <!-- card layout 1 -->
+        <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2.5">
+            {% for comm in communitiesFront  %}
+                <div class="card">
+                    <a href="timeline-group.html">
+                        <div class="card-media h-24">
+                            <img src="{{ comm.cover }}" alt="">
+                            <div class="card-overly"></div>
+                        </div>
+                    </a>
+                    <div class="card-body relative z-10">
+                        <img src="assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full mb-2 shadow -mt-8 relative border-2 border-white dark:border-slate-800">
+                        <a href="timeline-group.html"><h4 class="card-title"> {{ comm.nom }}  </h4></a>
+                        <div class="card-list-info font-normal mt-1">
+                            <a href="#">  {{ comm.idCategorie.nom}}  </a>
+                            <div class="md:block hidden">·</div>
+                            <div> {{ comm.nbrMembre }} members </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
+                            <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- card layout 2 -->
+        <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2.5">
+
+            <div class="card">
+                <a href="timeline-group.html">
+                    <div class="card-media h-24">
+                        <img src="assets/images/product/product-1.jpg" alt="">
+                        <div class="card-overly"></div>
+                    </div>
+                </a>
+                <div class="card-body">
+                    <a href="timeline-group.html"> <h4 class="card-title">  Graphic Design </h4></a>
+                    <div class="card-text">
+                        <div class="card-list-info font-normal mt-1">
+                            <div>232k members </div>
+                            <div class="md:block hidden">·</div>
+                            <a href="#">  Education </a>
+                        </div>
+                        <div class="flex items-center gap-3 mt-3">
+                            <div class="flex -space-x-2">
+                                <img src="assets/images/avatars/avatar-2.jpg" alt="" class="w-6 rounded-full border-2 border-white dark:border-slate-800">
+                                <img src="assets/images/avatars/avatar-3.jpg" alt="" class="w-6 rounded-full border-2 border-white dark:border-slate-800">
+                                <img src="assets/images/avatars/avatar-7.jpg" alt="" class="w-6 rounded-full border-2 border-white dark:border-slate-800">
+                            </div>
+                            <p class="card-text"> 6 friend are members </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" class="button bg-primary text-white flex-1">Join</button>
+                        <a href="timeline-group.html" class="button bg-secondery !w-auto"> View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- card layout 3 -->
+        <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2.5">
+            <div class="card">
+                <a href="timeline-group.html">
+                    <div class="card-media h-24">
+                        <img src="assets/images/group/group-cover-2.jpg" alt="">
+                        <div class="card-overly"></div>
+                    </div>
+                </a>
+                <div class="card-body">
+                    <a href="timeline-group.html"> <h4 class="card-title"> Delicious Foods  </h4> </a>
+                    <div class="card-list-info font-normal mt-1">
+                        <a href="#">  Health </a>
+                        <div class="md:block hidden">·</div>
+                        <div>42k members </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" class="button bg-primary-soft text-primary dark:text-white flex-1">Join</button>
+                        <button type="button" class="button bg-secondery flex-1">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--add-->
+    <div class="hidden lg:p-20" id="create-story" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium"> Create community </h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                <div>
+                    {{ form_label(form.nom) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté'}}) }}
+                    {{ form_errors(form.nom) |raw}}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
+                    {{ form_errors(form.description) |raw}}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form.id_categorie) }}
+                    {{ form_widget(form.id_categorie, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.id_categorie)|raw }}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form.cover) }}
+                    <br>
+                    {{ form_widget(form.cover) }}
+                    {{ form_errors(form.cover) }}
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start gap-2">
+                        <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
+                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                    </div>
+                    {{ form_widget(form.save,{'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                </div>
+                    {{ form_rest(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

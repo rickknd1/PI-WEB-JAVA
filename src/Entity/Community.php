@@ -43,6 +43,9 @@ class Community
     #[ORM\OneToMany(targetEntity: ChatRooms::class, mappedBy: 'id_community')]
     private Collection $chatRooms;
 
+    #[ORM\Column]
+    private ?int $nbr_membre = null;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -165,6 +168,18 @@ class Community
                 $chatRooms->setIdCommunity(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNbrMembre(): ?int
+    {
+        return $this->nbr_membre;
+    }
+
+    public function setNbrMembre(int $nbr_membre): static
+    {
+        $this->nbr_membre = $nbr_membre;
 
         return $this;
     }

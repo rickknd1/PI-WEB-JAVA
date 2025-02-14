@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class CategoriesInterestController extends AbstractController{
+
     #[Route('admin/categories', name: 'categories.index')]
     public function index(Request $request, CategoriesRepository $repository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {

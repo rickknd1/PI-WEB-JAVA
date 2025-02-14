@@ -1,0 +1,255 @@
+{% extends 'home/home.html.twig' %}
+
+{% block community %}
+    <div class="max-w-[1065px] mx-auto">
+
+        <!-- cover  -->
+        <div class="bg-white shadow lg:rounded-b-2xl lg:-mt-10 dark:bg-dark2">
+
+            <!-- cover -->
+            <div class="relative overflow-hidden w-full lg:h-72 h-36">
+                <img src="{{ comm.cover }}" alt="" class="h-full w-full object-cover inset-0">
+
+                <!-- overly -->
+                <div class="w-full bottom-0 absolute left-0 bg-gradient-to-t from -black/60 pt-10 z-10"></div>
+
+                <div class="absolute bottom-0 right-0 m-4 z-20">
+                    <div class="flex items-center gap-3">
+                        <button class="button bg-white/20 text-white flex items-center gap-2 backdrop-blur-small">Crop</button>
+                        <button class="button bg-black/10 text-white flex items-center gap-2 backdrop-blur-small">Edit</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:px-10 md:p-5 p-3">
+
+                <div class="flex flex-col justify-center">
+
+                    <div class="flex lg:items-center justify-between max-md:flex-col">
+
+                        <div class="flex-1">
+                            <h3 class="md:text-2xl text-base font-bold text-black dark:text-white"> {{ comm.nom }} </h3>
+                            <p  class=" font-normal text-gray-500 mt-2 flex gap-2 flex-wrap dark:text-white/80">
+                                <span class="max-lg:hidden"> Public comunity </span>
+                                <span class="max-lg:hidden"> • </span>
+                                <span> <b class="font-medium text-black dark:text-white">{{ comm.nbrMembre }}</b> Members </span>
+                            </p>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <div class="flex -space-x-4 mr-3">
+                                    <img src="assets/images/avatars/avatar-2.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
+                                    <img src="assets/images/avatars/avatar-3.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
+                                    <img src="assets/images/avatars/avatar-7.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
+                                    <img src="assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
+                                    <img src="assets/images/avatars/avatar-5.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
+                                </div>
+                                <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
+                                    <ion-icon name="add-outline" class="text-xl"></ion-icon>
+                                    <span class="text-sm"> <a href="{{ path('membre.add',{id: comm.id }) }}"></a>Join  </span>
+                                </button>
+                                <div>
+                                    <button type="button" class="rounded-lg bg-secondery flex px-2.5 py-2 dark:bg-dark2">
+                                        <ion-icon name="ellipsis-horizontal" class="text-xl">
+                                    </button>
+                                    <div  class="w-[240px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click;offset:10">
+                                        <nav>
+                                            <a href="#"> <ion-icon class="text-xl" name="share-outline"></ion-icon> Share  </a>
+                                            <a href="#"> <ion-icon class="text-xl" name="link-outline"></ion-icon>  Copy link </a>
+                                            <a href="#"> <ion-icon class="text-xl" name="flag-outline"></ion-icon>  Report group</a>
+                                            <hr>
+                                            <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl" name="stop-circle-outline"></ion-icon>  Block </a>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flex items-center justify-between  border-t border-gray-100 px-2 dark:border-slate-700">
+
+                <nav class="flex gap-0.5 rounded-xl overflow-hidden -mb-px text-gray-500 font-medium text-sm overflow-x-auto dark:text-white">
+                    <a href="{{path('community.detail',{id: comm.id })}}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.detail' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Discussion</a>
+                    <a href="{{ path('community.events',{id: comm.id }) }}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.events' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Event</a>
+                    <a href="#" class="inline-block py-3 leading-8 px-3.5">Members</a>
+                </nav>
+
+                <div class="flex items-center gap-1 text-sm p-3 bg-secondery py-2 mr-2 rounded-xl max-md:hidden dark:bg-white/5">
+                    <ion-icon name="search" class="text-lg"></ion-icon>
+                    <input placeholder="Search .." class="!bg-transparent">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="flex 2xl:gap-12 gap-10 mt-8 max-lg:flex-col" id="js-oversized">
+
+            <!-- feed story -->
+            <div class="flex-1 xl:space-y-6 space-y-3">
+
+                <!-- pages card layout 1 -->
+                {% if app.request.attributes.get('_route') == 'community.detail' %}
+                    <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                        {% for chat in chatRooms %}
+                            <div class="card">
+                                <a href="timeline-page.html">
+                                    <div class="card-media sm:aspect-[2/1.7] h-40">
+                                        <img src="{{ chat.cover }}" alt="">
+                                        <div class="card-overly"></div>
+                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <a href="timeline-page.html"> <h4 class="card-title"> {{ chat.nom }} </h4> </a>
+                                    <p class="card-text">{{ chat.type }}</p>
+                                    <button type="button" class="button bg-primary text-white">Join</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if chatRooms|length == 0 %}
+                            <div class=" rounded-xl shadow-sm p-4 space-y-4 bg-slate-200/40 animate-pulse border1 dark:bg-dark2">
+                                <div class=" flex gap-3">
+                                    <div class="flex-1 space-y-3">
+                                        <div class="w-24 h-4 rounded-md bg-slate-300/20"></div>
+                                    </div>
+                                </div>
+                                <div class="w-full h-52 rounded-lg bg-slate-300/10 my-3"> </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                        {% for event in events %}
+                            <div class="card">
+                                <a href="timeline-page.html">
+                                    <div class="card-media sm:aspect-[2/1.7] h-40">
+                                        <img src="{{ event.cover }}" alt="">
+                                        <div class="card-overly"></div>
+                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <a href="timeline-page.html"> <h4 class="card-title"> {{ event.nom }} </h4> </a>
+                                    <p class="card-text">{{ event.type }}</p>
+                                    <button type="button" class="button bg-primary text-white">Participe</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if events|length == 0 %}
+                            <div class=" rounded-xl shadow-sm p-4 space-y-4 bg-slate-200/40 animate-pulse border1 dark:bg-dark2">
+                                <div class=" flex gap-3">
+                                    <div class="flex-1 space-y-3">
+                                        <div class="w-24 h-4 rounded-md bg-slate-300/20"></div>
+                                    </div>
+                                </div>
+                                <div class="w-full h-52 rounded-lg bg-slate-300/10 my-3"> </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="lg:w-[400px]">
+
+                <div class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6"
+                     uk-sticky="media: 1024; end: #js-oversized; offset: 80">
+
+                    <!-- group info -->
+                    <div class="box p-5 px-6">
+
+                        <div class="flex items-ce justify-between text-black dark:text-white">
+                            <h3 class="font-bold text-lg"> About   </h3>
+                            <a href="#" class="text-sm text-blue-500">Edit</a>
+                        </div>
+
+                        <ul class="text-gray-700 space-y-4 mt-2 mb-1 text-sm dark:text-white">
+                            <li> {{ comm.description }}.</li>
+
+                            <li class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.893 13.393l-1.135-1.135a2.252 2.252 0 01-.421-.585l-1.08-2.16a.414.414 0 00-.663-.107.827.827 0 01-.812.21l-1.273-.363a.89.89 0 00-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 01-1.81 1.025 1.055 1.055 0 01-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 01-1.383-2.46l.007-.042a2.25 2.25 0 01.29-.787l.09-.15a2.25 2.25 0 012.37-1.048l1.178.236a1.125 1.125 0 001.302-.795l.208-.73a1.125 1.125 0 00-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 01-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 01-1.458-1.137l1.411-2.353a2.25 2.25 0 00.286-.76m11.928 9.869A9 9 0 008.965 3.525m11.928 9.868A9 9 0 118.965 3.525" />
+                                </svg>
+                                <div>
+                                    <span class="font-semibold text-black dark:text-white">Public  </span>
+                                    <p> Anyone can see who's in the group and what they post.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <div>
+                                    <span class="font-semibold text-black dark:text-white"> Visible </span>
+                                    <p> Anyone can find this group</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                </svg>
+                                <div>  Members <span class="font-semibold text-black dark:text-white"> {{ comm.nbrMembre }} People </span> </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <!-- group media  -->
+                    <div class="box p-5 px-6">
+                        <div class="flex items-baseline justify-between text-black dark:text-white">
+                            <h3 class="font-bold text-base"> Recent Events </h3>
+                            <a href="#" class="text-sm text-blue-500">See all</a>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-1 text-center text-sm mt-4 mb-2 rounded-lg overflow-hidden">
+                            {% for event in events %}
+                                <div class="relative w-full aspect-[4/3]">
+                                    <img src="{{ event.cover }}" alt="" class="object-cover w-full h-full inset-0">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- related group  -->
+                    <div class="box p-5 px-6">
+
+                        <div class="flex items-baseline justify-between text-black dark:text-white">
+                            <h3 class="font-bold text-base"> Suggested communities </h3>
+                            <a href="#" class="text-sm text-blue-500">See all</a>
+                        </div>
+
+                        <div class="side-list">
+                            {% for commt in communitys %}
+                            <div class="side-list-item">
+                                <a href="timeline-group.html">
+                                    <img src="{{ commt.cover }}" alt="" class="side-list-image rounded-md">
+                                </a>
+                                <div class="flex-1">
+                                    <a href="timeline-group.html"><h4 class="side-list-title">{{ commt.nom}} </h4></a>
+                                    <div class="side-list-info"> {{ commt.nbrMembre }} Members </div>
+                                </div>
+                                <button class="button bg-primary text-white">Join</button>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+{% endblock %}
