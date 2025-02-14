@@ -1,0 +1,50 @@
+{% extends "user/adminuser.html.twig" %}
+
+{% block titleUser %}Users{% endblock %}
+{% block nbruser %}( {{ users|length }} ){% endblock %}
+
+{% block user %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Roles</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Name</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.roles }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.name }} {{ user.firstname }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>{{ user.dateOB|date('d-m-Y') }}</td>
+                    <td>
+                        <a href="{{ path('app_user_edit', {id: user.id}) }}">
+                            <button type="button" class="btn btn-link btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                        </a>
+                        <a href="{{ path('app_user_delete', {id: user.id}) }}">
+                            <button type="button" class="btn btn-link btn-simple-danger">
+                                <i class="la la-times"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock user %}
+
+{% block adduser %}
+    {{ form(form) }}
+{% endblock %}

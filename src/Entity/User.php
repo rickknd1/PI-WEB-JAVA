@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -83,8 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+
+        // Garantit que chaque utilisateur a au moins ROLE_USER
+        if (!in_array('ROLE_USER', $roles, true)) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }
@@ -94,7 +99,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        // S'assure que ROLE_USER est toujours présent
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        $this->roles = array_unique($roles);
 
         return $this;
     }
@@ -179,6 +189,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGender(string $gender): static
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+    #[ORM\ManyToMany(targetEntity: Categories::class)]
+    private Collection $interests;
+
+    public function __construct()
+    {
+        $this->interests = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getInterests(): Collection
+    {
+        return $this->interests;
+    }
+
+    public function addInterest(Categories $interest): static
+    {
+        if (!$this->interests->contains($interest)) {
+            $this->interests->add($interest);
+        }
+
+        return $this;
+    }
+
+    public function removeInterest(Categories $interest): static
+    {
+        $this->interests->removeElement($interest);
 
         return $this;
     }

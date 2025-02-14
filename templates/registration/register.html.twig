@@ -4,11 +4,18 @@
 
 {% block body %}
     <div class="sm:flex">
+        <style>
+            .form-error {
+                @apply text-red-600 text-sm mt-1;
+            }
 
+            .field-error {
+                @apply border-red-500 focus:ring-red-500 focus:border-red-500;
+            }
+        </style>
         <!-- Left Panel -->
         <div class="relative lg:w-[580px] md:w-96 w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 dark:bg-slate-900 z-10">
             <div class="w-full lg:max-w-sm mx-auto space-y-10" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
-
                 <!-- Logo -->
                 <a href="{{ path('home') }}">
                     <img src="assets/images/logo.png" class="w-28 absolute top-10 left-10 dark:hidden" alt="Logo SyncYLinkY">
@@ -28,11 +35,11 @@
                 {{ form_start(registrationForm, {
                     'attr': {
                         'class': 'space-y-7 text-sm text-black font-medium dark:text-white',
-                        'uk-scrollspy': 'target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true'
+                        'uk-scrollspy': 'target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true',
+                        'novalidate': 'novalidate'
                     }
                 }) }}
                 <div class="grid grid-cols-2 gap-4 gap-y-7">
-
                     <!-- Last Name -->
                     <div>
                         {{ form_label(registrationForm.name, 'Last Name', {
@@ -40,11 +47,15 @@
                         }) }}
                         {{ form_widget(registrationForm.name, {
                             'attr': {
-                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
-                                'placeholder': 'Doe'
+                                'class': 'w-full px-1 py-1.5 rounded-lg  border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-200/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'last name'
                             }
                         }) }}
-                        {{ form_errors(registrationForm.name) }}
+                        {% if form_errors(registrationForm.name) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.name) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- First Name -->
@@ -58,7 +69,11 @@
                                 'placeholder': 'John'
                             }
                         }) }}
-                        {{ form_errors(registrationForm.firstname) }}
+                        {% if form_errors(registrationForm.firstname) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.firstname) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Email -->
@@ -72,7 +87,11 @@
                                 'placeholder': 'john.doe@example.com'
                             }
                         }) }}
-                        {{ form_errors(registrationForm.email) }}
+                        {% if form_errors(registrationForm.email) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.email) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Gender -->
@@ -85,7 +104,11 @@
                                 'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
                             }
                         }) }}
-                        {{ form_errors(registrationForm.gender) }}
+                        {% if form_errors(registrationForm.gender) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.gender) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Date of Birth -->
@@ -110,7 +133,11 @@
                                 }
                             }) }}
                         </div>
-                        {{ form_errors(registrationForm.dateOB) }}
+                        {% if form_errors(registrationForm.dateOB) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.dateOB) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Password -->
@@ -124,7 +151,21 @@
                                 'placeholder': '••••••••'
                             }
                         }) }}
-                        {{ form_errors(registrationForm.password.first) }}
+                        {% if form_errors(registrationForm.password.first) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.password.first) }}
+                            </div>
+                        {% endif %}
+                        <div class="password-requirements mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            <p class="font-medium mb-1">Password must contain:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>At least 8 characters</li>
+                                <li>One uppercase letter</li>
+                                <li>One lowercase letter</li>
+                                <li>One number</li>
+                                <li>One special character (@$!%*?&)</li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!-- Confirm Password -->
@@ -138,21 +179,115 @@
                                 'placeholder': '••••••••'
                             }
                         }) }}
-                        {{ form_errors(registrationForm.password.second) }}
+                        {% if form_errors(registrationForm.password.second) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.password.second) }}
+                            </div>
+                        {% endif %}
                     </div>
+
+                    <!-- Section des centres d'intérêt -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.interests, 'Centres d\'intérêt', {
+                            'label_attr': {'class': 'block mb-4 text-lg font-medium text-gray-700 dark:text-gray-300'}
+                        }) }}
+
+                        {% if form_errors(registrationForm.interests) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.interests) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="interestsGrid">
+                            {% for interest in registrationForm.interests %}
+                                <label class="interest-card relative cursor-pointer">
+                                    {{ form_widget(interest, { 'attr': {'class': 'hidden peer'} }) }}
+                                    <div class="h-40 w-full rounded-lg border-2 overflow-hidden transition-all
+                    peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-500
+                    hover:shadow-xl shadow-lg dark:border-slate-600">
+                                        <img src="{{ interest.vars.attr['data-cover'] }}"
+                                             alt="{{ interest.vars.label }}"
+                                             class="w-full h-full object-cover brightness-75">
+                                        <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black via-black/70 to-transparent shadow-lg">
+                                            <span class="text-white font-semibold text-sm">{{ interest.vars.label }}</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            {% endfor %}
+                        </div>
+
+                        <style>
+                            #interestsGrid {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                                gap: 10px;
+                                justify-content: center;
+                            }
+
+                            /* Style des cartes */
+                            .interest-card {
+                                position: relative;
+                                width: 180px;
+                                height: 180px;
+                                overflow: hidden;
+                                border-radius: 10px;
+                                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+                                background-color: white;
+                            }
+
+                            /* Image bien ajustée */
+                            .interest-card img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+
+                            /* Ombre et effet de sélection */
+                            .interest-card .overlay {
+                                position: absolute;
+                                bottom: 0;
+                                left: 0;
+                                width: 100%;
+                                background: rgba(0, 0, 0, 0.6);
+                                padding: 5px;
+                                text-align: center;
+                                border-bottom-left-radius: 10px;
+                                border-bottom-right-radius: 10px;
+                            }
+
+                            .interest-card .overlay span {
+                                color: white;
+                                font-weight: bold;
+                                font-size: 14px;
+                                transition: color 0.3s ease-in-out;
+                            }
+
+                            /* ✅ Changer la couleur du texte en vert lorsque sélectionné */
+                            .peer:checked + div span {
+                                color: limegreen !important;
+                            }
+
+                        </style>
+                    </div>
+
+
+
+
 
                     <!-- Terms Agreement -->
                     <div class="col-span-2">
                         <label class="inline-flex items-center">
-                            {{ form_widget(registrationForm.agreeTerms, {
-                                'attr': {'class': '!rounded-md accent-blue-600 dark:accent-blue-500'}
-                            }) }}
+                            {{ form_widget(registrationForm.agreeTerms)}}
                             <span class="ml-2 text-sm">
                                 I agree to the
                                 <a href="#" class="text-blue-700 hover:underline dark:text-blue-400">Terms of Service</a>
                             </span>
                         </label>
-                        {{ form_errors(registrationForm.agreeTerms) }}
+                        {% if form_errors(registrationForm.agreeTerms) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.agreeTerms) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!-- Submit Button -->
@@ -191,7 +326,7 @@
                 <ul class="uk-slideshow-items w-full h-full">
                     <li class="w-full">
                         <img
-                                src="assets/images/post/img-3.jpg"
+                                src="assets/images/imagesignup.jpg"
                                 alt="Community Connection"
                                 class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left"
                         >

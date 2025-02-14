@@ -1,0 +1,72 @@
+{% extends "categories_interest/adminCat.html.twig" %}
+
+{% block title %}{{ user.username }}{% endblock title %}
+
+{% block body %}
+    <script>
+        document.documentElement.classList.add('dark');
+    </script>
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h1 class="card-title">
+                                    Profil de {{ user.username }}
+                                </h1>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-4">
+                                        <img class="img-circle" src="/assets/images/profile.jpg" alt="Photo de profil" style="width: 300px;">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <ul class="list-unstyled mt-2">
+                                            <li class="mb-3">
+                                                <strong>Email:</strong> {{ user.email }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Rôles:</strong>
+                                                {% for role in user.roles %}
+                                                    <span class="badge badge-primary">{{ role }}</span>
+                                                {% endfor %}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Nom:</strong> {{ user.name }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Prénom:</strong> {{ user.firstname }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Nom d'utilisateur:</strong> {{ user.username }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Date de naissance:</strong> {{ user.dateOB ? user.dateOB|date('d-m-Y') : 'Non renseigné' }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Genre:</strong> {{ user.gender }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="card-action">
+                                    <a href="{{ path('app_user_index') }}" class="btn btn-primary">
+                                        <i class="la la-arrow-left"></i> Retour à la liste
+                                    </a>
+                                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">
+                                        <i class="la la-edit"></i> Modifier
+                                    </a>
+                                    {{ include('user/_delete_form.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
