@@ -1,0 +1,38 @@
+{% extends "admin.html.twig" %}
+
+{% block  abbAdmin %}
+    <div class="main-panel">
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="{% if app.request.attributes.get('_route') starts with 'abonnement.edit' %}col-md-10{% else %}col-md-6{% endif %}">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{% block titleAbb %}{% endblock %}</div>
+                                <p class="card-category">{% block nbrAbb %}{% endblock %}</p>
+                            </div>
+                            <div class="card-body">
+                                {% block  abbEdit %}{% endblock %}
+                                {% block abb %}{% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if app.request.attributes.get('_route') == 'abonnement.admin.index' %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Add Abonnement</h4>
+                                </div>
+                                <div class="card-body">
+                                    {% block addAbb %}{% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

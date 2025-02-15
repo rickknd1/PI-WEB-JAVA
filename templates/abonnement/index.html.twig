@@ -1,8 +1,109 @@
 {% extends "home/home.html.twig" %}
 
 {% block abonnement %}
-<div class="subscription-container">
-    <!-- Abonnement Normal (Gratuit) -->
+    <div class="max-w-4xl mx-auto max-lg:px-4">
+
+
+        <div class="lg:py-20 py-12">
+            <div class="text-center">
+                <ion-icon name="sparkles-sharp" class="text-5xl mb-6 text-sky-500 opacity-70 rotate-12"></ion-icon>
+                <h1 class="lg:text-5xl lg:font-bold md:text-3xl text-xl font-semibold bg-gradient-to-tr from-indigo-500 to-sky-400 bg-clip-text !text-transparent leading-relaxed">  With SyncYLinKY  Premium</h1>
+                <p class="text-sm text-gray-500 mt-2 dark:text-white/80"> Exclusive features and benefits on SyncYLinKY are accessible to you. </p>
+            </div>
+
+
+            <!-- pricing lebel with slider -->
+            <div class="relative lg:mt-12 mt-8 max-w-2xl mx-auto" tabindex="-1" uk-slider="finite: true">
+
+                <div class="overflow-hidden uk-slider-container py-2">
+
+                    <ul class="-ml-2 uk-slider-items w-[calc(100%+10px)]">
+                        {% for abonnement in abonnements%}
+                            <li class="lg:w-1/3 w-1/2 pr-[10px]">
+                                <label for="weekly">
+                                    <input type="radio" name="radio-membership" id="weekly" class="peer appearance-none hidden"/>
+                                    <div class="relative p-4 bg-white shadow -sm rounded-xl cursor-pointer peer-checked:[&_.active]:block dark:bg-dark3">
+                                        <div class="mb-auto font-bold text-xl-center"> {{ abonnement.nom}} </div>
+                                        <h2 class="text-3xl font-bold text-black relative px-2 dark:text-white">
+                                            {{ abonnement.prix }} <span class="text-sm absolute font-normal text-gray-300">DT</span><span class='text-sm'>/Month</span></h2>
+                                        <ion-icon name="checkmark-circle" class="hidden active absolute top-0 right-0 m-4 text-2xl text-blue-600 uk-animation-scale-up"></ion-icon>
+                                    </div>
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+                <!-- slide nav -->
+                <ul class="flex flex-wrap justify-center my-7 uk-dotnav uk-slider-nav gap-2.5"></ul>
+                <a class="hidden absolute -translate-y-1/2 bg-white rounded-full top-1/2 -left-4 flex w-8 h-8 p-2.5 place-items-center" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
+                <a class="hidden absolute -right-4 -translate-y-1/2 bg-white rounded-full top-1/2 flex w-8 h-8 p-2.5 place-items-center" href="#" uk-slidenav-next uk-slider-item="next"></a>
+            </div>
+
+            <div class="md:p-8 p-5 bg-white shadow-sm rounded-xl mt-16 dark:bg-dark3">
+                <h1 class="text-base font-medium text-black dark:text-white">Why Choose Premium Membership </h1>
+
+                <div class=" text-sm text-gray-500 grid md:grid-cols-2 grid-cols-3 gap-10 mt-8 dark:text-white/80">
+
+                    <div class="flex gap-5 max-md:items-center max-md:flex-col">
+                        <ion-icon name="sparkles-outline" class="flex shrink-0 p-2 text-2xl rounded-full bg-sky-100 text-sky-500 dark:bg-sky-500/20"></ion-icon>
+                        <div>
+                            <h5 class="text-black text-base font-medium dark:text-white">  </h5>
+                            <p class="mt-1 max-md:hidden"> You can have acces to the private events ( formations, conference...) </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 max-md:items-center max-md:flex-col">
+                        <ion-icon name="chatbubble-ellipses-outline" class="flex shrink-0 p-2 text-2xl rounded-full bg-teal-100 text-teal-500 dark:bg-teal-500/20"></ion-icon>
+                        <div>
+                            <h5 class="text-black text-base font-medium dark:text-white"> Private </h5>
+                            <p class="mt-1 max-md:hidden"> You can talk on the private community </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 max-md:items-center max-md:flex-col">
+                        <ion-icon name="chatbox" class="flex shrink-0 p-2 text-2xl rounded-full bg-orange-100 text-orange-500 dark:bg-orange-500/20"></ion-icon>
+                        <div>
+                            <h5 class="text-black text-base font-medium dark:text-white"> Messages </h5>
+                            <p class="mt-1 max-md:hidden"> Send photos, videos, and messages privately to your friends or groups </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 max-md:items-center max-md:flex-col">
+                        <ion-icon name="compass" class="flex shrink-0 p-2 text-2xl rounded-full bg-purple-100 text-purple-500 dark:bg-purple-500/20"></ion-icon>
+                        <div>
+                            <h5 class="text-black text-base font-medium dark:text-white"> Explore </h5>
+                            <p class="mt-1 max-md:hidden">  Discover content and creators based on their interests </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 max-md:items-center max-md:flex-col">
+                        <ion-icon name="shield" class="flex shrink-0 p-2 text-2xl rounded-full bg-red-100 text-red-500 dark:bg-red-500/20"></ion-icon>
+                        <div>
+                            <h5 class="text-black text-base font-medium dark:text-white"> Privacy  </h5>
+                            <p class="mt-1 max-md:hidden"> Make your account visible only to people who follow you </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 max-md:items-center max-md:flex-col">
+                        <ion-icon name="cart" class="flex shrink-0 p-2 text-2xl rounded-full bg-sky-100 text-sky-500 dark:bg-sky-500/20"></ion-icon>
+                        <div>
+                            <h5 class="text-black text-base font-medium dark:text-white"> Shopping </h5>
+                            <p class="mt-1 max-md:hidden"> Browse and buy products from your favorite brands and creators</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="py-10 flex justify-between">
+
+                <p class="max-w-xl mx-auto text-center text-sm text-gray-500dark:text-white/80"> SyncYLinKY Premium is the ultimate way to enhance your SyncYLinKY experience and connect with your passions. </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+<!-- <div class="subscription-container">
+     Abonnement Normal (Gratuit)
     <div class="subscription-card">
         <h2>Abonnement Normal</h2>
         <ul>
@@ -11,13 +112,13 @@
             <li>Support standard</li>
         </ul>
         <div class="button-container">
-            <a href="{{ path('app_user_inscription') }}">
+            <a href="">
                 <button>S'inscrire gratuitement</button>
             </a>
         </div>
     </div>
 
-    <!-- Abonnement Premium (Payant) -->
+    Abonnement Premium (Payant)
     <div class="subscription-card premium">
         <h2>Abonnement Premium</h2>
         <ul>
@@ -27,9 +128,10 @@
             <li>Pas de publicité</li>
         </ul>
         <div class="button-container">
-            <a href="{{ path('app_user_inscription') }}">
+            <a href="">
             <button>S'abonner maintenant</button>
         </div>
     </div>
 </div>
+    -->
 {% endblock abonnement %}

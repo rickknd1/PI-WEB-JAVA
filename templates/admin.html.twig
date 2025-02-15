@@ -224,9 +224,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="notifications.html">
-                        <i class="la la-bell"></i>
-                        <p>Notifications</p>
+                    <a href="{{ path('abonnement.admin.index') }}">
+                        <i class="las la-hand-holding-usd"></i>
+                        <p>Abonnements</p>
                         <span class="badge badge-success"></span>
                     </a>
                 </li>
@@ -248,6 +248,8 @@
     </div>
     {% block body %}{% endblock %}
     {% block  catAdmin %}{% endblock %}
+    {% block  abbAdmin %}{% endblock %}
+
 
 </div>
 </body>
