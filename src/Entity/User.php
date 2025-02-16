@@ -97,14 +97,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array|string $roles): static
     {
-        // S'assure que ROLE_USER est toujours présent
-        if (!in_array('ROLE_USER', $roles)) {
-            $roles[] = 'ROLE_USER';
+        // Convertir en tableau si une seule valeur est passée
+        if (!is_array($roles)) {
+            $roles = [$roles];
         }
 
-        $this->roles = array_unique($roles);
+        // On s'assure qu'il n'y a qu'un seul rôle (hors ROLE_USER qui est ajouté ailleurs)
+        $this->roles = array_intersect($roles, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
 
         return $this;
     }
