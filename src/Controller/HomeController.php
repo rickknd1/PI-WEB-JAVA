@@ -34,4 +34,11 @@ final class HomeController extends AbstractController{
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/pageAcceuil', name: 'app_acceuil')]
+    public function Acceuil(Request $request, EntityManagerInterface $em): Response
+    {
+        return $this->render('home/home.twml.twig');
+    }
+
 }

@@ -18,14 +18,21 @@ final class UserController extends AbstractController{
         $users = $userRepository->findAll();
 
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $form = $this->createForm(UserType::class, $user, [
+            'attr' => ['novalidate' => 'novalidate'],
+        ]);        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $this->addFlash('success', 'L\'utilisateur a été créé avec succès.');
+
             return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
+        } else {
+            foreach ($form->getErrors(true) as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
         }
         return $this->render('user/index.html.twig', [
             'user' => $user,
@@ -45,7 +52,12 @@ final class UserController extends AbstractController{
             $entityManager->persist($user);
             $entityManager->flush();
 
+
             return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
+        } else {
+            foreach ($form->getErrors(true) as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
         }
 
         return $this->render('user/new.html.twig', [
@@ -71,7 +83,7 @@ final class UserController extends AbstractController{
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/edit.html.twig', [

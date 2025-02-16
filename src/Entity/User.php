@@ -10,10 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Un compte existe déjà avec cet email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,35 +22,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "Veuillez entrer un email valide.")]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
-    private array $roles = [];
+    #[Assert\Choice(
+        choices: ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_USER'],
+        message: "Le rôle sélectionné est invalide."
+    )]
+    private string $role = 'ROLE_USER'; // Par défaut, un utilisateur a le rôle ROLE_USER
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
+    #[Assert\Length(
+        min: 6,
+        minMessage: "Le mot de passe doit contenir au moins 6 caractères."
+    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire.")]
+    #[Assert\Length(
+        min: 3,
+        minMessage: "Le nom d'utilisateur doit contenir au moins 3 caractères."
+    )]
     private ?string $username = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotNull(message: "La date de naissance est requise.")]
+    #[Assert\LessThan("-18 years", message: "Vous devez avoir au moins 18 ans.")]
     private ?\DateTimeInterface $dateOB = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Choice(
+        choices: ['homme', 'femme', 'autres'],
+        message: "Le genre sélectionné est invalide."
+    )]
     private ?string $gender = null;
+
+    #[ORM\ManyToMany(targetEntity: Categories::class)]
+    #[Assert\Count(
+        min: 1,
+        minMessage: "Vous devez sélectionner au moins une catégorie d'intérêt."
+    )]
+    private Collection $interests;
+
+    public function __construct()
+    {
+        $this->interests = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -64,55 +95,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     * @return list<string>
-     */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-
-        // Garantit que chaque utilisateur a au moins ROLE_USER
-        if (!in_array('ROLE_USER', $roles, true)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array_unique($roles);
+        // Retourne un tableau contenant uniquement le rôle de l'utilisateur
+        return [$this->role];
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array|string $roles): static
+    public function setRoles(string $role): static
     {
-        // Convertir en tableau si une seule valeur est passée
-        if (!is_array($roles)) {
-            $roles = [$roles];
+        // Assurez-vous que le rôle est valide
+        if (!in_array($role, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_USER'], true)) {
+            throw new \InvalidArgumentException("Rôle invalide : $role");
         }
 
-        // On s'assure qu'il n'y a qu'un seul rôle (hors ROLE_USER qui est ajouté ailleurs)
-        $this->roles = array_intersect($roles, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
-
+        $this->role = $role;
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -121,18 +133,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
+    public function eraseCredentials(): void {}
 
     public function getName(): ?string
     {
@@ -142,7 +146,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -154,7 +157,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
-
         return $this;
     }
 
@@ -166,7 +168,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -178,7 +179,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDateOB(\DateTimeInterface $dateOB): static
     {
         $this->dateOB = $dateOB;
-
         return $this;
     }
 
@@ -190,20 +190,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGender(string $gender): static
     {
         $this->gender = $gender;
-
         return $this;
     }
-    #[ORM\ManyToMany(targetEntity: Categories::class)]
-    private Collection $interests;
 
-    public function __construct()
-    {
-        $this->interests = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection<int, Categories>
-     */
     public function getInterests(): Collection
     {
         return $this->interests;
@@ -214,14 +203,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->interests->contains($interest)) {
             $this->interests->add($interest);
         }
-
         return $this;
     }
 
     public function removeInterest(Categories $interest): static
     {
         $this->interests->removeElement($interest);
-
         return $this;
     }
 }

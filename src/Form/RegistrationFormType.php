@@ -32,21 +32,7 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => 'Enter your last name',
                     'autocomplete' => 'family-name'
                 ],
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Last name is required'
-                    ]),
-                    new Assert\Length([
-                        'min' => 2,
-                        'max' => 50,
-                        'minMessage' => 'Your last name must be at least {{ limit }} characters long',
-                        'maxMessage' => 'Your last name cannot be longer than {{ limit }} characters'
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[a-zA-ZÀ-ÿ\-\' ]+$/',
-                        'message' => 'Your last name can only contain letters, spaces, hyphens and apostrophes'
-                    ])
-                ],
+
                 'trim' => true
             ])
             ->add('firstname', TextType::class, [
@@ -56,21 +42,7 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => 'Enter your first name',
                     'autocomplete' => 'given-name'
                 ],
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'First name is required'
-                    ]),
-                    new Assert\Length([
-                        'min' => 2,
-                        'max' => 50,
-                        'minMessage' => 'Your first name must be at least {{ limit }} characters long',
-                        'maxMessage' => 'Your first name cannot be longer than {{ limit }} characters'
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[a-zA-ZÀ-ÿ\-\' ]+$/',
-                        'message' => 'Your first name can only contain letters, spaces, hyphens and apostrophes'
-                    ])
-                ],
+
                 'trim' => true
             ])
             ->add('email', EmailType::class, [
@@ -80,35 +52,16 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => 'example@domain.com',
                     'autocomplete' => 'email'
                 ],
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Email address is required'
-                    ]),
-                    new Assert\Email([
-                        'message' => 'Please enter a valid email address',
-                        'mode' => 'strict'
-                    ]),
-                    new Assert\Length([
-                        'max' => 180,
-                        'maxMessage' => 'Email address cannot be longer than {{ limit }} characters'
-                    ])
-                ]
+
             ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'Gender',
                 'choices' => [
-                    'Prefer not to say' => 'not_specified',
-                    'Male' => 'male',
-                    'Female' => 'female',
-                    'Non-binary' => 'non_binary',
-                    'Other' => 'other'
+                    'Homme' => 'homme',
+                    'Femme' => 'femme',
+                    'Autres' => 'autres',
                 ],
-                'placeholder' => 'Select your gender',
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please select your gender'
-                    ])
-                ]
+                'expanded' => false,
+                'multiple' => false,
             ])
             ->add('dateOB', DateType::class, [
                 'label' => 'Date of Birth',
@@ -120,23 +73,10 @@ class RegistrationFormType extends AbstractType
                     'month' => 'Month',
                     'day' => 'Day'
                 ],
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Date of birth is required'
-                    ]),
-                    new Assert\LessThanOrEqual([
-                        'value' => "-13 years",
-                        'message' => 'You must be at least 13 years old to register'
-                    ]),
-                    new Assert\GreaterThanOrEqual([
-                        'value' => "-100 years",
-                        'message' => 'Please enter a valid date of birth'
-                    ])
-                ]
+
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
                 'first_options' => [
                     'label' => 'Password',
                     'attr' => [
@@ -208,4 +148,5 @@ class RegistrationFormType extends AbstractType
             'validation_groups' => ['Default', 'Registration']
         ]);
     }
+
 }
