@@ -17,7 +17,7 @@ final class ShareController extends AbstractController
     #[Route(name: 'app_share_index', methods: ['GET'])]
     public function index(ShareRepository $shareRepository): Response
     {
-        return $this->render('share/index.html.twig', [
+        return $this->render('share/index.html.twig.twig', [
             'shares' => $shareRepository->findAll(),
         ]);
     }

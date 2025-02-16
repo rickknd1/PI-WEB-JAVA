@@ -40,6 +40,9 @@ class Comment
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'comment')]
     private Collection $reactions;
 
+    #[ORM\ManyToOne(inversedBy: 'comment')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->reactions = new ArrayCollection();
@@ -124,6 +127,18 @@ class Comment
                 $r->setComment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

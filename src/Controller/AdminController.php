@@ -14,7 +14,7 @@ final class AdminController extends AbstractController{
     {
         $visitors = $repository->findAll();
         $nbr=$visitors[0]->getNbrVisitors();
-        return $this->render('admin/index.html.twig', [
+        return $this->render('admin/index.html.twig.twig', [
             'controller_name' => 'AdminController',
             'nbr'=>$nbr
         ]);

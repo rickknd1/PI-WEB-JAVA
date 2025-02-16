@@ -27,6 +27,9 @@ class Share
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'sharedPosts')]
     private ?Post $sharedFrom = null;
 
+    #[ORM\ManyToOne(inversedBy: 'share')]
+    private ?User $user = null;
+
     public function getSharedFrom(): ?self
     {
         return $this->sharedFrom;
@@ -58,6 +61,18 @@ class Share
     public function setPost(?Post $post): static
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

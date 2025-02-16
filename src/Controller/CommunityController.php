@@ -27,7 +27,7 @@ final class CommunityController extends AbstractController{
             return $this->redirectToRoute('community.index');
         }
 
-        return $this->render('community/index.html.twig', [
+        return $this->render('community/index.html.twig.twig', [
             'communities' => $communities,
             'form' => $form->createView()
         ]);

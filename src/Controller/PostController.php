@@ -18,7 +18,7 @@ final class PostController extends AbstractController
     #[Route(name: 'app_post_index', methods: ['GET'])]
     public function index(PostRepository $postRepository): Response
     {
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/index.html.twig.twig', [
             'posts' => $postRepository->findAll(),
         ]);
     }
@@ -94,7 +94,7 @@ final class PostController extends AbstractController
     {
         $posts = $em->getRepository(Post::class)->findBy([], ['created_at' => 'DESC']);
 
-        return $this->render('post/feed.html.twig', [
+        return $this->render('front/feed.html.twig.', [
             'posts' => $posts,
         ]);
     }

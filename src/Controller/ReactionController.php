@@ -17,7 +17,7 @@ final class ReactionController extends AbstractController
     #[Route(name: 'app_reaction_index', methods: ['GET'])]
     public function index(ReactionRepository $reactionRepository): Response
     {
-        return $this->render('reaction/index.html.twig', [
+        return $this->render('reaction/index.html.twig.twig', [
             'reactions' => $reactionRepository->findAll(),
         ]);
     }

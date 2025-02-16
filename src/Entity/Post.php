@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\Table(name: "post")]
 class Post
 {
     #[ORM\Id]
@@ -51,6 +52,9 @@ class Post
      */
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'post')]
     private Collection $Reactions;
+
+    #[ORM\ManyToOne(inversedBy: 'post')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -198,6 +202,18 @@ class Post
                 $reaction->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

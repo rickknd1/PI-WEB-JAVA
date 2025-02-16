@@ -23,4 +23,10 @@ final class HomeController extends AbstractController{
             'controller_name' => 'HomeController',
         ]);
     }
+    #[Route('/home', name: 'app_front')]
+    public function home(Request $request,EntityManagerInterface $em , VisitorsRepository $repository): Response
+    {
+
+        return $this->render('front/feed.html.twig');
+    }
 }
