@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fil d'actualité{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2 class="mb-4">📰 Fil d'actualité</h2>
+
+        {% for post in posts %}
+            <a href="{{ path('app_post_show', {'id': post.id}) }}">{{ post.title }}</a>
+            {% if post.sharedFrom %}
+                <p class="text-muted">🔄 Partagé depuis <strong>{{ post.sharedFrom.user.username }}</strong></p>
+                <div class="border p-2">
+                    <p>{{ post.sharedFrom.content }}</p>
+                </div>
+            {% else %}
+                <h5 class="card-title">{{ post.user.username }}</h5>
+                <p class="card-text">{{ post.content }}</p>
+            {% endif %}
+
+                    {% if post.image %}
+                        <img src="{{ asset('uploads/' ~ post.image) }}" alt="Post Image" class="img-fluid">
+                    {% endif %}
+
+                    <p class="text-muted small">{{ post.createdAt|date('d/m/Y H:i') }}</p>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('app_like', { id: post.id }) }}" class="btn btn-outline-primary">👍 {{ post.likes|length }}</a>
+                        <a href="{{ path('app_comment', { id: post.id }) }}" class="btn btn-outline-secondary">💬 {{ post.comments|length }}</a>
+                        <a href="{{ path('app_share', { id: post.id }) }}" class="btn btn-outline-success">🔄 Partager</a>
+                    </div>
+                    <form action="{{ path('app_comment', { id: post.id }) }}" method="post" class="mt-2">
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control" placeholder="Écrire un commentaire..." required>
+                            <button type="submit" class="btn btn-primary">💬 Envoyer</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center">Aucun post disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

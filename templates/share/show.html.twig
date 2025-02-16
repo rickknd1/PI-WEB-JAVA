@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Share{% endblock %}
+
+{% block body %}
+    <h1>Share</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ share.id }}</td>
+            </tr>
+            <tr>
+                <th>Create_at</th>
+                <td>{{ share.createAt ? share.createAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_share_index') }}">back to list</a>
+
+    <a href="{{ path('app_share_edit', {'id': share.id}) }}">edit</a>
+
+    {{ include('share/_delete_form.html.twig') }}
+{% endblock %}
