@@ -23,15 +23,13 @@ class UserType extends AbstractType
 
             ->add('role', ChoiceType::class, [
                 'choices' => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Super Administrateur' => 'ROLE_SUPER_ADMIN',
-                    'Simple Utilisateur' => 'ROLE_USER',
+                    'User' => 'ROLE_USER',
+                    'Admin' => 'ROLE_ADMIN',
+                    'Super Admin' => 'ROLE_SUPER_ADMIN',
                 ],
+                'label' => 'Rôle',
                 'multiple' => false, // Un seul rôle peut être sélectionné
-                'expanded' => false, // Vous pouvez utiliser true pour des boutons radio
-                'placeholder' => 'Sélectionnez un rôle',
-                'required' => true,
-                'mapped' => false,
+                'expanded' => false,  // Afficher sous forme de boutons radio
             ])
             ->add('password')
             ->add('name')
@@ -40,7 +38,6 @@ class UserType extends AbstractType
             ->add('dateOB', DateType::class, [
                 'widget' => 'single_text', // Utilise un input de type "date" en HTML5
                 'format' => 'yyyy-MM-dd', // Format de la date
-                'html5' => true, // Active le support HTML5
                 'required' => true, // Rend le champ obligatoire
             ])
             ->add('gender', ChoiceType::class, [

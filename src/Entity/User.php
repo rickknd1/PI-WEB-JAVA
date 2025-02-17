@@ -31,6 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Choice(
         choices: ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_USER'],
         message: "Le rôle sélectionné est invalide."
+
     )]
     private string $role = 'ROLE_USER'; // Par défaut, un utilisateur a le rôle ROLE_USER
 
@@ -95,6 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+        $this->username = $email;
         return $this;
     }
 
@@ -111,11 +113,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(string $role): static
     {
-        // Assurez-vous que le rôle est valide
-        if (!in_array($role, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_USER'], true)) {
-            throw new \InvalidArgumentException("Rôle invalide : $role");
-        }
-
+        $this->role = $role;
+        return $this;
+    }
+    public function setRole(string $role): static
+    {
         $this->role = $role;
         return $this;
     }

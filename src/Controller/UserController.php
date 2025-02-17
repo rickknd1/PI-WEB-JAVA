@@ -26,7 +26,6 @@ final class UserController extends AbstractController{
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'L\'utilisateur a été créé avec succès.');
 
             return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
         } else {
