@@ -40,4 +40,28 @@ final class AbonnementController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/abonnement/{id}/delete', name: 'abonnement.delete')]
+    public function delete(Request $request, Abonnements $abonnement, EntityManagerInterface $em): Response
+    {
+        $em->remove($abonnement);
+        $em->flush();
+        return $this->redirectToRoute('abonnement.admin.index');
+    }
+
+    #[Route('/admin/abonnement/{id}/edit', name: 'abonnement.edit')]
+    public function edit(Request $request, Abonnements $abonnement, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(AbonnementType::class, $abonnement);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($abonnement);
+            $em->flush();
+            return $this->redirectToRoute('abonnement.admin.index');
+        }
+        return $this->render('abonnement/edit.html.twig', [
+            'abonnements' => $abonnement,
+            'form' => $form->createView(),
+        ]);
+    }
+
 }

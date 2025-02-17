@@ -1,56 +1,11 @@
-{% extends 'abonnement/adminAbb.html.twig' %}
+{% extends "abonnement/adminAbb.html.twig" %}
 
-{% block titleAbb %}Abonnements {% endblock %}
-{% block nbrAbb %}{{ abonnements|length }}{% endblock %}
-{% block abb %}
-    <div class="relative overflow-x-auto">
-        <table class="table table-head-bg-primary mt-4">
-            <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Prix</th>
-                <th scope="col" >Advantages</th>
-                <th scope="col" >Type</th>
-                <th scope="col" >Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for abb in abonnements %}
-                <tr>
-                    <td>{{ abb.id }}</td>
-                    <td>{{ abb.nom }}</td>
-                    <td>{{ abb.prix }}</td>
-                    <td>
-                        {% for avantage in abb.avantages %}
-                            {{ avantage }}<br>
-                        {% else %}
-                            <em>No advantages added</em>
-                        {% endfor %}
-                    </td>
-                    <td>{{ abb.type }}</td>
-                    <td>
+{% block title %}{{ abonnements.nom|upper }}{% endblock title %}
+{% block titleAbb %}{{ abonnements.nom }}{% endblock %}
 
-                        <a href="{{ path('abonnement.edit' , {id: abb.id } ) }}">
-                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
-                                <i class="la la-edit"></i>
-                            </button>
-                        </a>
-                        <a href="{{ path('abonnement.delete' , {id: abb.id } ) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce abonnement ?');">
-                            <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
-                                <i class="la la-times"></i>
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endblock %}
+{% block  AbbEdit %}
 
-{% block  addAbb %}
-{{ form(form) }}
+    {{ form(form) }}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const collectionHolder = document.querySelector('.avantages');
@@ -113,4 +68,5 @@
         }
 
     </style>
+
 {% endblock %}
