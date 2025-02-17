@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\ReactionChoise;
 
 #[ORM\Entity(repositoryClass: ReactionRepository::class)]
 class Reaction
@@ -13,13 +14,13 @@ class Reaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $type = null;
+    #[ORM\Column(type: 'string', length: 255, enumType: ReactionChoise::class)]
+    private $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'Reaction')]
     private ?Post $post = null;
 
-    #[ORM\ManyToOne(inversedBy: 'r')]
+    #[ORM\ManyToOne(inversedBy: 'Comment')]
     private ?Comment $comment = null;
 
     #[ORM\ManyToOne(inversedBy: 'reaction')]

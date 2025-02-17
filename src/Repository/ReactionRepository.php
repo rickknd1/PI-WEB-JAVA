@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Reaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Enum\ReactionChoise;
 
 /**
  * @extends ServiceEntityRepository<Reaction>

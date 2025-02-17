@@ -6,13 +6,17 @@ use App\Entity\Reaction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Enum\Reactionchoise;
 
 class ReactionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type')
+            ->add('type', EnumType::class, [
+                'class' => ReactionChoise::class,
+                'choices' => 'name',
+            ])
         ;
     }
 

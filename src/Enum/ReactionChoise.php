@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum ReactionType: string
+enum ReactionChoise: string
 {
     case LIKE = 'like';
     case LOVE = 'love';
