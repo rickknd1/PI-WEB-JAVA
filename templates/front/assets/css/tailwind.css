@@ -92,16 +92,10 @@ abbr:where([title]) {
 Remove the default font size and weight for headings.
 */
 
-h1{
-  font-size: 50px;
-  font-weight: bold;
-}
-h4{
-  font-size: 15px;
-  font-weight: lighter;
-}
+h1,
 h2,
 h3,
+h4,
 h5,
 h6 {
   font-size: inherit;
@@ -6706,16 +6700,16 @@ h1, h2, h3, h4, h5, h6 {
 
   .dark\:bg-slate-900 {
     --tw-bg-opacity: 1;
-    background-color: rgb(255 111 0 / var(--tw-bg-opacity));
+    background-color: rgb(15 23 42 / var(--tw-bg-opacity));
   }
 
   .dark\:bg-slate-900\/80 {
-    background-color: rgb(255 111 0 / 0.8);
+    background-color: rgb(15 23 42 / 0.8);
   }
 
   .dark\:bg-slate-950 {
     --tw-bg-opacity: 1;
-    background-color: rgb(51 51 51 / var(--tw-bg-opacity));
+    background-color: rgb(2 6 23 / var(--tw-bg-opacity));
   }
 
   .dark\:bg-teal-500\/20 {
@@ -6833,15 +6827,15 @@ h1, h2, h3, h4, h5, h6 {
 
   .dark\:text-slate-800 {
     --tw-text-opacity: 1;
-    color: rgb(255 111 0 / var(--tw-text-opacity));
+    color: rgb(30 41 59 / var(--tw-text-opacity));
   }
 
   .dark\:text-slate-800\/40 {
-    color: rgb(255 111 0 / 0.4);
+    color: rgb(30 41 59 / 0.4);
   }
 
   .dark\:text-slate-800\/60 {
-    color: rgb(255 111 0 / 0.6);
+    color: rgb(30 41 59 / 0.6);
   }
 
   .dark\:text-white {

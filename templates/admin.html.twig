@@ -123,7 +123,7 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa fa-power-off"></i> Logout</a>
                         </ul>
                         <!-- /.dropdown-user -->
                     </li>
@@ -178,8 +178,8 @@
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="components.html">
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'user.admin' %}active{% endif %}">
+                    <a href="{{ path('user.admin') }}">
                         <i class="la la-table"></i>
                         <p>Users</p>
                         <span class="badge badge-count"></span>
@@ -252,7 +252,7 @@
     {% block  catAdmin %}{% endblock %}
     {% block  eventAdmin %}{% endblock %}
 
-
+    {% block userAdmin %}{% endblock %}
 </div>
 </body>
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>

@@ -1,0 +1,8 @@
+{% extends "user/adminuser.html.twig" %}
+
+{% block title %}{{ user.username|upper }}{% endblock title %}
+{% block titleUser %}{{ user.username }}{% endblock %}
+
+{% block userEdit %}
+    {{ form(form) }}
+{% endblock userEdit %}

@@ -1,0 +1,156 @@
+{% extends "admin.html.twig" %}
+
+{% block userAdmin %}
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="{% if app.request.attributes.get('_route') starts with 'users.edit' %}col-md-10{% else %}col-md-7{% endif %}">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{% block titleUser %}{% endblock %}</div>
+                                <p class="card-category">{% block nbruser %}{% endblock %}</p>
+                            </div>
+                            <div class="card-body" style="overflow-x: auto;">
+                                {% block userEdit %}{% endblock %}
+                                {% block user %}{% endblock %}
+                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    {% if app.request.attributes.get('_route') == 'user.admin' %}
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Add User</h4>
+                                </div>
+                                <div class="card-body">
+                                    {% block adduser %}{% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Style de base pour le tableau */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Style pour l'en-tête du tableau */
+        table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        /* Style pour les cellules de l'en-tête et du corps */
+        table th,
+        table td {
+            padding: 12px 15px;
+        }
+
+        /* Style pour les lignes du corps du tableau */
+        table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        /* Changement de couleur au survol des lignes */
+        table tbody tr:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+
+        /* Style pour les lignes paires */
+        table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        /* Style pour la dernière ligne */
+        table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        /* Style pour les boutons de pagination */
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .pagination .page-item {
+            margin: 0 5px;
+        }
+
+        .pagination .page-link {
+            color: #009879;
+            border: 1px solid #009879;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #009879;
+            border-color: #009879;
+            color: white;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #009879;
+            color: white;
+        }
+    </style>
+
+    <script>
+        // Ajouter un effet de survol sur les lignes du tableau
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('table tbody tr');
+
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.backgroundColor = '#e0f7fa'; // Couleur de survol
+                });
+
+                row.addEventListener('mouseleave', () => {
+                    row.style.backgroundColor = ''; // Revenir à la couleur d'origine
+                });
+            });
+        });
+
+        // Exemple de fonction pour trier le tableau par colonne
+        function sortTable(columnIndex) {
+            const table = document.querySelector('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort((a, b) => {
+                const aValue = a.querySelectorAll('td')[columnIndex].textContent;
+                const bValue = b.querySelectorAll('td')[columnIndex].textContent;
+                return aValue.localeCompare(bValue);
+            });
+
+            // Réorganiser les lignes dans le tbody
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    </script>
+{% endblock %}

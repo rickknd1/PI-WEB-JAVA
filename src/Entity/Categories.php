@@ -7,10 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
-#[Broadcast]
 class Categories
 {
     #[ORM\Id]
@@ -21,7 +19,7 @@ class Categories
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(type : Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
@@ -30,9 +28,6 @@ class Categories
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_creation = null;
 
-    /**
-     * @var Collection<int, Community>
-     */
     #[ORM\OneToMany(targetEntity: Community::class, mappedBy: 'id_categorie')]
     private Collection $communities;
 

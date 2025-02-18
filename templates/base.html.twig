@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}SyncYLinkY{% endblock %}</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../public/assets/images/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-        <!-- Favicon -->
-        <link href="/assets/images/favicon-32x32.png" rel="icon" type="image/png">
-    
-        <!-- title and description-->
-        <meta name="description" content="SyncYLinkY - community platform">
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SyncYLinkY{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- css files -->
-        <link rel="stylesheet" href="/assets/css/tailwind.css">
-        <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- Favicon -->
+    <link href="/assets/images/favicon-32x32.png" rel="icon" type="image/png">
+    <link href="/assets/images/logo-light.png" rel="alternate icon" media="(prefers-color-scheme: dark)">
+
+    <!-- Metadata -->
+    <meta name="description" content="SyncYLinkY - community platform">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 
         <!-- google font -->
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,6 +35,26 @@
                 </div>
             </div>
         </footer>
+        <!-- Scripts -->
+<script src="/assets/js/uikit.min.js"></script>
+<script src="/assets/js/script.js"></script>
+
+<!-- Ionicons -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<!-- Dark Mode Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+</script>
+
+{% block javascripts %}{% endblock %}
         {% block last %}{% endblock %}
     </body>
 </html>
