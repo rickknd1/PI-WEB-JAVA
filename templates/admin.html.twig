@@ -224,17 +224,17 @@
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'abonnement.admin.index' %}active{% endif %}">
                     <a href="{{ path('abonnement.admin.index') }}">
                         <i class="las la-hand-holding-usd"></i>
                         <p>Abonnements</p>
                         <span class="badge badge-success"></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="typography.html">
-                        <i class="la la-font"></i>
-                        <p>Typography</p>
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'gamification.admin.index' %}active{% endif %}">
+                    <a href="{{ path('gamification.admin.index') }}">
+                        <i class="las la-gift"></i>
+                        <p>Gamification</p>
                         <span class="badge badge-danger"></span>
                     </a>
                 </li>
@@ -252,8 +252,7 @@
     {% block  catAdmin %}{% endblock %}
     {% block  eventAdmin %}{% endblock %}
     {% block  abbAdmin %}{% endblock %}
-
-
+    {% block  gamAdmin %}{% endblock %}
     {% block userAdmin %}{% endblock %}
 </div>
 </body>

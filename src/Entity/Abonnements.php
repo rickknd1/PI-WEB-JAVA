@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use App\Repository\AbonnementsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,6 +27,19 @@ class Abonnements
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
+
+    #[ORM\OneToMany(mappedBy: "type_abonnement", targetEntity: Gamifications::class)]
+    private Collection $gamifications;
+
+    public function __construct()
+    {
+        $this->gamifications = new ArrayCollection();
+    }
+
+    public function getGamifications(): Collection
+    {
+        return $this->gamifications;
+    }
 
     public function getId(): ?int
     {
