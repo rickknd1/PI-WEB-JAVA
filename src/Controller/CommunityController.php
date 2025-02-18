@@ -32,6 +32,8 @@ final class CommunityController extends AbstractController{
         $communities = $repository->paginateCommunity($page , $limit);
         $maxPage = ceil($communities->count() / $limit);
 
+        $user = $this->getUser();
+
         $community = new Community();
         $form = $this->createForm(CommunityType::class, $community);
         $form->handleRequest($request);
@@ -75,7 +77,8 @@ final class CommunityController extends AbstractController{
                 'limit' => $limit,
                 'cats' => $cats,
                 'form' => $form->createView(),
-                'communitiesFront'=>$communitiesFront
+                'communitiesFront'=>$communitiesFront,
+                'user'=> $user,
             ]);
 
         }else{
@@ -85,6 +88,7 @@ final class CommunityController extends AbstractController{
                 'maxPage' => $maxPage,
                 'page' => $page,
                 'limit' => $limit,
+                'user'=> $user,
             ]);
         }
 
@@ -149,6 +153,7 @@ final class CommunityController extends AbstractController{
     #[Route('/community/{id}', name: 'community.detail', requirements: ['id' => '\d+'])]
     public function detail(Community $community,EventsRepository $eventsRepository,CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository): Response
     {
+        $user = $this->getUser();
         $events = $eventsRepository->findBy(['id_community' => $community]);
         $communitys = $communityRepository->findAll();
         $chatRooms = $chatRoomsRepository->findBy(['community' => $community]);
@@ -157,6 +162,7 @@ final class CommunityController extends AbstractController{
             'events' => $events,
             'communitys' =>$communitys,
             'chatRooms' => $chatRooms,
+            'user'=> $user,
         ]);
     }
 

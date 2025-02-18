@@ -37,13 +37,15 @@ final class HomeController extends AbstractController{
     #[Route('/', name: 'home')]
     public function indexhome(Request $request,EntityManagerInterface $em , VisitorsRepository $repository): Response
     {
-
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
         $visitor = $repository->findAll();
         $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
         $em->persist($visitor[0]);
         $em->flush();
         return $this->render('home/home.html.twig', [
-
+            'user' => $this->getUser(),
         ]);
     }
 }

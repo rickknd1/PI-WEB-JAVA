@@ -53,7 +53,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
         // Vérification du rôle et redirection appropriée
         if ($user->getRole() === 'ROLE_USER') {
-            return new RedirectResponse($this->urlGenerator->generate('app_acceuil'));
+            return new RedirectResponse($this->urlGenerator->generate('home'));
         } elseif ($user->getRole() === 'ROLE_ADMIN' || $user->getRole() === 'ROLE_SUPER_ADMIN') {
             return new RedirectResponse($this->urlGenerator->generate('app_admin'));
         }
