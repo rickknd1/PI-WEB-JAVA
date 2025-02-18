@@ -132,7 +132,7 @@
         </nav>
     </div>
     <!--- ---------------------------------------------------------------------------------------- -->
-
+    {% include 'partials/flash.html.twig' %}
     <div class="sidebar">
         <div class="scrollbar-inner sidebar-wrapper">
             <div class="user">
@@ -225,9 +225,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="notifications.html">
-                        <i class="la la-bell"></i>
-                        <p>Notifications</p>
+                    <a href="{{ path('abonnement.admin.index') }}">
+                        <i class="las la-hand-holding-usd"></i>
+                        <p>Abonnements</p>
                         <span class="badge badge-success"></span>
                     </a>
                 </li>
@@ -251,6 +251,8 @@
     {% block body %}{% endblock %}
     {% block  catAdmin %}{% endblock %}
     {% block  eventAdmin %}{% endblock %}
+    {% block  abbAdmin %}{% endblock %}
+
 
     {% block userAdmin %}{% endblock %}
 </div>
