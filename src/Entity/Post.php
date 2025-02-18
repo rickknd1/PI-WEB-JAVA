@@ -6,6 +6,7 @@ use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\Table(name: "post")]
@@ -39,28 +40,22 @@ class Post
      * @var Collection<int, Comment>
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
-    private Collection $Comments;
+    private Collection $comments;
 
-    /**
-     * @var Collection<int, Share>
-     */
     #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'post')]
     private Collection $shares;
 
-    /**
-     * @var Collection<int, Reaction>
-     */
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'post')]
-    private Collection $Reactions;
+    private Collection $reactions;
 
     #[ORM\ManyToOne(inversedBy: 'post')]
     private ?User $user = null;
 
     public function __construct()
     {
-        $this->Comments = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->shares = new ArrayCollection();
-        $this->Reactions = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,13 +116,13 @@ class Post
      */
     public function getComment(): Collection
     {
-        return $this->Comment;
+        return $this->comments;
     }
 
     public function addComment(Comment $comment): static
     {
-        if (!$this->Comment->contains($comment)) {
-            $this->Comment->add($comment);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
             $comment->setPost($this);
         }
 
@@ -136,7 +131,7 @@ class Post
 
     public function removeComment(Comment $comment): static
     {
-        if ($this->Comment->removeElement($comment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
             if ($comment->getPost() === $this) {
                 $comment->setPost(null);
@@ -151,13 +146,13 @@ class Post
      */
     public function getShare(): Collection
     {
-        return $this->share;
+        return $this->shares;
     }
 
     public function addShare(Share $share): static
     {
-        if (!$this->share->contains($share)) {
-            $this->share->add($share);
+        if (!$this->shares->contains($share)) {
+            $this->shares->add($share);
             $share->setPost($this);
         }
 
@@ -166,7 +161,7 @@ class Post
 
     public function removeShare(Share $share): static
     {
-        if ($this->share->removeElement($share)) {
+        if ($this->shares->removeElement($share)) {
             // set the owning side to null (unless already changed)
             if ($share->getPost() === $this) {
                 $share->setPost(null);
@@ -179,25 +174,23 @@ class Post
     /**
      * @return Collection<int, Reaction>
      */
+
     public function getReaction(): Collection
     {
-        return $this->Reaction;
+        return $this->reactions;
     }
 
-    public function addReaction(Reaction $reaction): static
+    public function addReaction(Reaction $reaction): self
     {
-        if (!$this->Reaction->contains($reaction)) {
-            $this->Reaction->add($reaction);
-            $reaction->setPost($this);
-        }
-
+        $this->reactions[] = $reaction;
+        $reaction->setPost($this);
         return $this;
     }
 
-    public function removeReaction(Reaction $reaction): static
+
+    public function removeReaction(Reaction $reaction): self
     {
-        if ($this->Reaction->removeElement($reaction)) {
-            // set the owning side to null (unless already changed)
+        if ($this->reactions->removeElement($reaction)) {
             if ($reaction->getPost() === $this) {
                 $reaction->setPost(null);
             }

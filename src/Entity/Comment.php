@@ -6,6 +6,7 @@ use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -38,14 +39,14 @@ class Comment
      * @var Collection<int, Reaction>
      */
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'comment')]
-    private Collection $reactions;
+    private Collection $reaction;
 
     #[ORM\ManyToOne(inversedBy: 'comment')]
     private ?User $user = null;
 
     public function __construct()
     {
-        $this->reactions = new ArrayCollection();
+        $this->reaction = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,13 +107,13 @@ class Comment
      */
     public function getR(): Collection
     {
-        return $this->r;
+        return $this->reaction;
     }
 
     public function addR(Reaction $r): static
     {
-        if (!$this->r->contains($r)) {
-            $this->r->add($r);
+        if (!$this->reaction->contains($r)) {
+            $this->reaction->add($r);
             $r->setComment($this);
         }
 
@@ -121,7 +122,7 @@ class Comment
 
     public function removeR(Reaction $r): static
     {
-        if ($this->r->removeElement($r)) {
+        if ($this->reaction->removeElement($r)) {
             // set the owning side to null (unless already changed)
             if ($r->getComment() === $this) {
                 $r->setComment(null);

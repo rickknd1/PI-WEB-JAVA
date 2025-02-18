@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,10 +17,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PostController extends AbstractController
 {
     #[Route(name: 'app_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository): Response
+    public function index(PostRepository $postRepository,CommentRepository $commentRepository): Response
     {
-        return $this->render('post/index.html.twig.twig', [
+        $comments = $commentRepository->findAll();
+        return $this->render('post/index.html.twig', [
             'posts' => $postRepository->findAll(),
+            'comments' => $comments,
         ]);
     }
 
@@ -31,7 +34,8 @@ final class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $post->setCreatedAt(new \DateTime());
+            $post->setCreatedAt(new \DateTimeImmutable());
+            $post->setUpdateAt(new \DateTimeImmutable());
             $entityManager->persist($post);
             $entityManager->flush();
 
@@ -89,12 +93,12 @@ final class PostController extends AbstractController
         return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/feed', name: 'app_feed', methods: ['GET'])]
-    public function feed(EntityManagerInterface $em): Response
+    #[Route('/feed', name: 'app_feed')]
+    public function feed(EntityManagerInterface $em, PostRepository $rep): Response
     {
-        $posts = $em->getRepository(Post::class)->findBy([], ['created_at' => 'DESC']);
+        $posts = $rep->findAll();
 
-        return $this->render('front/feed.html.twig.', [
+        return $this->render('post/feed.html.twig', [
             'posts' => $posts,
         ]);
     }

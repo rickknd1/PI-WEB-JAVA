@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 
 #[Route('/comment')]
 final class CommentController extends AbstractController
@@ -79,34 +82,30 @@ final class CommentController extends AbstractController
         return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/post/{id}/comment', name: 'app_comment', methods: ['POST'])]
-    public function comment(Post $post, Request $request, EntityManagerInterface $em): Response
+    #[Route('/post/{id}/comment', name: 'app_comment')]
+    public function comment(Post $post, Request $request, EntityManagerInterface $em,UserRepository $userRepository): Response
     {
-        $user = $this->getUser();
+        $content = $request->request->get('content');
+        //$user = $this->getUser();
 
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
+        $user = $userRepository->findAll();
+
+        //if (!$user) {
+            //return $this->redirectToRoute('app_login');
+        //}
 
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $comment->setPost($post);
+        $comment->setContent($content);
+        $comment->setUser($user[0]); // Si l'utilisateur est connecté
+        $comment->setCreatedAt(new \DateTimeImmutable());
+        $comment->setUpdatedAt(new \DateTimeImmutable());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setPost($post);
-            $comment->setAuthor($this->getUser()); // Si l'utilisateur est connecté
-            $comment->setCreatedAt(new \DateTime());
+        $em->persist($comment);
+        $em->flush();
 
-            $em->persist($comment);
-            $em->flush();
+        $this->addFlash('success', 'Commentaire ajouté avec succès !');
+        return $this->redirectToRoute('app_post_index');
 
-            $this->addFlash('success', 'Commentaire ajouté avec succès !');
-            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
-        }
-
-            return $this->render('post/show.html.twig', [
-                'post' => $post,
-                'form' => $form->createView(),
-            ]);
     }
 }

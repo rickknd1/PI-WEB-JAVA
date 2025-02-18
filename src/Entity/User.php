@@ -38,33 +38,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, comment>
      */
-    #[ORM\OneToMany(targetEntity: comment::class, mappedBy: 'user')]
-    private Collection $comment;
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
+    private Collection $comments;
 
-    /**
-     * @var Collection<int, post>
-     */
-    #[ORM\OneToMany(targetEntity: post::class, mappedBy: 'user')]
-    private Collection $post;
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user')]
+    private Collection $posts;
 
-    /**
-     * @var Collection<int, reaction>
-     */
-    #[ORM\OneToMany(targetEntity: reaction::class, mappedBy: 'user')]
-    private Collection $reaction;
+    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'user')]
+    private Collection $reactions;
 
-    /**
-     * @var Collection<int, share>
-     */
-    #[ORM\OneToMany(targetEntity: share::class, mappedBy: 'user')]
-    private Collection $share;
+    #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'user')]
+    private Collection $shares;
 
     public function __construct()
     {
-        $this->comment = new ArrayCollection();
-        $this->post = new ArrayCollection();
-        $this->reaction = new ArrayCollection();
-        $this->share = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
+        $this->shares = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,13 +138,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getComment(): Collection
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     public function addComment(comment $comment): static
     {
-        if (!$this->comment->contains($comment)) {
-            $this->comment->add($comment);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
             $comment->setUser($this);
         }
 
@@ -162,7 +153,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeComment(comment $comment): static
     {
-        if ($this->comment->removeElement($comment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
@@ -177,13 +168,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPost(): Collection
     {
-        return $this->post;
+        return $this->posts;
     }
 
     public function addPost(post $post): static
     {
-        if (!$this->post->contains($post)) {
-            $this->post->add($post);
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
             $post->setUser($this);
         }
 
@@ -192,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removePost(post $post): static
     {
-        if ($this->post->removeElement($post)) {
+        if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
             if ($post->getUser() === $this) {
                 $post->setUser(null);
@@ -207,13 +198,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getReaction(): Collection
     {
-        return $this->reaction;
+        return $this->reactions;
     }
 
     public function addReaction(reaction $reaction): static
     {
-        if (!$this->reaction->contains($reaction)) {
-            $this->reaction->add($reaction);
+        if (!$this->reactions->contains($reaction)) {
+            $this->reactions->add($reaction);
             $reaction->setUser($this);
         }
 
@@ -222,7 +213,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeReaction(reaction $reaction): static
     {
-        if ($this->reaction->removeElement($reaction)) {
+        if ($this->reactions->removeElement($reaction)) {
             // set the owning side to null (unless already changed)
             if ($reaction->getUser() === $this) {
                 $reaction->setUser(null);
@@ -237,13 +228,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getShare(): Collection
     {
-        return $this->share;
+        return $this->shares;
     }
 
     public function addShare(share $share): static
     {
-        if (!$this->share->contains($share)) {
-            $this->share->add($share);
+        if (!$this->shares->contains($share)) {
+            $this->shares->add($share);
             $share->setUser($this);
         }
 
@@ -252,7 +243,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeShare(share $share): static
     {
-        if ($this->share->removeElement($share)) {
+        if ($this->shares->removeElement($share)) {
             // set the owning side to null (unless already changed)
             if ($share->getUser() === $this) {
                 $share->setUser(null);

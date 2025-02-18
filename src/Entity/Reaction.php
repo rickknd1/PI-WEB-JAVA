@@ -15,15 +15,15 @@ class Reaction
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255, enumType: ReactionChoise::class)]
-    private $type = null;
+    private ReactionChoise $type;
 
-    #[ORM\ManyToOne(inversedBy: 'Reaction')]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'reactions')]
     private ?Post $post = null;
 
     #[ORM\ManyToOne(inversedBy: 'Comment')]
     private ?Comment $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reaction')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -31,15 +31,14 @@ class Reaction
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getType(): ReactionChoise
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(ReactionChoise $type): self
     {
         $this->type = $type;
-
         return $this;
     }
 

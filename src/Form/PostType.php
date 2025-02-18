@@ -4,8 +4,12 @@ namespace App\Form;
 
 use App\Entity\Post;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class PostType extends AbstractType
 {
@@ -24,12 +28,10 @@ class PostType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('file')
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('update_at', null, [
-                'widget' => 'single_text',
+            ->add('file', FileType::class, [
+                'label' => 'Choisissez une image',
+                'mapped' => false,
+                'required' => false,
             ])
         ;
     }

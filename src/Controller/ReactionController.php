@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Entity\Reaction;
+use App\Enum\ReactionChoise;
 use App\Form\ReactionType;
 use App\Repository\ReactionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,23 +83,32 @@ final class ReactionController extends AbstractController
     }
 
     #[Route('/post/{id}/like', name: 'app_like')]
-    public function like(Post $post, EntityManagerInterface $em): Response
+    public function like(Post $post, EntityManagerInterface $em, UserRepository $userRepository, ReactionRepository $reactionRepository): Response
     {
-        $user = $this->getUser();
+        $user = $userRepository->find(1);
 
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
+        $existingReaction = $reactionRepository->findOneBy([
+            'post' => $post,
+            'user' => $user
+        ]);
 
-        if ($post->getLikes()->contains($user)) {
-            $post->removeLike($user);
+        if ($existingReaction) {
+            $em->remove($existingReaction);
         } else {
-            $post->addLike($user);
+            $reaction = new Reaction();
+            $reaction->setUser($user);
+            $reaction->setPost($post);
+            $reaction->setType(ReactionChoise::LIKE);
+
+            $post->addReaction($reaction);
+
+            $em->persist($reaction);
         }
 
         $em->flush();
 
-        return $this->redirectToRoute('app_feed');
+        return $this->redirectToRoute('app_post_index');
     }
+
 
 }
