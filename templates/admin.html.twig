@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>SyncyLinky - Admin</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta name="turbo-visit-control" content="reload">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/assets/css/ready.css">
@@ -131,6 +132,7 @@
         </nav>
     </div>
     <!--- ---------------------------------------------------------------------------------------- -->
+
     <div class="sidebar">
         <div class="scrollbar-inner sidebar-wrapper">
             <div class="user">
@@ -170,7 +172,7 @@
             </div>
             <ul class="nav">
                 <li class="nav-item {% if app.request.attributes.get('_route') == 'app_admin' %}active{% endif %}">
-                    <a href="{{ path('app_admin') }}">
+                    <a href="{{ path('app_admin') }}" >
                         <i class="la la-dashboard"></i>
                         <p>Dashboard</p>
                         <span class="badge badge-count"></span>
@@ -183,11 +185,11 @@
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' %}active{% endif %}">
+                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' or app.request.attributes.get('_route') starts with 'chatrooms' or app.request.attributes.get('_route') starts with 'event'%}active{% endif %}">
                 <a class="nav-link" data-toggle="collapse" href="#communityCollapse" aria-expanded="false">
                         <i class="las la-users"></i>
                         <p>Community</p>
-                        <span class="badge badge-count">3</span>
+                        <span class="badge badge-count">4</span>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="communityCollapse">
@@ -203,12 +205,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{ path('event.index') }}">
                                     <span class="link-collapse">Events</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{ path('chatrooms.index') }}">
                                     <span class="link-collapse">Chat Rooms</span>
                                 </a>
                             </li>
@@ -245,8 +247,11 @@
             </ul>
         </div>
     </div>
+    {% include 'partials/flash.html.twig' %}
     {% block body %}{% endblock %}
     {% block  catAdmin %}{% endblock %}
+    {% block  eventAdmin %}{% endblock %}
+
 
 </div>
 </body>

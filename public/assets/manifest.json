@@ -1,0 +1,18 @@
+{
+    "@symfony\/stimulus-bundle\/controllers.js": "\/assets\/@symfony\/stimulus-bundle\/controllers-DJeB2bO.js",
+    "@symfony\/stimulus-bundle\/loader.js": "\/assets\/@symfony\/stimulus-bundle\/loader-1l6g4DT.js",
+    "@symfony\/ux-turbo\/turbo_controller.js": "\/assets\/@symfony\/ux-turbo\/turbo_controller-6cW3NzA.js",
+    "@symfony\/ux-turbo\/turbo_stream_controller.js": "\/assets\/@symfony\/ux-turbo\/turbo_stream_controller-iRWuWHj.js",
+    "android-chrome-192x192.png": "\/assets\/android-chrome-192x192-Xlq7tWa.png",
+    "android-chrome-512x512.png": "\/assets\/android-chrome-512x512-w86bmJT.png",
+    "app.js": "\/assets\/app-RcuaavP.js",
+    "apple-touch-icon.png": "\/assets\/apple-touch-icon-cZxLt8O.png",
+    "bootstrap.js": "\/assets\/bootstrap-qUNheCC.js",
+    "controllers\/csrf_protection_controller.js": "\/assets\/controllers\/csrf_protection_controller-wan2ury.js",
+    "controllers\/hello_controller.js": "\/assets\/controllers\/hello_controller-h7Y4WCm.js",
+    "favicon-16x16.png": "\/assets\/favicon-16x16-Zg7mBJ7.png",
+    "favicon.png": "\/assets\/favicon-B0bEYPk.png",
+    "styles\/app.css": "\/assets\/styles\/app-Rah9lBa.css",
+    "vendor\/@hotwired\/stimulus\/stimulus.index.js": "\/assets\/vendor\/@hotwired\/stimulus\/stimulus.index-gdswxX6.js",
+    "vendor\/@hotwired\/turbo\/turbo.index.js": "\/assets\/vendor\/@hotwired\/turbo\/turbo.index-vAyL8yb.js"
+}
