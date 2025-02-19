@@ -10,10 +10,10 @@
                 <div>
                     <p>Type: {{ medium.type }}</p>
                     {% if medium.type == 'image' %}
-                        <img src="{{ asset('uploads/media/' ~ medium.link) }}" alt="Image" class="img-fluid">
+                        <img src="{{ medium.link }}" alt="Image" class="img-fluid">
                     {% elseif medium.type == 'video' %}
                         <video controls>
-                            <source src="{{ asset('uploads/media/' ~ medium.link) }}" type="video/mp4">
+                            <source src="{{ medium.link }}" type="video/mp4">
                             Votre navigateur ne supporte pas la lecture de cette vidéo.
                         </video>
                     {% endif %}

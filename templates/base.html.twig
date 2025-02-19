@@ -36,25 +36,25 @@
             </div>
         </footer>
         <!-- Scripts -->
-<script src="/assets/js/uikit.min.js"></script>
-<script src="/assets/js/script.js"></script>
+        <script src="/assets/js/uikit.min.js"></script>
+        <script src="/assets/js/script.js"></script>
 
-<!-- Ionicons -->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <!-- Ionicons -->
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-<!-- Dark Mode Script -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    });
-</script>
+        <!-- Dark Mode Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
+        </script>
 
-{% block javascripts %}{% endblock %}
+        {% block javascripts %}{% endblock %}
         {% block last %}{% endblock %}
     </body>
 </html>

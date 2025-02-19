@@ -17,14 +17,17 @@ final class MediaController extends AbstractController{
     #[Route(name: 'app_media_index', methods: ['GET'])]
     public function index(MediaRepository $mediaRepository): Response
     {
+        $user = $this->getUser();
         return $this->render('media/index.html.twig', [
             'media' => $mediaRepository->findAll(),
+            'user' => $user
         ]);
     }
 
     #[Route('/new', name: 'app_media_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager): Response
 {
+    $user = $this->getUser();
     $medium = new Media();
     $form = $this->createForm(MediaType::class, $medium);
     $form->handleRequest($request);
@@ -50,7 +53,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
                 $newFilename
             );
 
-            $medium->setLink($newFilename);
+            $medium->setLink('/uploads/media/' .$newFilename);
         }
 
         $entityManager->persist($medium);
@@ -62,6 +65,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     return $this->render('media/new.html.twig', [
         'medium' => $medium,
         'form' => $form,
+        'user' => $user
     ]);
 }
 
@@ -70,15 +74,17 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     #[Route('/{id}', name: 'app_media_show', methods: ['GET'])]
     public function show(Media $medium): Response
     {
-        
+        $user = $this->getUser();
         return $this->render('media/show.html.twig', [
             'medium' => $medium,
+            'user' => $user
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_media_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Media $medium, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(MediaType::class, $medium);
         $form->handleRequest($request);
 
@@ -91,6 +97,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         return $this->render('media/edit.html.twig', [
             'medium' => $medium,
             'form' => $form,
+            'user' => $user
         ]);
     }
 

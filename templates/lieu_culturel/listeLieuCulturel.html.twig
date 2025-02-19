@@ -23,7 +23,7 @@
                 <td>{{ lieu.description }}</td>
                 <td>
                     {% if lieu.cover %}
-                        <img src="{{ asset('uploads/covers/' ~ lieu.cover) }}" alt="{{ lieu.nom }}" width="100">
+                        <img src="{{  lieu.cover }}" alt="{{ lieu.nom }}" width="100">
                     {% else %}
                         Pas d'image
                     {% endif %}

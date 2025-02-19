@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Abonnements;
 use App\Entity\Gamifications;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,11 +18,9 @@ class GamificationType extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
-            ->add('type_abonnement', ChoiceType::class, [
-                'choices' => [
-                    'Normal' => 'Normal',
-                    'Premium' => 'Premium',
-                ],
+            ->add('type_abonnement', EntityType::class, [
+                'class' => Abonnements::class,
+                'choice_label' => 'nom',
                 'mapped' => true,
                 'required' => true,
                 'label'=>'Type abonnement&nbsp&nbsp&nbsp',

@@ -60,12 +60,12 @@ class Gamifications
         return $this;
     }
 
-    public function getTypeAbonnement(): ?string
+    public function getTypeAbonnement(): ?Abonnements
     {
         return $this->type_abonnement;
     }
 
-    public function setTypeAbonnement(string $type_abonnement): static
+    public function setTypeAbonnement(?Abonnements $type_abonnement): static
     {
         $this->type_abonnement = $type_abonnement;
 

@@ -12,7 +12,7 @@
         <strong>Description :</strong> {{ lieu_culturel.description }}<br>
         {% if lieu_culturel.cover %}
             <strong>Image de couverture :</strong><br>
-            <img src="{{ asset('uploads/covers/' ~ lieu_culturel.cover) }}" alt="{{ lieu_culturel.nom }}" width="200">
+            <img src="{{  lieu_culturel.cover }}" alt="{{ lieu_culturel.nom }}" width="200">
         {% endif %}
     </div>
 

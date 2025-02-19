@@ -24,6 +24,7 @@ class LieuCulturelController extends AbstractController
     #[Route('/', name: 'app_lieu_culturel_liste', methods: ['GET'])]
     public function liste(EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         // Récupérer tous les lieux culturels
         $lieuCulturels = $entityManager
             ->getRepository(LieuCulturels::class)
@@ -32,12 +33,14 @@ class LieuCulturelController extends AbstractController
         // Afficher la liste des lieux culturels
         return $this->render('lieu_culturel/listeLieuCulturel.html.twig', [
             'lieu_culturels' => $lieuCulturels,
+            'user' => $user
         ]);
     }
 
     #[Route('/ajouter', name: 'app_lieu_culturel_ajout', methods: ['GET', 'POST'])]
     public function ajout(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         // Récupérer l'ID de la ville depuis les paramètres GET
         $villeId = $request->query->get('ville_id');
     
@@ -79,7 +82,7 @@ class LieuCulturelController extends AbstractController
                 );
     
                 // Enregistrer le nom du fichier dans l'entité
-                $lieuCulturel->setCover($newFilename);
+                $lieuCulturel->setCover('/uploads/covers/' . $newFilename);
             }
     
             // Enregistrer l'entité en base de données
@@ -94,6 +97,7 @@ class LieuCulturelController extends AbstractController
         return $this->render('lieu_culturel/ajoutLieuCulturel.html.twig', [
             'lieu_culturel' => $lieuCulturel,
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
     
@@ -101,6 +105,7 @@ class LieuCulturelController extends AbstractController
     #[Route('/{id}', name: 'app_lieu_culturel_detail', methods: ['GET'])]
     public function detail(LieuCulturels $lieuCulturel, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         // Filtrer les médias associés au lieu culturel
         $media = $entityManager
             ->getRepository(Media::class)
@@ -110,12 +115,14 @@ class LieuCulturelController extends AbstractController
         return $this->render('lieu_culturel/detailLieuCulturel.html.twig', [
             'lieu_culturel' => $lieuCulturel,
             'media' => $media,
+            'user' => $user
         ]);
     }
 
     #[Route('front/{id}', name: 'app_lieu_culturel_detail_front', methods: ['GET'])]
     public function detail2(LieuCulturels $lieuCulturel, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         // Filtrer les médias associés au lieu culturel
         $media = $entityManager
             ->getRepository(Media::class)
@@ -125,6 +132,7 @@ class LieuCulturelController extends AbstractController
         return $this->render('lieu_culturel/detailsLieuCulturelfront.html.twig', [
             'lieu_culturel' => $lieuCulturel,
             'media' => $media,
+            'user' => $user
         ]);
     }
     
@@ -132,6 +140,7 @@ class LieuCulturelController extends AbstractController
     #[Route('/{id}/modifier', name: 'app_lieu_culturel_modifier', methods: ['GET', 'POST'])]
     public function modifier(Request $request, LieuCulturels $lieuCulturel, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         // Créer le formulaire de modification
         $form = $this->createForm(LieuCulturelsType::class, $lieuCulturel);
         $form->handleRequest($request);
@@ -152,7 +161,7 @@ class LieuCulturelController extends AbstractController
                 );
 
                 // Enregistrer le nom du fichier dans l'entité
-                $lieuCulturel->setCover($newFilename);
+                $lieuCulturel->setCover('/uploads/covers/' .$newFilename);
             }
 
             // Enregistrer les modifications en base de données
@@ -166,12 +175,14 @@ class LieuCulturelController extends AbstractController
         return $this->render('lieu_culturel/modifierLieuCulturel.html.twig', [
             'lieu_culturel' => $lieuCulturel,
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
     #[Route('/{id}/supprimer', name: 'app_lieu_culturel_supprimer', methods: ['POST'])]
     public function supprimer(Request $request, LieuCulturels $lieuCulturel, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         if ($this->isCsrfTokenValid('delete' . $lieuCulturel->getId(), $request->request->get('_token'))) {
             // Supprimer les médias associés
             $mediaRepository = $entityManager->getRepository(Media::class);

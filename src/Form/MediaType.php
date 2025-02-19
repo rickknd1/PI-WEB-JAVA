@@ -55,7 +55,7 @@ class MediaType extends AbstractType
         
             ->add('lieux', EntityType::class, [
                 'class' => LieuCulturels::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
                 'label' => 'Lieu culturel associé',
                 'attr' => [
                     'class' => 'form-control',
