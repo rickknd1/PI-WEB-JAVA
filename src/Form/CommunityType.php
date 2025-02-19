@@ -20,7 +20,7 @@ class CommunityType extends AbstractType
             ->add('cover')
             ->add('id_categorie', EntityType::class, [
                 'class' => Categories::class,
-'choice_label' => 'nom',
+                'choice_label' => 'nom',
             ])
             ->add("save", SubmitType::class,[
                 'label' => 'Enregistrer'

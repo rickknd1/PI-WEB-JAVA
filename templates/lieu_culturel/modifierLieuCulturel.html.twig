@@ -1,0 +1,41 @@
+{% extends "ville/adminVille.html.twig" %}
+
+{% block title %}Modifier un lieu culturel{% endblock %}
+
+{% block villeEdit %}
+
+    <h1>Modifier un lieu culturel</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form'}}) }}
+
+    <div class="form-group">
+        {{ form_label(form.nom, 'Nom du lieu', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du lieu'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une description'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.link3D, 'Lien 3D', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.link3D, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le lien 3D'}}) }}
+        {{ form_errors(form.link3D) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.cover, 'Image de couverture', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.cover, {'attr': {'class': 'form-control', 'placeholder': 'Entrez l\'image de couverture'}}) }}
+        {{ form_errors(form.cover) }}
+    </div>
+
+    <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
+
+    {{ form_end(form) }}
+
+    
+
+{% endblock %}

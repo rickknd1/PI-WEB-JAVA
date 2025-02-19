@@ -1,0 +1,30 @@
+{% extends "ville/adminVille.html.twig" %}
+
+{% block title %}{{ ville.nom|upper }}{% endblock title %}
+{% block titleVille %}{{ ville.nom }}{% endblock %}
+
+{% block  villeEdit %}
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form'}}) }}
+    
+        <div class="form-group">
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom de la ville'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une description'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.position, 'Position', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.position, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la position'}}) }}
+            {{ form_errors(form.position) }}
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

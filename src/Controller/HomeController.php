@@ -12,13 +12,24 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController{
     #[Route('/', name: 'home')]
-    public function index(Request $request,EntityManagerInterface $em , VisitorsRepository $repository): Response
+    public function index(Request $request, EntityManagerInterface $em, VisitorsRepository $repository): Response
     {
-
+        // Récupérer les visiteurs existants
         $visitor = $repository->findAll();
-        $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
-        $em->persist($visitor[0]);
-        $em->flush();
+
+        if (empty($visitor)) {
+            // Si aucun visiteur en base, créer une nouvelle entrée
+            $newVisitor = new Visitors();
+            $newVisitor->setNbrVisitors(1);
+            $em->persist($newVisitor);
+            $em->flush();
+        } else {
+            // Sinon, incrémenter le nombre de visiteurs
+            $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
+            $em->persist($visitor[0]);
+            $em->flush();
+        }
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
