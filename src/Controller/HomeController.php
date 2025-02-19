@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Visitors;
+use App\Repository\UserRepository;
 use App\Repository\VisitorsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,18 +35,26 @@ final class HomeController extends AbstractController{
             'controller_name' => 'HomeController',
         ]);
     }
+
     #[Route('/', name: 'home')]
-    public function indexhome(Request $request,EntityManagerInterface $em , VisitorsRepository $repository): Response
+    public function indexhome(Request $request, EntityManagerInterface $em, VisitorsRepository $repository,UserRepository $userRepository): Response
     {
+        $session = $request->getSession();
+        $users = $userRepository->findAll();
         if (!$this->getUser()) {
+            $session->set('_security.target_path', $this->generateUrl('home'));
             return $this->redirectToRoute('app_login');
         }
+
         $visitor = $repository->findAll();
         $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
         $em->persist($visitor[0]);
         $em->flush();
+
         return $this->render('home/home.html.twig', [
             'user' => $this->getUser(),
+            'users' => $users,
         ]);
     }
+
 }

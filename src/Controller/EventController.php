@@ -18,6 +18,7 @@ final class EventController extends AbstractController{
     #[Route('admin/events', name: 'event.index')]
     public function index(Request $request,EventsRepository $repository,EntityManagerInterface $em,SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $limit = 2;
         $events = $repository->paginateEvents($page , $limit);
@@ -54,12 +55,14 @@ final class EventController extends AbstractController{
             'maxPage' => $maxPage,
             'page' => $page,
             'limit' => $limit,
+            'user' => $user,
         ]);
     }
 
     #[Route('/admin/event/{id}/edit', name: 'event.edit', requirements: ['id'=>'\d+'])]
     public function edit(Events $events,Request $request, EntityManagerInterface $em,SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(EventsType::class, $events);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -93,6 +96,7 @@ final class EventController extends AbstractController{
         return $this->render('event/edit.html.twig', [
             'events' => $events,
             'form' => $form->createView(),
+            'user' => $user,
 
         ]);
     }
@@ -100,6 +104,7 @@ final class EventController extends AbstractController{
     #[Route('/admin/event/{id}/delete', name: 'event.del', requirements: ['id'=>'\d+'])]
     public function delete(Request $request, Events $events, EntityManagerInterface $em,SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         if($events->getCover()){
             $oldCover = $this->getParameter('cover_directory').DIRECTORY_SEPARATOR . basename($events->getCover());
             if (file_exists($oldCover)) {
@@ -115,10 +120,14 @@ final class EventController extends AbstractController{
     #[Route('/admin/event/{slug}-{id}', name: 'event.show', requirements: ['id'=>'\d+','slug'=>'[a-zA-Z0-9-]+'])]
     public function detail(Request $request, Events $events,string $slug ,int $id, EntityManagerInterface $em,CommunityRepository $repository): Response
     {
+        $user = $this->getUser();
         $event=$repository->find($id);
         if (!$event->getNom()==$slug) {
             return $this->redirectToRoute('event.show',['id'=>$event->getId(),'slug'=>$event->getNom()]);
         }
-        return $this->render('event/detail.html.twig', ['event'=>$event]);
+        return $this->render('event/detail.html.twig', [
+            'event'=>$event,
+            'user'=>$user,
+        ]);
     }
 }

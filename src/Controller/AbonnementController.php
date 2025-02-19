@@ -27,6 +27,7 @@ final class AbonnementController extends AbstractController
     #[Route('/admin/abonnement', name: 'abonnement.admin.index')]
     public function add(Request $request , AbonnementsRepository $repository , EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
         $abonnements= $repository->findAll();
         $abonnement = new Abonnements();
         $form = $this->createForm(AbonnementType::class, $abonnement);
@@ -39,6 +40,7 @@ final class AbonnementController extends AbstractController
         return $this->render('abonnement/add.html.twig', [
             'abonnements' => $abonnements,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -53,6 +55,7 @@ final class AbonnementController extends AbstractController
     #[Route('/admin/abonnement/{id}/edit', name: 'abonnement.edit')]
     public function edit(Request $request, Abonnements $abonnement, EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(AbonnementType::class, $abonnement);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,6 +66,7 @@ final class AbonnementController extends AbstractController
         return $this->render('abonnement/edit.html.twig', [
             'abonnements' => $abonnement,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 

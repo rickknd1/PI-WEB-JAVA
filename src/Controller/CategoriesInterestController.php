@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Categories;
+use App\Entity\Community;
 use App\Form\CategoriesType;
 use App\Repository\CategoriesRepository;
+use App\Repository\CommunityRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +23,7 @@ final class CategoriesInterestController extends AbstractController{
     #[Route('admin/categories', name: 'categories.index')]
     public function index(Request $request, CategoriesRepository $repository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $limit = 2;
         $categories = $repository->paginateCategories($page , $limit);
@@ -64,17 +68,26 @@ final class CategoriesInterestController extends AbstractController{
             'maxPage' => $maxPage,
             'page' => $page,
             'limit' => $limit,
+            'user'=> $user,
         ]);
     }
 
     #[Route('/categories/{slug}-{id}', name: 'categories.detail' ,  requirements:['id' => '\d+' , 'slug' => '[a-zA-Z0-9-]+'])]
-    public function show(Request $request , string $slug , int $id ,CategoriesRepository $repository): Response
+    public function show(Request $request , string $slug , int $id ,CategoriesRepository $repository,UserRepository $userRepository,CommunityRepository $communityRepository): Response
     {
+        $users = $userRepository->findAll();
+        $communities = $communityRepository->findAll();
+        $user = $this->getUser();
         $cat=$repository->find($id);
         if(!$cat->getNom()==$slug){
             return $this->redirectToRoute('categories.detail' , ['slug' =>  $cat->getNom() , 'id'=> $cat->getId()]);
         }
-        return $this->render('categories_interest/detail.html.twig' , ['cat' => $cat]);
+        return $this->render('categories_interest/detail.html.twig' , [
+            'cat' => $cat,
+            'user'=> $user,
+            'users' => $users,
+            'communities'=> $communities,
+        ]);
     }
 
     #[Route('admin/categories/{id}/edit', name: 'categories.edit', requirements: ['id' => '\d+'])]

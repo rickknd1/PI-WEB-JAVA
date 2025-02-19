@@ -5,7 +5,7 @@
     <div class="sm:my-6 my-3 flex items-center justify-between">
         <div>
             <h2 class="md:text-lg text-base font-semibold text-black"> Categories </h2>
-            <p class="font-normal text-sm text-gray-500 leading-6"> Find a community by browsing top categories. </p>
+            <p class="font-normal text-sm text-gray-500 leading-6"> Find a comunity by browsing top categories. </p>
         </div>
         <a href="#" class="text-blue-500 sm:block hidden text-sm"> See all </a>
     </div>
@@ -15,9 +15,10 @@
 
         <div class="uk-slider-container pb-1">
             <ul class="uk-slider-items grid-small">
-                {% for cat in cats %}
+                {% set sortedCats = cats|sort((cat1, cat2) => cat2.communities|length - cat1.communities|length) %}
+                {% for cat in sortedCats %}
                 <li class="md:w-1/5 sm:w-1/3 w-1/2">
-                    <a href="#">
+                    <a href="{{ path('categories.detail', {slug: cat.nom,id: cat.id },) }}">
                         <div class="relative rounded-lg overflow-hidden">
                             <img src="{{ cat.cover }}" alt="" class="h-36 w-full object-cover">
                             <div class="w-full bottom-0 absolute left-0 bg-gradient-to-t from-black/60 pt-10">
@@ -36,12 +37,12 @@
     <br>
     <div class="page-heading">
 
-        <h1 class="page-title"> Groups </h1>
+        <h1 class="page-title"> Comunity </h1>
         <nav class="nav__underline">
             <ul class="group" uk-switcher="connect: #group-tabs ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">
                 <li> <a href="#" > Suggestions  </a> </li>
                 <li> <a href="#"> Popular </a> </li>
-                <li> <a href="#"> My groups </a> </li>
+                <li> <a href="#"> My comunity </a> </li>
                 <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #create-story"><i class="las la-plus"></i><a href=""> Create Community</a></button>
 
 
@@ -65,27 +66,34 @@
         <!-- card layout 1 -->
         <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2.5">
             {% for comm in communitiesFront  %}
-                <div class="card">
-                    <a href="timeline-group.html">
-                        <div class="card-media h-24">
-                            <img src="{{ comm.cover }}" alt="">
-                            <div class="card-overly"></div>
-                        </div>
-                    </a>
-                    <div class="card-body relative z-10">
-                        <img src="assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full mb-2 shadow -mt-8 relative border-2 border-white dark:border-slate-800">
-                        <a href="timeline-group.html"><h4 class="card-title"> {{ comm.nom }}  </h4></a>
-                        <div class="card-list-info font-normal mt-1">
-                            <a href="#">  {{ comm.idCategorie.nom}}  </a>
-                            <div class="md:block hidden">·</div>
-                            <div> {{ comm.nbrMembre }} members </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
-                            <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                {% set userInterestsIds = user.interests|map(i => i.id) %}
+                {% if comm.idCategorie.id in userInterestsIds %}
+                    <div class="card">
+                        <a href="{{ path('community.detail',{id: comm.id}) }}">
+                            <div class="card-media h-24">
+                                <img src="{{ comm.cover }}" alt="">
+                                <div class="card-overly"></div>
+                            </div>
+                        </a>
+                        <div class="card-body relative z-10">
+                            <img src="/assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full mb-2 shadow -mt-8 relative border-2 border-white dark:border-slate-800">
+                            <a href="{{ path('community.detail',{id: comm.id}) }}"><h4 class="card-title"> {{ comm.nom }}  </h4></a>
+                            <div class="card-list-info font-normal mt-1">
+                                <a href="#">  {{ comm.idCategorie.nom}}  </a>
+                                <div class="md:block hidden">·</div>
+                                <div> {{ comm.nbrMembre }} members </div>
+                            </div>
+                            <div class="flex gap-2">
+                                {% if comm.id in userCommIds %}
+                                    <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-primary text-white flex-1"> View</a>
+                                {% else %}
+                                    <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
+                                    <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             {% endfor %}
         </div>
 
@@ -108,8 +116,12 @@
                             <div> {{ comm.nbrMembre }} members </div>
                         </div>
                         <div class="flex gap-2">
-                            <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
-                            <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                            {% if comm.id in userCommIds %}
+                                <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-primary text-white flex-1"> View</a>
+                            {% else %}
+                                <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
+                                <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -118,26 +130,30 @@
 
         <!-- card layout 3 -->
         <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2.5">
-            <div class="card">
-                <a href="timeline-group.html">
-                    <div class="card-media h-24">
-                        <img src="assets/images/group/group-cover-2.jpg" alt="">
-                        <div class="card-overly"></div>
+            {% for comm in communitiesFront %}
+                {% if comm.id in userCommIds %}
+                    <div class="card">
+                        <a href="timeline-group.html">
+                            <div class="card-media h-24">
+                                <img src="{{ comm.cover }}" alt="">
+                                <div class="card-overly"></div>
+                            </div>
+                        </a>
+                        <div class="card-body relative z-10">
+                            <img src="/assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full mb-2 shadow -mt-8 relative border-2 border-white dark:border-slate-800">
+                            <a href="timeline-group.html"><h4 class="card-title"> {{ comm.nom }}  </h4></a>
+                            <div class="card-list-info font-normal mt-1">
+                                <a href="#">  {{ comm.idCategorie.nom}}  </a>
+                                <div class="md:block hidden">·</div>
+                                <div> {{ comm.nbrMembre }} members </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-primary text-white flex-1"> View</a>
+                            </div>
+                        </div>
                     </div>
-                </a>
-                <div class="card-body">
-                    <a href="timeline-group.html"> <h4 class="card-title"> Delicious Foods  </h4> </a>
-                    <div class="card-list-info font-normal mt-1">
-                        <a href="#">  Health </a>
-                        <div class="md:block hidden">·</div>
-                        <div>42k members </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button type="button" class="button bg-primary-soft text-primary dark:text-white flex-1">Join</button>
-                        <button type="button" class="button bg-secondery flex-1">Edit</button>
-                    </div>
-                </div>
-            </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 

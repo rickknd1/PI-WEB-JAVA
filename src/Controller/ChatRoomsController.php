@@ -17,6 +17,7 @@ final class ChatRoomsController extends AbstractController{
     #[Route('admin/chatrooms', name: 'chatrooms.index')]
     public function index(Request $request, ChatRoomsRepository $repository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $limit = 2;
         $chatrooms = $repository->paginateChatRooms($page , $limit);
@@ -54,12 +55,14 @@ final class ChatRoomsController extends AbstractController{
             'maxPage' => $maxPage,
             'page' => $page,
             'limit' => $limit,
+            'user' => $user,
         ]);
     }
 
     #[Route('/admin/chatroom/{id}/edit', name: 'chatroom.edit', requirements: ['id'=>'\d+'])]
     public function edit(ChatRooms $chatroom, Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(ChatRoomsType::class, $chatroom);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -92,6 +95,7 @@ final class ChatRoomsController extends AbstractController{
         return $this->render('chat_rooms/edit.html.twig', [
             'chatroom' => $chatroom,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -117,6 +121,9 @@ final class ChatRoomsController extends AbstractController{
         if (!$chatroom || $chatroom->getNom() !== $slug) {
             return $this->redirectToRoute('chatroom.show', ['id' => $chatroom->getId(), 'slug' => $chatroom->getNom()]);
         }
-        return $this->render('chat_rooms/detail.html.twig', ['chatroom' => $chatroom]);
+        return $this->render('chat_rooms/detail.html.twig', [
+            'chatroom' => $chatroom,
+            'user' => $this->getUser(),
+        ]);
     }
 }

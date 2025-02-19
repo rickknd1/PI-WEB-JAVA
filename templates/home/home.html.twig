@@ -530,7 +530,7 @@
                 <nav id="side">
 
                     <ul>
-                        <li class="active">
+                        <li class="">
                             <a href="feed.html">
                                 <img src="/assets/images/icons/home.png" alt="feeds" class="w-6">
                                 <span> Feed </span>
@@ -560,7 +560,7 @@
                                 <span> Pages </span>
                             </a>
                         </li>
-                        <li>
+                        <li class="{% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' or app.request.attributes.get('_route') starts with 'chatrooms' or app.request.attributes.get('_route') starts with 'event'%}active{% endif %}">
                             <a href="{{ path('community.index.front') }}">
                                 <img src="/assets/images/icons/group.png" alt="community" class="w-6">
                                 <span> community </span>
@@ -721,13 +721,19 @@
 
         <!-- timeline -->
         <!--ADD here -->
-
+        <div class="flex max-lg:flex-col 2xl:gap-12 gap-10 2xl:max-w-[1220px] max-w-[1065px] mx-auto" id="js-oversized">
+            <div class="flex-1">
+                <div class="max-w-[680px] w-full mx-auto">
+                    {% block catDet %}{% endblock %}
+                </div>
+            </div>
+        </div>
         <div class="lg:flex 2xl:gap-16 gap-12 max-w-[1065px] mx-auto"  id="js-oversized">
-
             {% block communitydet %}{% endblock %}
             <div class="2xl:max-w-[1220px] max-w-[1065px] mx-auto">
                 {% block community %}{% endblock %}
                 {% block abonnement %}{% endblock %}
+                {% block Access %}{% endblock %}
             </div>
         </div>
     </main>
