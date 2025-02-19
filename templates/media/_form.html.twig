@@ -1,0 +1,43 @@
+{% extends "ville/adminVille.html.twig" %}
+
+{% block title %}
+    {{ form.vars.value.id is not null ? 'Modifier un média' : 'Ajouter un média' }}
+{% endblock %}
+
+{% block villeEdit %}
+    <h1 class="mb-4">{{ form.vars.value.id is not null ? 'Modifier un média' : 'Ajouter un média' }}</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form'}}) }}
+
+    <!-- Champ pour le type de média (select) -->
+    <div class="form-group mb-3">
+        {{ form_label(form.type, 'Type de média', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.type, {
+            'attr': {'class': 'form-control'}
+        }) }}
+        {{ form_errors(form.type) }}
+    </div>
+
+    <!-- Champ pour le fichier du média -->
+    <div class="form-group mb-3">
+        {{ form_label(form.link, 'Fichier du média', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.link, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.link) }}
+    </div>
+
+    <!-- Champ pour le lieu culturel associé -->
+    <div class="form-group mb-3">
+        {{ form_label(form.lieux, 'Lieu culturel associé', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.lieux, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.lieux) }}
+    </div>
+
+    <!-- Bouton de soumission -->
+    <button type="submit" class="btn btn-success">
+        {{ form.vars.value.id is not null ? 'Enregistrer les modifications' : 'Ajouter' }}
+    </button>
+
+    {{ form_end(form) }}
+
+    <!-- Lien de retour -->
+{% endblock %}

@@ -217,10 +217,10 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a href="tables.html">
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'ville_index' %}active{% endif %}">
+                    <a href="{{ path('ville_index')}}">
                         <i class="la la-th"></i>
-                        <p>Tables</p>
+                        <p>villes</p>
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
@@ -253,7 +253,9 @@
     {% block  eventAdmin %}{% endblock %}
     {% block  abbAdmin %}{% endblock %}
     {% block  gamAdmin %}{% endblock %}
-    {% block userAdmin %}{% endblock %}
+    {% block userAdmin %}{% endblock %}    
+    {% block  villeAdmin %}{% endblock %}
+
 </div>
 </body>
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>

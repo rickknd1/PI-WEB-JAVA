@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     cover_directory: '%kernel.project_dir%/public/uploads'
+    # Répertoire de stockage des images de couverture
+    covers_directory: '%kernel.project_dir%/public/uploads/covers'
+    uploads_directory: '%kernel.project_dir%/public/uploads/media'
 
 services:
     # default configuration for services in *this* file

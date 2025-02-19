@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des lieux culturels{% endblock %}
+
+{% block body %}
+    <h1>Liste des lieux culturels</h1>
+
+    <a href="{{ path('app_lieu_culturel_ajout') }}" class="btn btn-success mb-3">Ajouter un lieu culturel</a>
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Image de couverture</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lieu in lieu_culturels %}
+            <tr>
+                <td>{{ lieu.nom }}</td>
+                <td>{{ lieu.description }}</td>
+                <td>
+                    {% if lieu.cover %}
+                        <img src="{{ asset('uploads/covers/' ~ lieu.cover) }}" alt="{{ lieu.nom }}" width="100">
+                    {% else %}
+                        Pas d'image
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_lieu_culturel_modifier', {'id': lieu.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                    <a href="{{ path('app_lieu_culturel_supprimer', {'id': lieu.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce lieu culturel ?')">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">Aucun lieu culturel trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
