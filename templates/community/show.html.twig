@@ -12,13 +12,14 @@
 
                 <!-- overly -->
                 <div class="w-full bottom-0 absolute left-0 bg-gradient-to-t from -black/60 pt-10 z-10"></div>
-
+                {% if comm.id in moderatedCommIds %}
                 <div class="absolute bottom-0 right-0 m-4 z-20">
                     <div class="flex items-center gap-3">
                         <button class="button bg-white/20 text-white flex items-center gap-2 backdrop-blur-small">Crop</button>
                         <button class="button bg-black/10 text-white flex items-center gap-2 backdrop-blur-small">Edit</button>
                     </div>
                 </div>
+                {% endif %}
 
             </div>
 
@@ -46,10 +47,28 @@
                                     <img src="assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
                                     <img src="assets/images/avatars/avatar-5.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
                                 </div>
-                                <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
-                                    <ion-icon name="add-outline" class="text-xl"></ion-icon>
-                                    <span class="text-sm"> <a href="{{ path('membre.add',{id: comm.id }) }}"></a>Join  </span>
-                                </button>
+                                {% if comm.id in moderatedCommIds %}
+                                    <a href="#">
+                                        <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
+                                            <i class="las la-pen"></i>
+                                            <span class="text-sm"> Edit</span>
+                                        </button>
+                                    </a>
+                                {% elseif comm.id in userCommIds%}
+                                    <a href="{{ path('membre.comunity.remove', {id: comm.id }) }}">
+                                        <button class="button bg-red-600 flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
+                                            <i class="las la-times"></i>
+                                            <span class="text-sm"> Leave</span>
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('membre.comunity.add', {id: comm.id }) }}">
+                                        <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
+                                            <ion-icon name="add-outline" class="text-xl"></ion-icon>
+                                            <span class="text-sm"> Join</span>
+                                        </button>
+                                    </a>
+                                {% endif %}
                                 <div>
                                     <button type="button" class="rounded-lg bg-secondery flex px-2.5 py-2 dark:bg-dark2">
                                         <ion-icon name="ellipsis-horizontal" class="text-xl">
@@ -235,7 +254,11 @@
                                     <a href="timeline-group.html"><h4 class="side-list-title">{{ commt.nom}} </h4></a>
                                     <div class="side-list-info"> {{ commt.nbrMembre }} Members </div>
                                 </div>
-                                <button class="button bg-primary text-white">Join</button>
+                                {% if commt.id in userCommIds %}
+                                    <button class="button bg-primary text-white"><a href="{{ path('community.detail',{id: commt.id }) }}">View</a></button>
+                                {% else %}
+                                    <button class="button bg-primary text-white"><a href="{{ path('membre.comunity.add', {id: commt.id }) }}">Join</a></button>
+                                {% endif %}
                             </div>
                             {% endfor %}
                         </div>

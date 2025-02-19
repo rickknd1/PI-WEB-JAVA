@@ -28,8 +28,14 @@ final class CommunityController extends AbstractController{
 
         $user = $this->getUser();
         $userId = $user->getId();
+
         $userComm = $membreComunityRepository->findByUserId($userId);
         $userCommIds = array_map(fn($item) => $item->getIdComunity()->getId(), $userComm);
+        $moderatedCommIds = array_map(
+            fn($item) => $item->getIdComunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'moderator')
+        );
+
         $routeName = $request->attributes->get('_route');
         $cats = $categoriesRepository->findAll();
         $communitiesFront = $repository->findAll();
@@ -104,6 +110,7 @@ final class CommunityController extends AbstractController{
                 'communitiesFront'=>$communitiesFront,
                 'user'=> $user,
                 'userCommIds'=>$userCommIds,
+                'moderatedCommIds' => $moderatedCommIds,
             ]);
 
         }else{
@@ -181,9 +188,16 @@ final class CommunityController extends AbstractController{
     }
     #[Route('/community/{id}/events', name: 'community.events' , requirements: ['id'=>'\d+'])]
     #[Route('/community/{id}', name: 'community.detail', requirements: ['id' => '\d+'])]
-    public function detail(Community $community,EventsRepository $eventsRepository,CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository): Response
+    public function detail(Community $community,EventsRepository $eventsRepository,CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository,MembreComunityRepository $membreComunityRepository): Response
     {
         $user = $this->getUser();
+        $userId = $user->getId();
+        $userComm = $membreComunityRepository->findByUserId($userId);
+        $userCommIds = array_map(fn($item) => $item->getIdComunity()->getId(), $userComm);
+        $moderatedCommIds = array_map(
+            fn($item) => $item->getIdComunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'moderator')
+        );
         $events = $eventsRepository->findBy(['id_community' => $community]);
         $communitys = $communityRepository->findAll();
         $chatRooms = $chatRoomsRepository->findBy(['community' => $community]);
@@ -193,6 +207,9 @@ final class CommunityController extends AbstractController{
             'communitys' =>$communitys,
             'chatRooms' => $chatRooms,
             'user'=> $user,
+            'userCommIds' => $userCommIds,
+            'moderatedCommIds' => $moderatedCommIds
+
         ]);
     }
 

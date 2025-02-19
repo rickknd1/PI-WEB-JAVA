@@ -87,7 +87,7 @@
                                 {% if comm.id in userCommIds %}
                                     <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-primary text-white flex-1"> View</a>
                                 {% else %}
-                                    <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
+                                    <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.comunity.add', {id: comm.id }) }}">Join</a></button>
                                     <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
                                 {% endif %}
                             </div>
@@ -119,7 +119,7 @@
                             {% if comm.id in userCommIds %}
                                 <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-primary text-white flex-1"> View</a>
                             {% else %}
-                                <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.add', {id: comm.id }) }}">Join</a></button>
+                                <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.comunity.add', {id: comm.id }) }}">Join</a></button>
                                 <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
                             {% endif %}
                         </div>
