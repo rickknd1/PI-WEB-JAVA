@@ -17,29 +17,25 @@
     <link rel="stylesheet" href="/assets/css/tailwind.css">
     <link rel="stylesheet" href="/assets/css/style.css">
 
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- UIkit CSS (optionnel si déjà dans les fichiers CSS) -->
-    <style>
-        #header-nav nav a.uk-active { color:rgb(59, 130, 246)}
-        .dark #header-nav nav a.uk-active { color:#fff !important}
-    </style>
-</head>
-
-<body class="bg-white dark:bg-slate-950 overflow-x-hidden">
-{% include 'partials/flash.html.twig' %}
-
-{% block body %}{% endblock %}
-
-<footer class="max-w-5xl mx-auto mb-6 mt-32 pt-6 border-t dark:border-slate-800">
-    <div class="flex justify-center text-sm dark:text-white">
-        Made with ❤️ par WebNaan
-    </div>
-</footer>
-
-<!-- Scripts -->
+        <!-- google font -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+     
+        <!-- custom style -->
+        <style> 
+            #header-nav nav a.uk-active         { color:rgb(59, 130, 246)}
+            .dark #header-nav nav a.uk-active   { color:#fff !important}
+        </style>
+    </head>
+        <body class="bg-white dark:bg-slate-950 overflow-x-hidden">
+        {% block body %}{% endblock %}
+        <footer>
+            <div class="max-w-5xl mx-auto mb-6 mt-32 pt-6 border-t dark:border-slate-800">
+                <div class="flex justify-center text-sm dark:to-white">
+                    Made with ❤️ by WebNaan
+                </div>
+            </div>
+        </footer>
+        <!-- Scripts -->
 <script src="/assets/js/uikit.min.js"></script>
 <script src="/assets/js/script.js"></script>
 
@@ -59,5 +55,6 @@
 </script>
 
 {% block javascripts %}{% endblock %}
-</body>
+        {% block last %}{% endblock %}
+    </body>
 </html>

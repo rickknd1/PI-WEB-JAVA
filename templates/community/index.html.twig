@@ -1,15 +1,21 @@
 {% extends 'community/adminCom.html.twig' %}
 
 {% block titleComm %}Communities {% endblock %}
-{% block nbrcomm %}( {{ communities|length}} ){% endblock %}
+    {% block nbrcomm %}
+        {% if communities|length > 1 %}
+            ( {{ limit }} )
+        {% else %}
+            ( 1 )
+        {% endif %}
+    {% endblock %}
 {% block  comm %}
     <div class="relative overflow-x-auto">
         <table class="table table-head-bg-primary mt-4">
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Id_Cat</th>
-                <th scope="col">Nom_Cat</th>
+                <th scope="col">Id Cat</th>
+                <th scope="col">Nom Cat</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Cover</th>
                 <th scope="col" class="col-4" >Description</th>
@@ -33,7 +39,7 @@
                                 <i class="la la-edit"></i>
                             </button>
                         </a>
-                            <a href="{{ path('community.del', {id: comm.id }) }}">
+                            <a href="{{ path('community.del', {id: comm.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet communaute ?');">
                             <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
                                 <i class="la la-times"></i>
                             </button>
@@ -45,6 +51,32 @@
         </table>
     </div>
 {% endblock comm %}
+
+{% block pagination %}
+    {% if maxPage > 1 %}
+    <ul class="pagination justify-content-center">
+        {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path('community.index', { page: page - 1 }) }}" tabindex="-1">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for p in 1..maxPage %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ path('community.index', { page: p }) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+
+        {% if page < maxPage %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path('community.index', { page: page + 1 }) }}">Next</a>
+            </li>
+        {% endif %}
+        <p class="card-category">&nbsp( {{ communities|length}} ) </p>
+    </ul>
+    {% endif %}
+{% endblock pagination %}
+
 {% block addcomm %}
     {{ form(form) }}
 {% endblock %}

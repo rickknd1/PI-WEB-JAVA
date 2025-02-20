@@ -1,0 +1,45 @@
+{% extends "admin.html.twig" %}
+
+{% block  catAdmin %}
+    <div class="main-panel">
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="{% if app.request.attributes.get('_route') starts with 'chatrooms.edit' %}col-md-10{% else %}col-md-6{% endif %}">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{% block titleChat %}{% endblock %}</div>
+                                <p class="card-category">{% block nbrchatrooms %}{% endblock %}</p>
+                            </div>
+                            <div class="card-body">
+                                {% block  chatroomsEdit %}{% endblock %}
+                                {% block chatrooms %}{% endblock %}
+                            </div>
+                            <div class="card-footer">
+                                <div class="legend">
+                                    <nav aria-label="Page navigation example">
+                                        {% block pagination %}{% endblock %}
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if app.request.attributes.get('_route') == 'chatrooms.index' %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Add Chat Rooms</h4>
+                                </div>
+                                <div class="card-body">
+                                    {% block addchatrooms %}{% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

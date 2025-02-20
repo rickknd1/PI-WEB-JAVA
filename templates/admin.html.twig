@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>SyncyLinky - Admin</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta name="turbo-visit-control" content="reload">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/assets/css/ready.css">
@@ -105,14 +106,14 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="/assets/images/profile.jpg" alt="user-img" width="36" class="img-circle"><span >Hizrian</span></span> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="/assets/images/profile.jpg" alt="user-img" width="36" class="img-circle"><span >{{ user.username }}</span></span> </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li>
                                 <div class="user-box">
                                     <div class="u-img"><img src="/assets/images/profile.jpg" alt="user"></div>
                                     <div class="u-text">
-                                        <h4>Hizrian</h4>
-                                        <p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                        <h4>{{ user.username }}</h4>
+                                        <p class="text-muted">{{ user.email }}</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
                                 </div>
                             </li>
                             <div class="dropdown-divider"></div>
@@ -131,6 +132,7 @@
         </nav>
     </div>
     <!--- ---------------------------------------------------------------------------------------- -->
+    {% include 'partials/flash.html.twig' %}
     <div class="sidebar">
         <div class="scrollbar-inner sidebar-wrapper">
             <div class="user">
@@ -140,8 +142,8 @@
                 <div class="info">
                     <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 								<span>
-									Hizrian
-									<span class="user-level">Administrator</span>
+									{{ user.username }}
+									<span class="user-level">{{ user.role }}</span>
 									<span class="caret"></span>
 								</span>
                     </a>
@@ -170,7 +172,7 @@
             </div>
             <ul class="nav">
                 <li class="nav-item {% if app.request.attributes.get('_route') == 'app_admin' %}active{% endif %}">
-                    <a href="{{ path('app_admin') }}">
+                    <a href="{{ path('app_admin') }}" >
                         <i class="la la-dashboard"></i>
                         <p>Dashboard</p>
                         <span class="badge badge-count"></span>
@@ -183,11 +185,11 @@
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' %}active{% endif %}">
+                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' or app.request.attributes.get('_route') starts with 'chatrooms' or app.request.attributes.get('_route') starts with 'event'%}active{% endif %}">
                 <a class="nav-link" data-toggle="collapse" href="#communityCollapse" aria-expanded="false">
                         <i class="las la-users"></i>
                         <p>Community</p>
-                        <span class="badge badge-count">3</span>
+                        <span class="badge badge-count">4</span>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="communityCollapse">
@@ -203,12 +205,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{ path('event.index') }}">
                                     <span class="link-collapse">Events</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="">
+                                <a href="{{ path('chatrooms.index') }}">
                                     <span class="link-collapse">Chat Rooms</span>
                                 </a>
                             </li>
@@ -222,17 +224,17 @@
                         <span class="badge badge-count"></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="notifications.html">
-                        <i class="la la-bell"></i>
-                        <p>Notifications</p>
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'abonnement.admin.index' %}active{% endif %}">
+                    <a href="{{ path('abonnement.admin.index') }}">
+                        <i class="las la-hand-holding-usd"></i>
+                        <p>Abonnements</p>
                         <span class="badge badge-success"></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="typography.html">
-                        <i class="la la-font"></i>
-                        <p>Typography</p>
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'gamification.admin.index' %}active{% endif %}">
+                    <a href="{{ path('gamification.admin.index') }}">
+                        <i class="las la-gift"></i>
+                        <p>Gamification</p>
                         <span class="badge badge-danger"></span>
                     </a>
                 </li>
@@ -245,8 +247,12 @@
             </ul>
         </div>
     </div>
+    {% include 'partials/flash.html.twig' %}
     {% block body %}{% endblock %}
     {% block  catAdmin %}{% endblock %}
+    {% block  eventAdmin %}{% endblock %}
+    {% block  abbAdmin %}{% endblock %}
+    {% block  gamAdmin %}{% endblock %}
     {% block userAdmin %}{% endblock %}
 </div>
 </body>

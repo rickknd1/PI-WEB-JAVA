@@ -78,9 +78,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private Collection $interests;
 
+    /**
+     * @var Collection<int, MembreComunity>
+     */
+    #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: 'id_user')]
+    private Collection $membreComunities;
+
     public function __construct()
     {
         $this->interests = new ArrayCollection();
+        $this->membreComunities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,6 +218,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeInterest(Categories $interest): static
     {
         $this->interests->removeElement($interest);
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MembreComunity>
+     */
+    public function getMembreComunities(): Collection
+    {
+        return $this->membreComunities;
+    }
+
+    public function addMembreComunity(MembreComunity $membreComunity): static
+    {
+        if (!$this->membreComunities->contains($membreComunity)) {
+            $this->membreComunities->add($membreComunity);
+            $membreComunity->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembreComunity(MembreComunity $membreComunity): static
+    {
+        if ($this->membreComunities->removeElement($membreComunity)) {
+            // set the owning side to null (unless already changed)
+            if ($membreComunity->getIdUser() === $this) {
+                $membreComunity->setIdUser(null);
+            }
+        }
+
         return $this;
     }
 }

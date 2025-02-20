@@ -1,0 +1,48 @@
+{% extends 'gamification/adminGam.html.twig' %}
+
+{% block titleGam %}Gamifications {% endblock %}
+{% block nbrGam %}{{ games|length }}{% endblock %}
+{% block gam %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Description</th>
+                <th scope="col" >Type d'abonnement</th>
+                <th scope="col" >Type</th>
+                <th scope="col" >Condition</th>
+                <th scope="col" >Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for gam in games %}
+                <tr>
+                    <td>{{ gam.id }}</td>
+                    <td>{{ gam.nom }}</td>
+                    <td>{{ gam.description }}</td>
+                    <td>{{ gam.typeAbonnement }}</td>
+                    <td>{{ gam.type }}</td>
+                    <td>{{ gam.conditionGamification }}</td>
+                    <td>
+                        <a href="{{ path('gamification.edit' , {id: gam.id } ) }}">
+                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                        </a>
+                        <a href="{{ path('gamification.delete' , {id: gam.id } ) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce abonnement ?');">
+                            <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                <i class="la la-times"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block  addGam %}
+{{ form(form) }}
+{% endblock %}

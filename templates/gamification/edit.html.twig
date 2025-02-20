@@ -1,0 +1,8 @@
+{% extends "gamification/adminGam.html.twig" %}
+
+{% block title %}{{ games.nom|upper }}{% endblock title %}
+{% block titleGam %}{{ games.nom }}{% endblock %}
+
+{% block  GamEdit %}
+    {{ form(form) }}
+{% endblock %}

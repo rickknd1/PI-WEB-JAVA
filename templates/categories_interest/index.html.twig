@@ -2,7 +2,14 @@
 
 
 {% block titleCat %}Categories {% endblock %}
-{% block nbrcat %}( {{ categories|length}} ){% endblock %}
+    {% block nbrcat %}
+        {% if categories|length > 1 %}
+            ( {{ limit }} )
+        {% else %}
+            ( 1 )
+        {% endif %}
+    {% endblock %}
+
 {% block  cat %}
     <div class="relative overflow-x-auto">
         <table class="table table-head-bg-primary mt-4">
@@ -25,12 +32,14 @@
                     <td>Description</td>
                     <td class="">{{ cat.dateCreation |date('d-m-Y')}}</td>
                     <td>
-                        <a href="{{ path('categories.edit' , {id: cat.id } ) }}">
-                        <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
-                            <i class="la la-edit"></i>
-                        </button>
-                        </a>
-                        <a href="{{ path('categories.del' , {id: cat.id } ) }}">
+                        <turbo-frame id="categorie_{{ cat.id }}">
+                            <a href="{{ path('categories.edit' , {id: cat.id } ) }}">
+                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                            </a>
+                        </turbo-frame>
+                        <a href="{{ path('categories.del' , {id: cat.id } ) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet categorie ?');">
                         <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
                             <i class="la la-times"></i>
                         </button>
@@ -42,6 +51,31 @@
         </table>
     </div>
 {% endblock cat %}
+{% block pagination %}
+    {% if maxPage > 1 %}
+        <ul class="pagination justify-content-center">
+            {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('categories.index', { page: page - 1 }) }}" tabindex="-1">Previous</a>
+                </li>
+            {% endif %}
+
+            {% for p in 1..maxPage %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="{{ path('categories.index', { page: p }) }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+
+            {% if page < maxPage %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('categories.index', { page: page + 1 }) }}">Next</a>
+                </li>
+            {% endif %}
+            <p class="card-category">&nbsp( {{ categories|length}} ) </p>
+        </ul>
+    {% endif %}
+{% endblock pagination %}
+
 {% block addcat %}
     {{ form(form) }}
 {% endblock %}

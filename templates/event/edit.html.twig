@@ -1,0 +1,10 @@
+{% extends "event/adminEvent.html.twig" %}
+
+{% block title %}{{ event.nom|upper }}{% endblock title %}
+{% block titleevent %}{{ event.nom }}{% endblock %}
+
+{% block  eventEdit %}
+
+    {{ form(form) }}
+
+{% endblock  eventEdit %}

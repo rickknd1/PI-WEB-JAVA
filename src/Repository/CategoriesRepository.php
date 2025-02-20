@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Categories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @extends ServiceEntityRepository<Categories>
@@ -24,6 +26,17 @@ class CategoriesRepository extends ServiceEntityRepository
             ->orderBy('r.date_creation', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function paginateCategories(int $page , int $limit): Paginator
+    {
+        return new Paginator($this
+            ->createQueryBuilder('r')
+            ->setFirstResult(($page - 1 ) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->setHint(Paginator::HINT_ENABLE_DISTINCT, false)
+        );
     }
 
 //    /**
