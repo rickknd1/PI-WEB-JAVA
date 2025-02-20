@@ -62,7 +62,7 @@ final class CategoriesInterestController extends AbstractController{
             return $this->redirectToRoute('categories.index');
         }
 
-        return $this->render('categories_interest/index.html.twig', [
+        return $this->render('categories_interest/index.html.twig.twig', [
             'categories' => $categories,
             'form' => $form->createView(),
             'maxPage' => $maxPage,

@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\Post;
+use App\Form\PostType;
+use App\Repository\PostRepository;
 
 final class HomeController extends AbstractController{
     #[Route('/welcome', name: 'welcome')]
@@ -51,7 +54,7 @@ final class HomeController extends AbstractController{
         $em->persist($visitor[0]);
         $em->flush();
 
-        return $this->render('home/home.html.twig', [
+        return $this->render('front/feed.html.twig', [
             'user' => $this->getUser(),
             'users' => $users,
         ]);
