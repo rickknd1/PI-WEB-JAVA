@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Comment;
 use App\Repository\ReactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Enum\ReactionChoise;

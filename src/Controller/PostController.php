@@ -19,10 +19,12 @@ final class PostController extends AbstractController
     #[Route(name: 'app_post_index', methods: ['GET'])]
     public function index(PostRepository $postRepository,CommentRepository $commentRepository): Response
     {
+        $user = $this->getUser();
         $comments = $commentRepository->findAll();
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/feed.html.twig', [
             'posts' => $postRepository->findAll(),
             'comments' => $comments,
+            'user' => $user
         ]);
     }
 
@@ -32,8 +34,10 @@ final class PostController extends AbstractController
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $post->setUser($user);
             $post->setCreatedAt(new \DateTimeImmutable());
             $post->setUpdateAt(new \DateTimeImmutable());
             $entityManager->persist($post);
@@ -91,9 +95,11 @@ final class PostController extends AbstractController
     public function feed(EntityManagerInterface $em, PostRepository $rep): Response
     {
         $posts = $rep->findAll();
+        $user =$this->getUser();
 
         return $this->render('post/feed.html.twig', [
             'posts' => $posts,
+            'user' => $user,
         ]);
     }
 

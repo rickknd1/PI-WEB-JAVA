@@ -54,7 +54,7 @@ final class HomeController extends AbstractController{
         $em->persist($visitor[0]);
         $em->flush();
 
-        return $this->render('front/feed.html.twig', [
+        return $this->render('home/home.html.twig', [
             'user' => $this->getUser(),
             'users' => $users,
         ]);

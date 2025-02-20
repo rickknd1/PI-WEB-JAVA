@@ -1465,7 +1465,7 @@
                     "dev-master": "5.x-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Knp\\Component\\": "src/Knp/Component"
@@ -1540,7 +1540,7 @@
                     "dev-master": "6.x-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Knp\\Bundle\\PaginatorBundle\\": "src"
@@ -9914,7 +9914,7 @@
                     "name": "symfony/ux"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Symfony\\UX\\Turbo\\": "src/"
