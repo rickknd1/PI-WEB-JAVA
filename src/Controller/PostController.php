@@ -20,7 +20,7 @@ final class PostController extends AbstractController
     public function index(PostRepository $postRepository,CommentRepository $commentRepository): Response
     {
         $comments = $commentRepository->findAll();
-        return $this->render('post/index.html.twig', [
+        return $this->render('front/feed.html.twig', [
             'posts' => $postRepository->findAll(),
             'comments' => $comments,
         ]);
