@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\Post;
+use App\Form\PostType;
+use App\Repository\PostRepository;
 
 final class HomeController extends AbstractController{
     #[Route('/', name: 'home')]

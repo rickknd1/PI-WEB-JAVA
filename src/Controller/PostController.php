@@ -6,12 +6,12 @@ use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use App\Repository\VisitorsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
 
 #[Route('/post')]
 final class PostController extends AbstractController
@@ -51,14 +51,8 @@ final class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function show(int $id, Post $post, PostRepository $postRepository): Response
+    public function show(Post $post): Response
     {
-        $post = $postRepository->find($id);
-
-        if (!$post) {
-            throw $this->createNotFoundException("Ce post n'existe pas !");
-        }
-
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
@@ -123,5 +117,4 @@ final class PostController extends AbstractController
 
         return $this->redirectToRoute('app_feed');
     }
-
 }
