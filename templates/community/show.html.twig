@@ -252,7 +252,11 @@
 
                         <div class="flex items-ce justify-between text-black dark:text-white">
                             <h3 class="font-bold text-lg"> About   </h3>
-                            <a href="#" class="text-sm text-blue-500">Edit</a>
+                            {% if comm.id in ownCommIds or comm.id in moderatedCommIds%}
+                            <a href="">
+                                <button class="text-sm text-blue-500 " uk-toggle="target: #edit-story">Edit</button>
+                            </a>
+                            {% endif %}
                         </div>
 
                         <ul class="text-gray-700 space-y-4 mt-2 mb-1 text-sm dark:text-white">
@@ -292,7 +296,7 @@
                     <div class="box p-5 px-6">
                         <div class="flex items-baseline justify-between text-black dark:text-white">
                             <h3 class="font-bold text-base"> Recent Events </h3>
-                            <a href="#" class="text-sm text-blue-500">See all</a>
+                            <a href="{{ path('community.events',{id: comm.id }) }}" class="text-sm text-blue-500">See all</a>
                         </div>
 
                         <div class="grid grid-cols-2 gap-1 text-center text-sm mt-4 mb-2 rounded-lg overflow-hidden">
@@ -309,25 +313,27 @@
 
                         <div class="flex items-baseline justify-between text-black dark:text-white">
                             <h3 class="font-bold text-base"> Suggested communities </h3>
-                            <a href="#" class="text-sm text-blue-500">See all</a>
+                            <a href="{{ path('categories.detail', {slug: comm.idCategorie.nom , id: comm.idCategorie.id} ) }}" class="text-sm text-blue-500">See all</a>
                         </div>
 
                         <div class="side-list">
-                            {% for commt in communitys %}
-                            <div class="side-list-item">
-                                <a href="timeline-group.html">
-                                    <img src="{{ commt.cover }}" alt="" class="side-list-image rounded-md">
-                                </a>
-                                <div class="flex-1">
-                                    <a href="timeline-group.html"><h4 class="side-list-title">{{ commt.nom}} </h4></a>
-                                    <div class="side-list-info"> {{ commt.nbrMembre }} Members </div>
-                                </div>
-                                {% if commt.id in userCommIds %}
-                                    <button class="button bg-primary text-white"><a href="{{ path('community.detail',{id: commt.id }) }}">View</a></button>
-                                {% else %}
-                                    <button class="button bg-primary text-white"><a href="{{ path('membre.comunity.add', {id: commt.id }) }}">Join</a></button>
+                            {% for commt in communitys |sort((a, b) => a.nbrMembre <=> b.nbrMembre)|reverse %}
+                                {% if commt.idCategorie.id == comm.idCategorie.id %}
+                                    <div class="side-list-item">
+                                        <a href="timeline-group.html">
+                                            <img src="{{ commt.cover }}" alt="" class="side-list-image rounded-md">
+                                        </a>
+                                        <div class="flex-1">
+                                            <a href="timeline-group.html"><h4 class="side-list-title">{{ commt.nom}} </h4></a>
+                                            <div class="side-list-info"> {{ commt.nbrMembre }} Members </div>
+                                        </div>
+                                        {% if commt.id in userCommIds %}
+                                            <button class="button bg-primary text-white"><a href="{{ path('community.detail',{id: commt.id }) }}">View</a></button>
+                                        {% else %}
+                                            <button class="button bg-primary text-white"><a href="{{ path('membre.comunity.add', {id: commt.id }) }}">Join</a></button>
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
-                            </div>
                             {% endfor %}
                         </div>
                     </div>

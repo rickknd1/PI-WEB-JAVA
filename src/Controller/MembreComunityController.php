@@ -49,6 +49,7 @@ final class MembreComunityController extends AbstractController{
             'community' => $community
         ]);
 
+
         if ($membreComunity) {
             $em->remove($membreComunity);
 
@@ -57,6 +58,7 @@ final class MembreComunityController extends AbstractController{
 
             $em->flush();
         }
+
 
         return $this->redirect($referer ?: $this->redirectToRoute('community.index.front', [
             'user' => $user->getId(),
@@ -73,17 +75,30 @@ final class MembreComunityController extends AbstractController{
             'community' => $community
         ]);
 
-        if ($membreComunity) {
-            $em->remove($membreComunity);
+        $userComm = $membreComunityRepository->findByUserId($user->getId());
+        $moderatedCommIds = array_map(
+            fn($item) => $item->getCommunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'moderator')
+        );
+        $ownCommIds = array_map(
+            fn($item) => $item->getCommunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'owner')
+        );
+        if (in_array($community->getId(), $moderatedCommIds) || in_array($community->getId(), $ownCommIds) || in_array('ROLE_ADMIN', $user->getRoles())) {
+            if ($membreComunity) {
+                $em->remove($membreComunity);
 
-            $community->setNbrMembre(max(0, $community->getNbrMembre() - 1));
-            $em->persist($community);
+                $community->setNbrMembre(max(0, $community->getNbrMembre() - 1));
+                $em->persist($community);
 
-            $em->flush();
+                $em->flush();
+            }
+        }else{
+            return $this->redirectToRoute('access_denied');
         }
 
         return $this->redirect($referer ?: $this->redirectToRoute('community.index.front', [
-            'user' => $user->getId(),
+            'user' => $user,
         ]));
     }
 
@@ -93,24 +108,30 @@ final class MembreComunityController extends AbstractController{
         $referer = $request->headers->get('referer');
         $user = $this->getUser();
 
-        // Fetch the member community entry
         $membreComunity = $membreComunityRepository->findOneBy([
             'id_user' => $membre,
             'community' => $community
         ]);
 
-        // Check if the member exists
-        if (!$membreComunity) {
-            $this->addFlash('error', 'Member not found.');
-            return $this->redirectToRoute('community.index.front', ['user' => $user]);
+        $userComm = $membreComunityRepository->findByUserId($user->getId());
+
+        $ownCommIds = array_map(
+            fn($item) => $item->getCommunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'owner')
+        );
+        if (in_array($community->getId(), $ownCommIds) || in_array('ROLE_ADMIN', $user->getRoles())) {
+            if (!$membreComunity) {
+                $this->addFlash('error', 'Member not found.');
+                return $this->redirectToRoute('community.index.front', ['user' => $user]);
+            }
+
+            $membreComunity->setStatus('moderator');
+            $em->persist($membreComunity);
+            $em->flush();
+        }else{
+            return $this->redirectToRoute('access_denied');
         }
 
-        // Update the status
-        $membreComunity->setStatus('moderator');
-        $em->persist($membreComunity);
-        $em->flush();
-
-        // Redirect to the referer or fallback to a route
         return $this->redirect($referer ?: $this->generateUrl('community.index.front', [
             'user' => $user
         ]));
@@ -124,10 +145,20 @@ final class MembreComunityController extends AbstractController{
             'id_user' => $membre,
             'community' => $community
         ]);
-        if ($membreComunity) {
-            $membreComunity->setStatus('membre');
-            $em->persist($membreComunity);
-            $em->flush();
+        $userComm = $membreComunityRepository->findByUserId($user->getId());
+
+        $ownCommIds = array_map(
+            fn($item) => $item->getCommunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'owner')
+        );
+        if (in_array($community->getId(), $ownCommIds) || in_array('ROLE_ADMIN', $user->getRoles())) {
+            if ($membreComunity) {
+                $membreComunity->setStatus('membre');
+                $em->persist($membreComunity);
+                $em->flush();
+            }
+        }else{
+            return $this->redirectToRoute('access_denied');
         }
         return $this->redirect($referer ?: $this->redirectToRoute('community.index.front', [
             'user' => $user,
