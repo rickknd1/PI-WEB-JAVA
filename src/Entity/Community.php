@@ -34,17 +34,20 @@ class Community
     /**
      * @var Collection<int, Events>
      */
-    #[ORM\OneToMany(targetEntity: Events::class, mappedBy: 'id_community')]
+    #[ORM\OneToMany(targetEntity: Events::class, mappedBy: 'id_community', cascade: ["remove"], orphanRemoval: true)]
     private Collection $events;
 
     /**
      * @var Collection<int, ChatRooms>
      */
-    #[ORM\OneToMany(targetEntity: ChatRooms::class, mappedBy: 'id_community')]
+    #[ORM\OneToMany(targetEntity: ChatRooms::class, mappedBy: 'community', cascade: ["remove"], orphanRemoval: true)]
     private Collection $chatRooms;
 
     #[ORM\Column]
     private ?int $nbr_membre = null;
+
+    #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: "community", cascade: ["remove"], orphanRemoval: true)]
+    private Collection $membreComunities;
 
     public function __construct()
     {
@@ -143,7 +146,7 @@ class Community
     {
         if (!$this->chatRooms->contains($chatRooms)) {
             $this->chatRooms->add($chatRooms);
-            $chatRooms->setIdCommunity($this);
+            $chatRooms->setCommunity($this);
         }
 
         return $this;
@@ -164,8 +167,8 @@ class Community
     {
         if ($this->events->removeElement($chatRooms)) {
             // set the owning side to null (unless already changed)
-            if ($chatRooms->getIdCommunity() === $this) {
-                $chatRooms->setIdCommunity(null);
+            if ($chatRooms->getCommunity() === $this) {
+                $chatRooms->setCommunity(null);
             }
         }
 

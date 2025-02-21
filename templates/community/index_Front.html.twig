@@ -44,8 +44,6 @@
                 <li> <a href="#"> Popular </a> </li>
                 <li> <a href="#"> My comunity </a> </li>
                 <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #create-story"><i class="las la-plus"></i><a href=""> Create Community</a></button>
-
-
             </ul>
         </nav>
     </div>
@@ -84,7 +82,7 @@
                                 <div> {{ comm.nbrMembre }} members </div>
                             </div>
                             <div class="flex gap-2">
-                                {% if comm.id in userCommIds %}
+                                {% if comm.id in userCommIds%}
                                     <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-primary text-white flex-1"> View</a>
                                 {% else %}
                                     <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.comunity.add', {id: comm.id }) }}">Join</a></button>

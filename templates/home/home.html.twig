@@ -550,7 +550,7 @@
                         </li>
                         <li>
                             <a href="event.html">
-                                <img src="/assets/images/icons/event.png" alt="messages" class="w-6">
+                                <i class="las la-calendar"></i>
                                 <span> event </span>
                             </a>
                         </li>
@@ -562,7 +562,7 @@
                         </li>
                         <li class="{% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' or app.request.attributes.get('_route') starts with 'chatrooms' or app.request.attributes.get('_route') starts with 'event'%}active{% endif %}">
                             <a href="{{ path('community.index.front') }}">
-                                <img src="/assets/images/icons/group.png" alt="community" class="w-6">
+                                <i class="las la-user-friends"></i>
                                 <span> community </span>
                             </a>
                         </li>

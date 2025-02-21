@@ -12,14 +12,6 @@
 
                 <!-- overly -->
                 <div class="w-full bottom-0 absolute left-0 bg-gradient-to-t from -black/60 pt-10 z-10"></div>
-                {% if comm.id in moderatedCommIds %}
-                <div class="absolute bottom-0 right-0 m-4 z-20">
-                    <div class="flex items-center gap-3">
-                        <button class="button bg-white/20 text-white flex items-center gap-2 backdrop-blur-small">Crop</button>
-                        <button class="button bg-black/10 text-white flex items-center gap-2 backdrop-blur-small">Edit</button>
-                    </div>
-                </div>
-                {% endif %}
 
             </div>
 
@@ -47,11 +39,24 @@
                                     <img src="assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
                                     <img src="assets/images/avatars/avatar-5.jpg" alt="" class="w-10 rounded-full border-4 border-white dark:border-slate-800">
                                 </div>
-                                {% if comm.id in moderatedCommIds %}
-                                    <a href="#">
-                                        <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
-                                            <i class="las la-pen"></i>
+                                {% if comm.id in ownCommIds%}
+                                    <a href="">
+                                        <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto " uk-toggle="target: #edit-story">
+                                            <i class="las la-pen"> </i>
                                             <span class="text-sm"> Edit</span>
+                                        </button>
+                                    </a>
+                                {% elseif comm.id in moderatedCommIds %}
+                                    <a href="">
+                                        <button class="button bg-primary flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto " uk-toggle="target: #edit-story">
+                                            <i class="las la-pen"> </i>
+                                            <span class="text-sm"> Edit</span>
+                                        </button>
+                                    </a>
+                                    <a href="{{ path('membre.comunity.remove', {id: comm.id }) }}">
+                                        <button class="button bg-red-600 flex items-center gap-1 text-white py-2 px-3.5 shadow ml-auto">
+                                            <i class="las la-times"></i>
+                                            <span class="text-sm"> Leave</span>
                                         </button>
                                     </a>
                                 {% elseif comm.id in userCommIds%}
@@ -78,8 +83,10 @@
                                             <a href="#"> <ion-icon class="text-xl" name="share-outline"></ion-icon> Share  </a>
                                             <a href="#"> <ion-icon class="text-xl" name="link-outline"></ion-icon>  Copy link </a>
                                             <a href="#"> <ion-icon class="text-xl" name="flag-outline"></ion-icon>  Report group</a>
-                                            <hr>
-                                            <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl" name="stop-circle-outline"></ion-icon>  Block </a>
+                                            {% if comm.id in ownCommIds %}
+                                                <hr>
+                                                <a href="{{path('community.front.del',{id:comm.id})}}" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl" name="trash"></ion-icon> Delete comunity </a>
+                                            {% endif %}
                                         </nav>
                                     </div>
                                 </div>
@@ -97,7 +104,7 @@
                 <nav class="flex gap-0.5 rounded-xl overflow-hidden -mb-px text-gray-500 font-medium text-sm overflow-x-auto dark:text-white">
                     <a href="{{path('community.detail',{id: comm.id })}}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.detail' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Discussion</a>
                     <a href="{{ path('community.events',{id: comm.id }) }}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.events' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Event</a>
-                    <a href="#" class="inline-block py-3 leading-8 px-3.5">Members</a>
+                    <a href="{{ path('community.members',{id: comm.id }) }}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.members' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Members</a>
                 </nav>
 
                 <div class="flex items-center gap-1 text-sm p-3 bg-secondery py-2 mr-2 rounded-xl max-md:hidden dark:bg-white/5">
@@ -143,7 +150,7 @@
                             </div>
                         {% endif %}
                     </div>
-                {% else %}
+                {% elseif app.request.attributes.get('_route') == 'community.events' %}
                     <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
                         {% for event in events %}
                             <div class="card">
@@ -161,6 +168,67 @@
                             </div>
                         {% endfor %}
                         {% if events|length == 0 %}
+                            <div class=" rounded-xl shadow-sm p-4 space-y-4 bg-slate-200/40 animate-pulse border1 dark:bg-dark2">
+                                <div class=" flex gap-3">
+                                    <div class="flex-1 space-y-3">
+                                        <div class="w-24 h-4 rounded-md bg-slate-300/20"></div>
+                                    </div>
+                                </div>
+                                <div class="w-full h-52 rounded-lg bg-slate-300/10 my-3"> </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                        {% for membre in membres %}
+                            <div class="card">
+                                {% if membre.status != 'owner' %}
+                                    {% if comm.id in moderatedCommIds or comm.id in ownCommIds %}
+                                        <div>
+                                            <button type="button" class="rounded-lg bg-secondary flex px-2.5 py-1.5 dark:bg-dark2">
+                                                <ion-icon name="ellipsis-horizontal" class="text-xl"></ion-icon>
+                                            </button>
+                                            <div class="w-[240px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click; offset:10">
+                                                <nav>
+                                                    {% if comm.id in ownCommIds %}
+                                                        {% if membre.status == 'membre' %}
+                                                            <a href="{{path('membre.promote' , {id:comm.id , membre:membre.idUser.id} ) }}"> <i class="las la-angle-double-up"></i> Promote to moderator </a>
+                                                        {% elseif membre.status == 'moderator' %}
+                                                            <a href="{{ path('membre.demote' , {id:comm.id , membre:membre.idUser.id} ) }}"> <i class="las la-angle-double-down"></i> Demote to member </a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if comm.id in moderatedCommIds or comm.id in ownCommIds %}
+                                                        <hr>
+                                                        <a href="{{ path('membre.remove', {id: comm.id , membre:membre.idUser.id }) }}" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
+                                                            <ion-icon class="text-xl" name="close"></ion-icon>Remove member
+                                                        </a>
+                                                    {% endif %}
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="flex py-4" ></div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="flex py-4" ></div>
+                                {% endif %}
+                                <a href="timeline-page.html">
+                                    <div class="card-media sm:aspect-[2/1.7] h-40">
+                                        <img src="/assets/images/group/group-1.jpg" alt="">
+                                        <div class="card-overlay"></div>
+                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <a href="timeline-page.html">
+                                        <h4 class="card-title">{{ membre.idUser.username }}</h4>
+                                    </a>
+                                    <p class="card-text">{{ membre.status }}</p>
+                                    <button type="button" class="button bg-primary text-white flex-1">Follow</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% if membres|length == 0 %}
                             <div class=" rounded-xl shadow-sm p-4 space-y-4 bg-slate-200/40 animate-pulse border1 dark:bg-dark2">
                                 <div class=" flex gap-3">
                                     <div class="flex-1 space-y-3">
@@ -262,17 +330,59 @@
                             </div>
                             {% endfor %}
                         </div>
-
-
                     </div>
-
-
                 </div>
-
             </div>
-
-
         </div>
-
+    </div>
+    <!--add-->
+    <div class="hidden lg:p-20" id="edit-story" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium"> Create community </h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                <div>
+                    {{ form_label(form.nom) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté'}}) }}
+                    {{ form_errors(form.nom) |raw}}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
+                    {{ form_errors(form.description) |raw}}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form.id_categorie) }}
+                    {{ form_widget(form.id_categorie, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.id_categorie)|raw }}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form.cover) }}
+                    <br>
+                    {{ form_widget(form.cover) }}
+                    {{ form_errors(form.cover) }}
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start gap-2">
+                        <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
+                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                    </div>
+                    {{ form_widget(form.save,{'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                </div>
+                {{ form_rest(form) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

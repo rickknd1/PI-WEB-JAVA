@@ -17,9 +17,10 @@ class MembreComunity
     #[ORM\ManyToOne(inversedBy: 'membreComunities')]
     private ?User $id_user = null;
 
-    #[ORM\ManyToOne(targetEntity: Community::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Community $id_comunity = null;
+    #[ORM\ManyToOne(targetEntity: Community::class, inversedBy: "membreComunities")]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?Community $community = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
@@ -44,14 +45,14 @@ class MembreComunity
         return $this;
     }
 
-    public function getIdComunity(): ?Community
+    public function getCommunity(): ?Community
     {
-        return $this->id_comunity;
+        return $this->community;
     }
 
-    public function setIdComunity(?Community $id_comunity): static
+    public function setIdCommunity(?Community $community): static
     {
-        $this->id_comunity = $id_comunity;
+        $this->community = $community;
 
         return $this;
     }

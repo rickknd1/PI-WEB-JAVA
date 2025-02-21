@@ -28,8 +28,8 @@ class ChatRooms
     private ?\DateTimeImmutable $createdAt = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'chatRooms')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Community::class, inversedBy: "chatRooms")]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Community $community = null;
 
     public function getId(): ?int
