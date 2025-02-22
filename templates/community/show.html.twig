@@ -107,9 +107,9 @@
                     <a href="{{ path('community.members',{id: comm.id }) }}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.members' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Members</a>
                 </nav>
 
-                <div class="flex items-center gap-1 text-sm p-3 bg-secondery py-2 mr-2 rounded-xl max-md:hidden dark:bg-white/5">
-                    <ion-icon name="search" class="text-lg"></ion-icon>
-                    <input placeholder="Search .." class="!bg-transparent">
+                <div class="flex items-center gap-1 text-sm p-3 py-2 mr-2 rounded-xl">
+                    <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #add-event"><i class="las la-calendar"></i><a href=""> Add Event</a></button>
+                    <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #add-chat"><i class="las la-comments"></i><a href=""> Add Chat</a></button>
                 </div>
 
             </div>
@@ -388,6 +388,140 @@
                     {{ form_widget(form.save,{'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
                 </div>
                 {{ form_rest(form) }}
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:p-20" id="add-event" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium"> Create event </h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                {{ form_start(form_event, {'attr': {'enctype': 'multipart/form_event-data'}}) }}
+                <div>
+                    {{ form_label(form_event.nom) }}
+                    {{ form_widget(form_event.nom, {'id': 'event_nom','attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la evenement'}}) }}
+                    {{ form_errors(form_event.nom) |raw}}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form_event.description) }}
+                    {{ form_widget(form_event.description, {'id': 'event_desc','attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
+                    {{ form_errors(form_event.description) |raw}}
+                </div>
+                <div>
+                    {{ form_label(form_event.startedAt) }}
+                    {{ form_widget(form_event.startedAt, {'id': 'event_start','attr': {'class': 'w-full mt-3'}}) }}
+                    {{ form_errors(form_event.startedAt) |raw}}
+                </div>
+                <div>
+                    {{ form_label(form_event.finishAt) }}
+                    {{ form_widget(form_event.finishAt, {'id': 'event_finish','attr': {'class': 'w-full mt-3'}}) }}
+                    {{ form_errors(form_event.finishAt) |raw}}
+                </div>
+                <div>
+                    {{ form_label(form_event.lieu) }}
+                    {{ form_widget(form_event.lieu, {'id': 'event_lieu','attr': {'class': 'w-full mt-3'}}) }}
+                    {{ form_errors(form_event.lieu) |raw}}
+                </div>
+                <div>
+                    {{ form_label(form_event.type) }}
+                    {{ form_widget(form_event.type, {'id': 'event_type','attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form_event.type) |raw}}
+                </div>
+                <div id="link-container">
+                    {% if form_event.link is defined %}
+                        {{ form_label(form_event.link) }}
+                        {{ form_widget(form_event.link, {'id': 'event_link','attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form_event.link) |raw}}
+                    {% endif %}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form_event.cover) }}
+                    <br>
+                    {{ form_widget(form_event.cover, {'id': 'event_cover'}) }}
+                    {{ form_errors(form_event.cover) }}
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start gap-2">
+                        <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
+                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                    </div>
+                    {{ form_widget(form_event.save,{'id': 'event_save','attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const typeField = document.querySelector("#events_type");
+                        const form = typeField.closest("form");
+                        const linkContainer = document.getElementById("link-container");
+
+                        function toggleLinkField() {
+                            let linkField = document.getElementById("events_link");
+                            if (typeField.value === "En Ligne") {
+                                if (!linkField) {
+                                    let div = document.createElement("div");
+                                    div.innerHTML = `<label for="events_link">Link</label><input type="text" id="events_link" name="events[link]" required class="form-control">`;
+                                    linkContainer.appendChild(div);
+                                }
+                            } else if (linkField) {
+                                linkField.parentNode.remove();
+                            }
+                        }
+
+                        typeField.addEventListener("change", toggleLinkField);
+                        toggleLinkField();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:p-20" id="add-chat" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium"> Create ChatRoom </h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                {{ form_start(form_chat, {'id': 'chat_form','attr': {'enctype': 'multipart/form_chat-data'}}) }}
+                <div>
+                    {{ form_label(form_chat.nom) }}
+                    {{ form_widget(form_chat.nom, {'id': 'chat_nom','attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté'}}) }}
+                    {{ form_errors(form_chat.nom) |raw}}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form_chat.type) }}
+                    {{ form_widget(form_chat.type, {'id': 'chat_type','attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form_chat.type)|raw }}
+                </div>
+                <br>
+                <div>
+                    {{ form_label(form_chat.cover) }}
+                    <br>
+                    {{ form_widget(form_chat.cover,{'id': 'chat_cover'}) }}
+                    {{ form_errors(form_chat.cover) }}
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start gap-2">
+                        <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
+                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                    </div>
+                    {{ form_widget(form_chat.save,{'id': 'chat_save','attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                </div>
             </div>
         </div>
     </div>

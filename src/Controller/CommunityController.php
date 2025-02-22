@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\ChatRooms;
 use App\Entity\Community;
+use App\Entity\Events;
 use App\Entity\MembreComunity;
+use App\Form\ChatRoomsType;
 use App\Form\CommunityType;
+use App\Form\EventsType;
 use App\Repository\CategoriesRepository;
 use App\Repository\ChatRoomsRepository;
 use App\Repository\CommunityRepository;
@@ -113,7 +117,7 @@ final class CommunityController extends AbstractController{
                 'user'=> $user,
                 'userCommIds'=>$userCommIds,
                 'moderatedCommIds' => $moderatedCommIds,
-                'ownCommIds' => $ownCommIds
+                'ownCommIds' => $ownCommIds,
             ]);
 
         }else{
@@ -308,6 +312,61 @@ final class CommunityController extends AbstractController{
             }
         }
 
+        $event = new Events();
+        $form_event = $this->createForm(EventsType::class, $event);
+        $form_event->handleRequest($request);
+        if ($form_event->isSubmitted() && $form_event->isValid()) {
+            $coverFile = $form_event->get('cover')->getData();
+            if ($coverFile) {
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                    return $this->redirect($referer);
+                }
+                $event->setCover('/uploads/' . $newFilename);
+            }
+            $event->setIdCommunity($community);
+            $em->persist($event);
+            $em->flush();
+            $this->addFlash('success', 'Event created!');
+            return $this->redirect($referer);
+        }
+
+        $chatroom = new ChatRooms();
+        $form_chat = $this->createForm(ChatRoomsType::class, $chatroom);
+        $form_chat->handleRequest($request);
+        if ($form_chat->isSubmitted() && $form_chat->isValid()) {
+            $coverFile = $form_chat->get('cover')->getData();
+            if ($coverFile) {
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                    return $this->redirect($referer);
+                }
+                $chatroom->setCover('/uploads/' . $newFilename);
+            }
+            $chatroom->setCreatedAt(new \DateTimeImmutable());
+            $chatroom->setCommunity($community);
+            $em->persist($chatroom);
+            $em->flush();
+            $this->addFlash('success', 'Chatroom created!');
+            return $this->redirect($referer);
+        }
+
         return $this->render('community/show.html.twig', [
             'comm' => $community,
             'events' => $events,
@@ -319,6 +378,8 @@ final class CommunityController extends AbstractController{
             'form' => $form->createView(),
             'membres' => $membres,
             'ownCommIds' => $ownCommIds,
+            'form_event' => $form_event->createView(),
+            'form_chat' => $form_chat->createView(),
         ]);
     }
 }
