@@ -46,11 +46,11 @@ final class HomeController extends AbstractController{
         $session = $request->getSession();
         $users = $userRepository->findAll();
         $user = $this->getUser();
-        $userComm = $membreComunityRepository->findByUserId($user->getId());
         if (!$this->getUser()) {
             $session->set('_security.target_path', $this->generateUrl('home'));
             return $this->redirectToRoute('app_login');
         }
+        $userComm = $membreComunityRepository->findByUserId($user->getId());
 
         $visitor = $repository->findAll();
         $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);

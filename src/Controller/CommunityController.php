@@ -255,7 +255,7 @@ final class CommunityController extends AbstractController{
 
     }
     #[Route('/community/{id}/events', name: 'community.events' , requirements: ['id'=>'\d+'])]
-    #[Route('/community/{id}', name: 'community.detail', requirements: ['id' => '\d+'])]
+    #[Route('/community/{id}/chat_rooms', name: 'community.detail', requirements: ['id' => '\d+'])]
     #[Route('/community/{id}/members', name: 'community.members', requirements: ['id' => '\d+'])]
     public function detail(Request $request,Community $community,EventsRepository $eventsRepository,EntityManagerInterface $em, SluggerInterface $slugger,CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository,MembreComunityRepository $membreComunityRepository): Response
     {

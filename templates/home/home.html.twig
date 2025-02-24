@@ -629,7 +629,7 @@
                     <ul>
                         {% for com in first_com %}
                             <li>
-                                <a href="{{path('community.detail', {id: com.community.id } )}}">
+                                <a href="{{path('community.events', {id: com.community.id } )}}">
                                     <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
                                         <img src="{{ com.community.cover }}" alt="" class="w-6 rounded-full object-cover">
                                         <div> {{ com.community.nom }}</div>
@@ -639,7 +639,7 @@
                         {% endfor %}
                         {% for com in other_com %}
                             <li class="!hidden" id="show__more_com">
-                                <a href="{{path('community.detail', {id: com.community.id } )}}">
+                                <a href="{{path('community.events', {id: com.community.id } )}}">
                                     <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
                                         <img src="{{ com.community.cover }}" alt="" class="w-6 rounded-full object-cover">
                                         <div> {{ com.community.nom }}</div>
@@ -747,6 +747,7 @@
                 {% block abonnement %}{% endblock %}
                 {% block Access %}{% endblock %}
                 {% block feed %}{% endblock %}
+                {% block event %}{% endblock %}
             </div>
         </div>
     </main>

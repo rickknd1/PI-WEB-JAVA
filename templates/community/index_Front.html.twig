@@ -67,7 +67,7 @@
                 {% set userInterestsIds = user.interests|map(i => i.id) %}
                 {% if comm.idCategorie.id in userInterestsIds %}
                     <div class="card">
-                        <a href="{{ path('community.detail',{id: comm.id}) }}">
+                        <a href="{{ path('community.events',{id: comm.id}) }}">
                             <div class="card-media h-24">
                                 <img src="{{ comm.cover }}" alt="">
                                 <div class="card-overly"></div>
@@ -75,7 +75,7 @@
                         </a>
                         <div class="card-body relative z-10">
                             <img src="/assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full mb-2 shadow -mt-8 relative border-2 border-white dark:border-slate-800">
-                            <a href="{{ path('community.detail',{id: comm.id}) }}"><h4 class="card-title"> {{ comm.nom }}  </h4></a>
+                            <a href="{{ path('community.events',{id: comm.id}) }}"><h4 class="card-title"> {{ comm.nom }}  </h4></a>
                             <div class="card-list-info font-normal mt-1">
                                 <a href="#">  {{ comm.idCategorie.nom}}  </a>
                                 <div class="md:block hidden">·</div>
@@ -83,13 +83,13 @@
                             </div>
                             <div class="flex gap-2">
                                 {% if comm.id in userCommIds%}
-                                    <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery text-white flex-1"> View</a>
+                                    <a href="{{ path('community.events',{id: comm.id }) }}" class="button bg-secondery text-white flex-1"> View</a>
                                     {% if comm.id in ownCommIds %}
                                         <a href="{{ path('community.front.del',{id: comm.id }) }}" class="button bg-red-600 !w-auto"> Delete </a>
                                     {% endif %}
                                 {% else %}
                                     <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.comunity.add', {id: comm.id }) }}">Join</a></button>
-                                    <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                                    <a href="{{ path('community.events',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -118,13 +118,13 @@
                         </div>
                         <div class="flex gap-2">
                             {% if comm.id in userCommIds %}
-                                <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery text-white flex-1"> View</a>
+                                <a href="{{ path('community.events',{id: comm.id }) }}" class="button bg-secondery text-white flex-1"> View</a>
                                 {% if comm.id in ownCommIds %}
                                     <a href="{{ path('community.front.del',{id: comm.id }) }}" class="button bg-red-600 !w-auto"> Delete </a>
                                 {% endif %}
                             {% else %}
                                 <button type="button" class="button bg-primary text-white flex-1"><a href="{{ path('membre.comunity.add', {id: comm.id }) }}">Join</a></button>
-                                <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
+                                <a href="{{ path('community.events',{id: comm.id }) }}" class="button bg-secondery !w-auto"> View</a>
                             {% endif %}
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                                 <div> {{ comm.nbrMembre }} members </div>
                             </div>
                             <div class="flex gap-2">
-                                <a href="{{ path('community.detail',{id: comm.id }) }}" class="button bg-secondery text-white flex-1"> View</a>
+                                <a href="{{ path('community.events',{id: comm.id }) }}" class="button bg-secondery text-white flex-1"> View</a>
                                 {% if comm.id in ownCommIds %}
                                     <a href="{{ path('community.front.del',{id: comm.id }) }}" class="button bg-red-600 !w-auto"> Delete </a>
                                 {% endif %}

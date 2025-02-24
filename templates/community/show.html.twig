@@ -102,16 +102,16 @@
             <div class="flex items-center justify-between  border-t border-gray-100 px-2 dark:border-slate-700">
 
                 <nav class="flex gap-0.5 rounded-xl overflow-hidden -mb-px text-gray-500 font-medium text-sm overflow-x-auto dark:text-white">
-                    <a href="{{path('community.detail',{id: comm.id })}}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.detail' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Discussion</a>
                     <a href="{{ path('community.events',{id: comm.id }) }}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.events' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Event</a>
+                    <a href="{{path('community.detail',{id: comm.id })}}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.detail' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Discussion</a>
                     <a href="{{ path('community.members',{id: comm.id }) }}" class="inline-block py-3 leading-8 px-3.5 {% if app.request.attributes.get('_route') == 'community.members' %} border-b-2 border-blue-600 text-blue-600 {% endif %}">Members</a>
                 </nav>
-
+                {% if comm.id in ownCommIds or comm.id in moderatedCommIds%}
                 <div class="flex items-center gap-1 text-sm p-3 py-2 mr-2 rounded-xl">
                     <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #add-event"><i class="las la-calendar"></i><a href=""> Add Event</a></button>
                     <button type="button" class="button bg-primary text-white create-btn" uk-toggle="target: #add-chat"><i class="las la-comments"></i><a href=""> Add Chat</a></button>
                 </div>
-
+                {% endif %}
             </div>
 
         </div>
@@ -135,7 +135,12 @@
                                 <div class="card-body">
                                     <a href="timeline-page.html"> <h4 class="card-title"> {{ chat.nom }} </h4> </a>
                                     <p class="card-text">{{ chat.type }}</p>
-                                    <button type="button" class="button bg-primary text-white">Join</button>
+                                    {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
+                                        <a href="" class="button bg-secondery !w-auto"> View</a>
+                                        <a href="{{ path('chatroom.front.del',{id: chat.id }) }}" class="button bg-red-600 !w-auto"> Delete </a>
+                                    {% else %}
+                                        <button type="button" class="button bg-primary text-white"{% if chat.type == 'Private' %} uk-toggle="target: #acces" {% endif %}>Join</button>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
@@ -153,17 +158,28 @@
                 {% elseif app.request.attributes.get('_route') == 'community.events' %}
                     <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
                         {% for event in events %}
-                            <div class="card">
+                            <div class="card flex flex-col h-full">
                                 <a href="timeline-page.html">
                                     <div class="card-media sm:aspect-[2/1.7] h-40">
                                         <img src="{{ event.cover }}" alt="">
                                         <div class="card-overly"></div>
                                     </div>
                                 </a>
-                                <div class="card-body">
+                                <div class="card-body flex-1">
+                                    <div class="side-list-info {% if event.acces == 'Public' %} text-green-700 {% else %} text-red-600 {% endif %}">{{ event.acces }}</div>
                                     <a href="timeline-page.html"> <h4 class="card-title"> {{ event.nom }} </h4> </a>
                                     <p class="card-text">{{ event.type }}</p>
-                                    <button type="button" class="button bg-primary text-white">Participe</button>
+                                    <div class="side-list-info"> {{ event.startedAt | date('d/m h:i')}} -> {{ event.finishAt| date('d/m h:i') }}</div>
+                                </div>
+                                <div class="card-footer p-4">
+                                    <div class="flex gap-2">
+                                        {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
+                                            <a href="{{ path('event.front.show',{id: event.id }) }}" class="button bg-secondery !w-auto flex-1"> View</a>
+                                            <a href="{{ path('event.front.del',{id: event.id }) }}" class="button bg-red-600 !w-auto flex-1"> Delete </a>
+                                        {% else %}
+                                            <button type="button" class="button bg-primary text-white flex-1" {% if event.acces == 'Private' %} uk-toggle="target: #acces" {% endif %}>Participe</button>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -185,7 +201,7 @@
                                 {% if membre.status != 'owner' %}
                                     {% if comm.id in moderatedCommIds or comm.id in ownCommIds %}
                                         <div>
-                                            <button type="button" class="rounded-lg bg-secondary flex px-2.5 py-1.5 dark:bg-dark2">
+                                            <button type="button" class="rounded-lg bg-secondary flex px-2.5 py-1.5 dark:bg-dark2 ">
                                                 <ion-icon name="ellipsis-horizontal" class="text-xl"></ion-icon>
                                             </button>
                                             <div class="w-[240px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click; offset:10">
@@ -328,7 +344,7 @@
                                             <div class="side-list-info"> {{ commt.nbrMembre }} Members </div>
                                         </div>
                                         {% if commt.id in userCommIds %}
-                                            <button class="button bg-primary text-white"><a href="{{ path('community.detail',{id: commt.id }) }}">View</a></button>
+                                            <button class="button bg-primary text-white"><a href="{{ path('community.events',{id: commt.id }) }}">View</a></button>
                                         {% else %}
                                             <button class="button bg-primary text-white"><a href="{{ path('membre.comunity.add', {id: commt.id }) }}">Join</a></button>
                                         {% endif %}
@@ -388,6 +404,7 @@
                     {{ form_widget(form.save,{'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
                 </div>
                 {{ form_rest(form) }}
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
@@ -403,60 +420,73 @@
                 </button>
             </div>
             <div class="space-y-5 mt-7">
-                {{ form_start(form_event, {'attr': {'enctype': 'multipart/form_event-data'}}) }}
-                <div>
-                    {{ form_label(form_event.nom) }}
-                    {{ form_widget(form_event.nom, {'id': 'event_nom','attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la evenement'}}) }}
-                    {{ form_errors(form_event.nom) |raw}}
-                </div>
-                <br>
-                <div>
-                    {{ form_label(form_event.description) }}
-                    {{ form_widget(form_event.description, {'id': 'event_desc','attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
-                    {{ form_errors(form_event.description) |raw}}
-                </div>
-                <div>
-                    {{ form_label(form_event.startedAt) }}
-                    {{ form_widget(form_event.startedAt, {'id': 'event_start','attr': {'class': 'w-full mt-3'}}) }}
-                    {{ form_errors(form_event.startedAt) |raw}}
-                </div>
-                <div>
-                    {{ form_label(form_event.finishAt) }}
-                    {{ form_widget(form_event.finishAt, {'id': 'event_finish','attr': {'class': 'w-full mt-3'}}) }}
-                    {{ form_errors(form_event.finishAt) |raw}}
-                </div>
-                <div>
-                    {{ form_label(form_event.lieu) }}
-                    {{ form_widget(form_event.lieu, {'id': 'event_lieu','attr': {'class': 'w-full mt-3'}}) }}
-                    {{ form_errors(form_event.lieu) |raw}}
-                </div>
-                <div>
-                    {{ form_label(form_event.type) }}
-                    {{ form_widget(form_event.type, {'id': 'event_type','attr': {'class': 'form-select'}}) }}
-                    {{ form_errors(form_event.type) |raw}}
-                </div>
-                <div id="link-container">
-                    {% if form_event.link is defined %}
-                        {{ form_label(form_event.link) }}
-                        {{ form_widget(form_event.link, {'id': 'event_link','attr': {'class': 'form-select'}}) }}
-                        {{ form_errors(form_event.link) |raw}}
-                    {% endif %}
-                </div>
-                <br>
-                <div>
-                    {{ form_label(form_event.cover) }}
-                    <br>
-                    {{ form_widget(form_event.cover, {'id': 'event_cover'}) }}
-                    {{ form_errors(form_event.cover) }}
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex items-start gap-2">
-                        <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
-                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                <form id="event_form" method="POST" enctype="multipart/form-data">
+                    {{ form_start(form_event, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                    <div>
+                        {{ form_label(form_event.nom) }}
+                        {{ form_widget(form_event.nom, {'id': 'event_nom', 'attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la evenement'}}) }}
+                        {{ form_errors(form_event.nom) |raw }}
                     </div>
-                    {{ form_widget(form_event.save,{'id': 'event_save','attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
-                </div>
+                    <br>
+                    <div>
+                        {{ form_label(form_event.description) }}
+                        {{ form_widget(form_event.description, {'id': 'event_desc', 'attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
+                        {{ form_errors(form_event.description) |raw }}
+                    </div>
+                    <div>
+                        {{ form_label(form_event.startedAt) }}
+                        {{ form_widget(form_event.startedAt, {'id': 'event_start', 'attr': {'class': 'w-full mt-3'}}) }}
+                        {{ form_errors(form_event.startedAt) |raw }}
+                    </div>
+                    <div>
+                        {{ form_label(form_event.finishAt) }}
+                        {{ form_widget(form_event.finishAt, {'id': 'event_finish', 'attr': {'class': 'w-full mt-3'}}) }}
+                        {{ form_errors(form_event.finishAt) |raw }}
+                    </div>
+                    <div>
+                        {{ form_label(form_event.lieu) }}
+                        {{ form_widget(form_event.lieu, {'id': 'event_lieu', 'attr': {'class': 'w-full mt-3'}}) }}
+                        {{ form_errors(form_event.lieu) |raw }}
+                    </div>
+                    <br>
+                    <div>
+                        {{ form_label(form_event.type) }}
+                        {{ form_widget(form_event.type, {'id': 'event_type', 'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form_event.type) |raw }}
+                    </div>
+                    <br>
+                    <div>
+                        {{ form_label(form_event.acces) }}
+                        {{ form_widget(form_event.acces, {'id': 'event_acces', 'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form_event.acces) |raw }}
+                    </div>
+                    <div id="link-container">
+                        {% if form_event.link is defined %}
+                            {{ form_label(form_event.link) }}
+                            {{ form_widget(form_event.link, {'id': 'event_link', 'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form_event.link) |raw }}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div>
+                        {{ form_label(form_event.cover) }}
+                        <br>
+                        {{ form_widget(form_event.cover, {'id': 'event_cover'}) }}
+                        {{ form_errors(form_event.cover) }}
+                    </div>
+                    <br>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start gap-2">
+                            <ion-icon name="time-outline" class="text-3xl text-sky-600 rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
+                            <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after ADMIN VERIFICATION </p>
+                        </div>
+                        {{ form_widget(form_event.save, {'id': 'event_save', 'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                    </div>
+                    {{ form_widget(form_event.id_community, {'attr': {'style': 'display: none;'}}) }}
+                    {{ form_end(form_event) }}
+                </form>
+            </div>
+
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         const typeField = document.querySelector("#events_type");
@@ -495,33 +525,57 @@
                 </button>
             </div>
             <div class="space-y-5 mt-7">
-                {{ form_start(form_chat, {'id': 'chat_form','attr': {'enctype': 'multipart/form_chat-data'}}) }}
-                <div>
-                    {{ form_label(form_chat.nom) }}
-                    {{ form_widget(form_chat.nom, {'id': 'chat_nom','attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté'}}) }}
-                    {{ form_errors(form_chat.nom) |raw}}
-                </div>
-                <br>
-                <div>
-                    {{ form_label(form_chat.type) }}
-                    {{ form_widget(form_chat.type, {'id': 'chat_type','attr': {'class': 'form-select'}}) }}
-                    {{ form_errors(form_chat.type)|raw }}
-                </div>
-                <br>
-                <div>
-                    {{ form_label(form_chat.cover) }}
-                    <br>
-                    {{ form_widget(form_chat.cover,{'id': 'chat_cover'}) }}
-                    {{ form_errors(form_chat.cover) }}
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex items-start gap-2">
-                        <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
-                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                <form id="chat_form" method="POST" enctype="multipart/form-data">
+                    {{ form_start(form_chat, {'id': 'chat_form','attr': {'enctype': 'multipart/form-data'}}) }}
+
+                    <div>
+                        {{ form_label(form_chat.nom) }}
+                        {{ form_widget(form_chat.nom, {'id': 'chat_nom','attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté'}}) }}
+                        {{ form_errors(form_chat.nom) |raw }}
                     </div>
-                    {{ form_widget(form_chat.save,{'id': 'chat_save','attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
-                </div>
+                    <br>
+
+                    <div>
+                        {{ form_label(form_chat.type) }}
+                        {{ form_widget(form_chat.type, {'id': 'chat_type','attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form_chat.type)|raw }}
+                    </div>
+                    <br>
+
+                    <div>
+                        {{ form_label(form_chat.cover) }}
+                        <br>
+                        {{ form_widget(form_chat.cover, {'id': 'chat_cover'}) }}
+                        {{ form_errors(form_chat.cover) }}
+                    </div>
+                    <br>
+
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start gap-2">
+                            <ion-icon name="time-outline" class="text-3xl text-sky-600 rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
+                            <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after ADMIN VERIFICATION </p>
+                        </div>
+                        {{ form_widget(form_chat.save, {'id': 'chat_save', 'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                    </div>
+                    {{ form_widget(form_chat.community, {'attr': {'style': 'display: none;'}}) }}
+                    {{ form_end(form_chat) }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:p-20" id="acces" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium">Private Event </h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                <h3 class="font-medium">Cannot participate in this {% if app.request.attributes.get('_route') == 'community.events' %} event {% else %} chat {% endif%} as it is private</h3>
             </div>
         </div>
     </div>
