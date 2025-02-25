@@ -15,6 +15,7 @@ final class InscriptionAbonnementController extends AbstractController
     #[Route('/inscription/abonnement/{id}', name: 'app_inscription_abonnement')]
     public function index(Request $request,EntityManagerInterface $em): Response
     {
+        $referer = $request->headers->get('referer');
         $user=$this->getUser();
         $inscriptionAbonnement = new InscriptionAbonnement();
         $form = $this->createForm(AbonnementType::class, $inscriptionAbonnement);
@@ -25,11 +26,9 @@ final class InscriptionAbonnementController extends AbstractController
             $inscriptionAbonnement->setExpiredAt((new \DateTimeImmutable())->modify('+1 month'));
             $em->persist($inscriptionAbonnement);
             $em->flush();
-            return $this->redirectToRoute('abonnement.admin.index');
+            return $this->redirect($referer);
+        }else{
+            return $this->redirectToRoute('access_denied');
         }
-        return $this->render('inscription_abonnement/index.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
     }
 }

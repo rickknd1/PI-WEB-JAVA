@@ -344,7 +344,7 @@
                                             <div class="side-list-info"> {{ commt.nbrMembre }} Members </div>
                                         </div>
                                         {% if commt.id in userCommIds %}
-                                            <button class="button bg-primary text-white"><a href="{{ path('community.events',{id: commt.id }) }}">View</a></button>
+                                            <button class="button bg-secondery text-white"><a href="{{ path('community.events',{id: commt.id }) }}">View</a></button>
                                         {% else %}
                                             <button class="button bg-primary text-white"><a href="{{ path('membre.comunity.add', {id: commt.id }) }}">Join</a></button>
                                         {% endif %}
@@ -575,7 +575,7 @@
                 </button>
             </div>
             <div class="space-y-5 mt-7">
-                <h3 class="font-medium">Cannot participate in this {% if app.request.attributes.get('_route') == 'community.events' %} event {% else %} chat {% endif%} as it is private</h3>
+                <h3 class="font-medium">Cannot {% if app.request.attributes.get('_route') == 'community.events' %} participate {% else %} enter {% endif%} in this {% if app.request.attributes.get('_route') == 'community.events' %} event {% else %} chat {% endif%} as it is private</h3>
             </div>
         </div>
     </div>

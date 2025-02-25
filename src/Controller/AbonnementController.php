@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Abonnements;
+use App\Entity\InscriptionAbonnement;
 use App\Form\AbonnementType;
+use App\Form\IncriptionAbonnementType;
 use App\Repository\AbonnementsRepository;
+use App\Repository\InscriptionAbonnementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +17,55 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AbonnementController extends AbstractController
 {
     #[Route('/abonnement', name: 'app_abonnement')]
-    public function index(Request $request,AbonnementsRepository $repository): Response
+    public function index(Request $request,EntityManagerInterface $em,AbonnementsRepository $abonnementsRepository,InscriptionAbonnementRepository $inscriptionAbonnementRepository): Response
     {
-        $abonnements = $repository->findAll();
+        $referer = $request->headers->get('referer');
+        $abonnements = $abonnementsRepository->findAll();
         $user = $this->getUser();
+
+        $inscriptionAbonnement = new InscriptionAbonnement();
+        $form = $this->createForm(IncriptionAbonnementType::class, $inscriptionAbonnement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $abonnementId = $form->get('abonnement_id')->getData();
+            dump($abonnementId); // Debug here
+
+            if (!$abonnementId) {
+                $this->addFlash('error', 'No abonnement selected!');
+                return $this->render('abonnement/index.html.twig', [
+                    'abonnements' => $abonnements,
+                    'user' => $user,
+                    'form' => $form->createView(),
+                ]);
+            }
+
+            $abonnement = $abonnementsRepository->find($abonnementId);
+            if (!$abonnement) {
+                $this->addFlash('error', 'Selected abonnement not found!');
+                return $this->render('abonnement/index.html.twig', [
+                    'abonnements' => $abonnements,
+                    'user' => $user,
+                    'form' => $form->createView(),
+                ]);
+            }
+
+            $inscriptionAbonnement->setAbonnement($abonnement);
+            $inscriptionAbonnement->setUser($user);
+            $inscriptionAbonnement->setSubscribedAt(new \DateTimeImmutable());
+            $inscriptionAbonnement->setExpiredAt((new \DateTimeImmutable())->modify('+1 month'));
+
+            $em->persist($inscriptionAbonnement);
+            $em->flush();
+
+            return $this->redirect($referer);
+        }
+        $userabb = $inscriptionAbonnementRepository->findOneBy(['user' => $user]);
         return $this->render('abonnement/index.html.twig', [
             'abonnements' => $abonnements,
             'user' => $user,
+            'form' => $form->createView(),
+            'userabb' => $userabb,
         ]);
     }
 
