@@ -65,7 +65,7 @@ final class CommentController extends AbstractController
             return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('comment/edit.html.twig', [
+        return $this->render('post/feed.html.twig', [
             'comment' => $comment,
             'form' => $form,
         ]);

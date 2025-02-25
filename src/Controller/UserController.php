@@ -15,15 +15,17 @@ final class UserController extends AbstractController{
     #[Route('/admin/user',name: 'user.admin', methods: ['GET', 'POST'])]
     public function index(UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager): Response
     {
-        $users = $userRepository->findAll();
 
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user, [
+        $users = $userRepository->findAll();
+        $user = $this->getUser();
+
+        $newuser = new User();
+        $form = $this->createForm(UserType::class, $newuser, [
             'attr' => ['novalidate' => 'novalidate'],
         ]);        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
+            $entityManager->persist($newuser);
             $entityManager->flush();
 
 
@@ -34,9 +36,10 @@ final class UserController extends AbstractController{
             }
         }
         return $this->render('user/index.html.twig', [
-            'user' => $user,
+            'newuser' => $newuser,
             'users' => $users,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
