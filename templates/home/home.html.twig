@@ -550,7 +550,7 @@
                         </li>
                         <li>
                             <a href="event.html">
-                                <img src="/assets/images/icons/event.png" alt="messages" class="w-6">
+                                <ion-icon class="text-xl" name="calendar"></ion-icon>
                                 <span> event </span>
                             </a>
                         </li>
@@ -562,7 +562,7 @@
                         </li>
                         <li class="{% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' or app.request.attributes.get('_route') starts with 'chatrooms' or app.request.attributes.get('_route') starts with 'event'%}active{% endif %}">
                             <a href="{{ path('community.index.front') }}">
-                                <img src="/assets/images/icons/group.png" alt="community" class="w-6">
+                                <ion-icon class="text-xl" name="people"></ion-icon>
                                 <span> community </span>
                             </a>
                         </li>
@@ -621,26 +621,40 @@
 
                 <div class="font-medium text-sm text-black border-t pt-3 mt-2 dark:text-white dark:border-slate-800">
                     <div class="px-3 pb-2 text-sm font-medium">
-                        <div class="text-black dark:text-white">Shortcut</div>
+                        <div class="text-black dark:text-white">My community</div>
                     </div>
-                    <a href="#">
-                        <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
-                            <img src="/assets/images/avatars/avatar-2.jpg" alt="" class="w-6 rounded-full object-cover">
-                            <div> Marin Gray</div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
-                            <img src="/assets/images/avatars/avatar-7.jpg" alt="" class="w-6 rounded-full object-cover">
-                            <div>   Alexa Stella</div>
-                        </div>
-                    </a>
-                    <a href="#">
-                        <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
-                            <img src="/assets/images/avatars/avatar-3.jpg" alt="" class="w-6 rounded-full object-cover">
-                            <div> Sarah Ali</div>
-                        </div>
-                    </a>
+                    {% set com_list = comm_service.findUserComm | filter(com => user.id == com.idUser.id) %}
+                    {% set first_com = com_list[:3] %}
+                    {% set other_com = com_list[3:] %}
+                    <ul>
+                        {% for com in first_com %}
+                            <li>
+                                <a href="{{path('community.events', {id: com.community.id } )}}">
+                                    <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
+                                        <img src="{{ com.community.cover }}" alt="" class="w-6 rounded-full object-cover">
+                                        <div> {{ com.community.nom }}</div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        {% for com in other_com %}
+                            <li class="!hidden" id="show__more_com">
+                                <a href="{{path('community.events', {id: com.community.id } )}}">
+                                    <div class="flex items-center gap-2 p-3 px-4 rounded-xl hover:bg-secondery">
+                                        <img src="{{ com.community.cover }}" alt="" class="w-6 rounded-full object-cover">
+                                        <div> {{ com.community.nom }}</div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% if com_list | length > 3 %}
+                        <button type="button" class="flex items-center gap-4 py-2 px-4 w-full font-medium text-sm text-black dark:text-white" uk-toggle="target: #show__more_com; cls: !hidden uk-animation-fade">
+                            <svg class="bg-gray-200 rounded-full w-6 h-6 dark:bg-slate-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span id="show__more_com"> See More </span>
+                            <span class="!hidden" id="show__more_com"> See Less </span>
+                        </button>
+                    {% endif %}
                 </div>
 
                 <nav id="side" class="font-medium text-sm text-black border-t pt-3 mt-2 dark:text-white dark:border-slate-800">
@@ -690,9 +704,7 @@
                                 <li><a href="components.html" class="!py-2 !rounded -md">Icons</a></li>
                             </ul>
                         </li>
-
                     </ul>
-
                 </nav>
 
 
@@ -735,6 +747,7 @@
                 {% block abonnement %}{% endblock %}
                 {% block Access %}{% endblock %}
                 {% block feed %}{% endblock %}
+                {% block event %}{% endblock %}
             </div>
         </div>
     </main>

@@ -10,12 +10,10 @@
 
         <div class="flex items-baseline justify-between text-black dark:text-white">
             <h3 class="font-bold text-base"> Who might be your friends </h3>
-            <a href="#" class="text-sm text-blue-500">See all</a>
         </div>
         <div class="relative mt-2" tabindex="-1" uk-slider>
 
             <div class="overflow-hidden uk-slider-container">
-
                 <ul class="-ml-2 uk-slider-items w-[calc(100%+0.5rem)] pt-3 text-center" uk-scrollspy="target: > li; cls: uk-animation-scale-up; delay: 20 ;repeat: true">
                     {% set usersFound = false %}
                     {% for us in users %}
@@ -42,7 +40,6 @@
                         </li>
                     {% endif %}
                 </ul>
-
             </div>
 
             <!-- slide nav icons -->
@@ -76,7 +73,7 @@
                 {% for comm in communities|sort((a, b) => a.nbrMembre <=> b.nbrMembre)|reverse %}
                     {% if comm.idCategorie.id == cat.id %}
                         <div class="card">
-                            <a href="{{ path('community.detail',{id: comm.id}) }}">
+                            <a href="{{ path('community.events',{id: comm.id}) }}">
                                 <div class="card-media h-24">
                                     <img src="{{ comm.cover }}" alt="">
                                     <div class="card-overly"></div>
@@ -84,7 +81,7 @@
                             </a>
                             <div class="card-body relative z-10">
                                 <img src="/assets/images/avatars/avatar-4.jpg" alt="" class="w-10 rounded-full mb-2 shadow md:-mt-11 -mt-7 relative border-2 border-white">
-                                <a href="{{ path('community.detail',{id: comm.id}) }}"> <h4 class="card-title"> {{ comm.nom}} </h4></a>
+                                <a href="{{ path('community.events',{id: comm.id}) }}"> <h4 class="card-title"> {{ comm.nom}} </h4></a>
                                 <div class="card-text mt-1">
                                     <div class="flex items-center flex-wrap space-x-1">
                                         <a href="{{ path('community.detail',{id: comm.id}) }}"> <span> {{ comm.nbrmembre }} Members </span></a>

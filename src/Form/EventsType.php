@@ -73,6 +73,16 @@ class EventsType extends AbstractType
                 'label'=>'Type&nbsp&nbsp&nbsp',
                 'label_html' => true,
             ])
+            ->add('acces', ChoiceType::class, [
+                'choices' => [
+                    'Public' => 'Public',
+                    'Private' => 'Private'
+                ],
+                'mapped' => true,
+                'required' => true,
+                'label'=>'Acces&nbsp&nbsp&nbsp',
+                'label_html' => true,
+            ])
             ->add('id_community', EntityType::class, [
                 'class' => Community::class,
                 'choice_label' => 'nom',

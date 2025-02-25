@@ -6,6 +6,7 @@ use App\Entity\Events;
 use App\Form\EventsType;
 use App\Repository\CommunityRepository;
 use App\Repository\EventsRepository;
+use App\Repository\MembreComunityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -18,7 +19,11 @@ final class EventController extends AbstractController{
     #[Route('admin/events', name: 'event.index')]
     public function index(Request $request,EventsRepository $repository,EntityManagerInterface $em,SluggerInterface $slugger): Response
     {
+        $routeName = $request->attributes->get('_route');
         $user = $this->getUser();
+        if ($routeName=== "event.index" && !in_array('ROLE_ADMIN', $user->getRoles())) {
+            return $this->redirectToRoute('access_denied');
+        }
         $page = $request->query->getInt('page', 1);
         $limit = 2;
         $events = $repository->paginateEvents($page , $limit);
@@ -62,7 +67,11 @@ final class EventController extends AbstractController{
     #[Route('/admin/event/{id}/edit', name: 'event.edit', requirements: ['id'=>'\d+'])]
     public function edit(Events $events,Request $request, EntityManagerInterface $em,SluggerInterface $slugger): Response
     {
+        $routeName = $request->attributes->get('_route');
         $user = $this->getUser();
+        if ($routeName=== "event.edit" && !in_array('ROLE_ADMIN', $user->getRoles())) {
+            return $this->redirectToRoute('access_denied');
+        }
         $form = $this->createForm(EventsType::class, $events);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -102,29 +111,56 @@ final class EventController extends AbstractController{
     }
 
     #[Route('/admin/event/{id}/delete', name: 'event.del', requirements: ['id'=>'\d+'])]
-    public function delete(Request $request, Events $events, EntityManagerInterface $em,SluggerInterface $slugger): Response
+    #[Route('/event/{id}/delete', name: 'event.front.del', requirements: ['id'=>'\d+'])]
+    public function delete(Request $request, Events $events, EntityManagerInterface $em,SluggerInterface $slugger,MembreComunityRepository $membreComunityRepository): Response
     {
+        $referer = $request->headers->get('referer');
+        $routeName = $request->attributes->get('_route');
         $user = $this->getUser();
-        if($events->getCover()){
-            $oldCover = $this->getParameter('cover_directory').DIRECTORY_SEPARATOR . basename($events->getCover());
-            if (file_exists($oldCover)) {
-                unlink($oldCover);
-            }
+        if ($routeName=== "event.del" && !in_array('ROLE_ADMIN', $user->getRoles())) {
+            return $this->redirectToRoute('access_denied');
         }
-        $em->remove($events);
-        $em->flush();
-        $this->addFlash('success', 'Event deleted!');
-        return $this->redirectToRoute('event.index');
+
+        $userComm = $membreComunityRepository->findByUserId($user->getId());
+        $moderatedCommIds = array_map(
+            fn($item) => $item->getCommunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'moderator')
+        );
+        $ownCommIds = array_map(
+            fn($item) => $item->getCommunity()->getId(),
+            array_filter($userComm, fn($item) => $item->getStatus() === 'owner')
+        );
+        if (in_array($events->getIdCommunity()->getId(), $moderatedCommIds) || in_array($events->getIdCommunity()->getId(), $ownCommIds) || in_array('ROLE_ADMIN', $user->getRoles())) {
+            if($events->getCover()){
+                $oldCover = $this->getParameter('cover_directory').DIRECTORY_SEPARATOR . basename($events->getCover());
+                if (file_exists($oldCover)) {
+                    unlink($oldCover);
+                }
+            }
+            $em->remove($events);
+            $em->flush();
+            $this->addFlash('success', 'Event deleted!');
+            if ($routeName === 'event.front.del'){
+                return $this->redirect($referer);
+            }else{
+                return $this->redirectToRoute('event.index');
+            }
+        }else{
+            return $this->redirectToRoute('access_denied');
+        }
+
     }
 
-    #[Route('/admin/event/{slug}-{id}', name: 'event.show', requirements: ['id'=>'\d+','slug'=>'[a-zA-Z0-9-]+'])]
-    public function detail(Request $request, Events $events,string $slug ,int $id, EntityManagerInterface $em,CommunityRepository $repository): Response
+    #[Route('/admin/event/{id}', name: 'event.show', requirements: ['id'=>'\d+'])]
+    #[Route('/event/{id}', name: 'event.front.show', requirements: ['id'=>'\d+'])]
+    public function detail(Request $request,int $id, EntityManagerInterface $em,CommunityRepository $repository): Response
     {
+        $routeName = $request->attributes->get('_route');
         $user = $this->getUser();
-        $event=$repository->find($id);
-        if (!$event->getNom()==$slug) {
-            return $this->redirectToRoute('event.show',['id'=>$event->getId(),'slug'=>$event->getNom()]);
+        if ($routeName=== "event.show" && !in_array('ROLE_ADMIN', $user->getRoles())) {
+            return $this->redirectToRoute('access_denied');
         }
+        $event=$repository->find($id);
         return $this->render('event/detail.html.twig', [
             'event'=>$event,
             'user'=>$user,

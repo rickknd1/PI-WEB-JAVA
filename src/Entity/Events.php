@@ -40,6 +40,21 @@ class Events
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $link = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $acces = 'public';
+
+    public function getAcces(): ?string
+    {
+        return $this->acces;
+    }
+
+    public function setAcces(string $acces): static
+    {
+        $this->acces = $acces;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
