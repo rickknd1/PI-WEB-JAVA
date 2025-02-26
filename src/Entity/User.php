@@ -35,6 +35,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private string $role = 'ROLE_USER'; // Par défaut, un utilisateur a le rôle ROLE_USER
 
+    #[ORM\Column(length: 255)]
+    private ?string $pp = null;
+
+    public function getPp(): ?string
+    {
+        return $this->pp;
+    }
+    public function setPp(string $pp): static
+    {
+        $this->pp = $pp;
+
+        return $this;
+    }
     #[ORM\Column]
     #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
     #[Assert\Length(

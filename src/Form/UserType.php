@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,6 +40,21 @@ class UserType extends AbstractType
                 'widget' => 'single_text', // Utilise un input de type "date" en HTML5
                 'format' => 'yyyy-MM-dd', // Format de la date
                 'required' => true, // Rend le champ obligatoire
+            ])
+            ->add('pp' ,FileType::class,[
+                'label' => 'Choisissez une image',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+                        'mimeTypesMessage' => 'Please upload a valid image (jpeg, png, gif, webp)',
+                    ]),
+                    new Assert\NotBlank([
+                        'message' => 'Cover cannot be empty'
+                    ]),
+                ],
             ])
             ->add('gender', ChoiceType::class, [
                 'choices' => [
