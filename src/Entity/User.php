@@ -5,14 +5,16 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Un compte existe déjà avec cet email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,42 +22,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(message: "Veuillez entrer un email valide.")]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
-    private array $roles = [];
+    #[Assert\Choice(
+        choices: ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_USER'],
+        message: "Le rôle sélectionné est invalide."
 
-    /**
-     * @var string The hashed password
-     */
+    )]
+    private string $role = 'ROLE_USER'; // Par défaut, un utilisateur a le rôle ROLE_USER
+
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
+    #[Assert\Length(
+        min: 6,
+        minMessage: "Le mot de passe doit contenir au moins 6 caractères."
+    )]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire.")]
+    #[Assert\Length(
+        min: 3,
+        minMessage: "Le nom d'utilisateur doit contenir au moins 3 caractères."
+    )]
+    private ?string $username = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotNull(message: "La date de naissance est requise.")]
+    #[Assert\LessThan("-18 years", message: "Vous devez avoir au moins 18 ans.")]
+    private ?\DateTimeInterface $dateOB = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Choice(
+        choices: ['homme', 'femme', 'autres'],
+        message: "Le genre sélectionné est invalide."
+    )]
+    private ?string $gender = null;
+
+    #[ORM\ManyToMany(targetEntity: Categories::class)]
+    #[Assert\Count(
+        min: 1,
+        minMessage: "Vous devez sélectionner au moins une catégorie d'intérêt."
+    )]
+    private Collection $interests;
+
     /**
-     * @var Collection<int, comment>
+     * @var Collection<int, MembreComunity>
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
-    private Collection $comments;
-
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user')]
-    private Collection $posts;
-
-    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'user')]
-    private Collection $reactions;
-
-    #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'user')]
-    private Collection $shares;
+    #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: 'id_user')]
+    private Collection $membreComunities;
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->reactions = new ArrayCollection();
-        $this->shares = new ArrayCollection();
+        $this->interests = new ArrayCollection();
+        $this->membreComunities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,47 +103,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
+        $this->username = $email;
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        // Retourne un tableau contenant uniquement le rôle de l'utilisateur
+        return [$this->role];
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
+    public function setRoles(string $role): static
     {
-        $this->roles = $roles;
-
+        $this->role = $role;
+        return $this;
+    }
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -120,133 +142,109 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+        return $this;
+    }
 
+    public function eraseCredentials(): void {}
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function getDateOB(): ?\DateTimeInterface
+    {
+        return $this->dateOB;
+    }
+
+    public function setDateOB(\DateTimeInterface $dateOB): static
+    {
+        $this->dateOB = $dateOB;
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): static
+    {
+        $this->gender = $gender;
+        return $this;
+    }
+
+    public function getInterests(): Collection
+    {
+        return $this->interests;
+    }
+
+    public function addInterest(Categories $interest): static
+    {
+        if (!$this->interests->contains($interest)) {
+            $this->interests->add($interest);
+        }
+        return $this;
+    }
+
+    public function removeInterest(Categories $interest): static
+    {
+        $this->interests->removeElement($interest);
         return $this;
     }
 
     /**
-     * @see UserInterface
+     * @return Collection<int, MembreComunity>
      */
-    public function eraseCredentials(): void
+    public function getMembreComunities(): Collection
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        return $this->membreComunities;
     }
 
-    /**
-     * @return Collection<int, comment>
-     */
-    public function getComment(): Collection
+    public function addMembreComunity(MembreComunity $membreComunity): static
     {
-        return $this->comments;
-    }
-
-    public function addComment(comment $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setUser($this);
+        if (!$this->membreComunities->contains($membreComunity)) {
+            $this->membreComunities->add($membreComunity);
+            $membreComunity->setIdUser($this);
         }
 
         return $this;
     }
 
-    public function removeComment(comment $comment): static
+    public function removeMembreComunity(MembreComunity $membreComunity): static
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->membreComunities->removeElement($membreComunity)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getUser() === $this) {
-                $comment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, post>
-     */
-    public function getPost(): Collection
-    {
-        return $this->posts;
-    }
-
-    public function addPost(post $post): static
-    {
-        if (!$this->posts->contains($post)) {
-            $this->posts->add($post);
-            $post->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePost(post $post): static
-    {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getUser() === $this) {
-                $post->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, reaction>
-     */
-    public function getReaction(): Collection
-    {
-        return $this->reactions;
-    }
-
-    public function addReaction(reaction $reaction): static
-    {
-        if (!$this->reactions->contains($reaction)) {
-            $this->reactions->add($reaction);
-            $reaction->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReaction(reaction $reaction): static
-    {
-        if ($this->reactions->removeElement($reaction)) {
-            // set the owning side to null (unless already changed)
-            if ($reaction->getUser() === $this) {
-                $reaction->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, share>
-     */
-    public function getShare(): Collection
-    {
-        return $this->shares;
-    }
-
-    public function addShare(share $share): static
-    {
-        if (!$this->shares->contains($share)) {
-            $this->shares->add($share);
-            $share->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShare(share $share): static
-    {
-        if ($this->shares->removeElement($share)) {
-            // set the owning side to null (unless already changed)
-            if ($share->getUser() === $this) {
-                $share->setUser(null);
+            if ($membreComunity->getIdUser() === $this) {
+                $membreComunity->setIdUser(null);
             }
         }
 

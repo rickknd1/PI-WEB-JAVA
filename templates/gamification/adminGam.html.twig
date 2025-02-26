@@ -1,0 +1,36 @@
+{% extends "admin.html.twig" %}
+
+{% block  gamAdmin %}
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="{% if app.request.attributes.get('_route') starts with 'gamification.edit' %}col-md-10{% else %}col-md-6{% endif %}">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{% block titleGam %}{% endblock %}</div>
+                                <p class="card-category">{% block nbrGam %}{% endblock %}</p>
+                            </div>
+                            <div class="card-body">
+                                {% block  GamEdit %}{% endblock %}
+                                {% block gam %}{% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if app.request.attributes.get('_route') == 'gamification.admin.index' %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Add Gamification</h4>
+                                </div>
+                                <div class="card-body">
+                                    {% block addGam %}{% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

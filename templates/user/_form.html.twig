@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_row(form.dateOB) }} {# Affiche le champ dateOB avec son label et ses erreurs #}
+    {{ form_rest(form) }} {# Affiche les autres champs non rendus #}
+<button type="submit" class="btn btn-primary">Enregistrer</button>
+{{ form_end(form) }}

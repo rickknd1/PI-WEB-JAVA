@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer un lieu culturel{% endblock %}
+
+{% block body %}
+    <h1>Supprimer un lieu culturel</h1>
+
+    <p>Êtes-vous sûr de vouloir supprimer ce lieu culturel ?</p>
+
+    <div class="alert alert-danger">
+        <strong>Nom :</strong> {{ lieu_culturel.nom }}<br>
+        <strong>Description :</strong> {{ lieu_culturel.description }}<br>
+        {% if lieu_culturel.cover %}
+            <strong>Image de couverture :</strong><br>
+            <img src="{{  lieu_culturel.cover }}" alt="{{ lieu_culturel.nom }}" width="200">
+        {% endif %}
+    </div>
+
+    <form method="post" action="{{ path('app_lieu_culturel_supprimer', {'id': lieu_culturel.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ lieu_culturel.id) }}">
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+        <a href="{{ path('app_lieu_culturel_liste') }}" class="btn btn-secondary">Annuler</a>
+    </form>
+{% endblock %}

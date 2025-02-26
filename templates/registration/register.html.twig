@@ -1,19 +1,487 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register - SyncYLinkY{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="sm:flex">
+        <style>
+            .form-error {
+                @apply text-red-600 text-sm mt-1;
+            }
 
-    {{ form_errors(registrationForm) }}
+            .field-error {
+                @apply border-red-500 focus:ring-red-500 focus:border-red-500;
+            }
+        </style>
+        <!-- Left Panel -->
+        <div class="relative lg:w-[580px] md:w-96 w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 dark:bg-slate-900 z-10">
+            <div class="w-full lg:max-w-sm mx-auto space-y-10" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                <!-- Logo -->
+                <a href="{{ path('home') }}">
+                    <img src="assets/images/logo.png" class="w-28 absolute top-10 left-10 dark:hidden" alt="Logo SyncYLinkY">
+                    <img src="assets/images/logo-light.png" class="w-28 absolute top-10 left-10 hidden dark:!block" alt="Logo SyncYLinkY dark">
+                </a>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                <!-- Header -->
+                <div>
+                    <h2 class="text-2xl font-semibold mb-1.5">Sign up to get started</h2>
+                    <p class="text-sm text-gray-700 font-normal dark:text-gray-300">
+                        Already have an account?
+                        <a href="{{ path('app_login') }}" class="text-blue-700 hover:text-blue-900 dark:text-blue-400">Login here</a>
+                    </p>
+                </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <!-- Form -->
+                {{ form_start(registrationForm, {
+                    'attr': {
+                        'class': 'space-y-7 text-sm text-black font-medium dark:text-white',
+                        'uk-scrollspy': 'target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true',
+                        'novalidate': 'novalidate'
+                    }
+                }) }}
+                <div class="grid grid-cols-2 gap-4 gap-y-7">
+                    <!-- Last Name -->
+                    <div>
+                        {{ form_label(registrationForm.name, 'Last Name', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.name, {
+                            'attr': {
+                                'class': 'w-full px-1 py-1.5 rounded-lg  border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-200/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'last name'
+                            }
+                        }) }}
+                        {% if form_errors(registrationForm.name) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.name) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- First Name -->
+                    <div>
+                        {{ form_label(registrationForm.firstname, 'First Name', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.firstname, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'John'
+                            }
+                        }) }}
+                        {% if form_errors(registrationForm.firstname) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.firstname) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.email, 'Email Address', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': 'john.doe@example.com'
+                            }
+                        }) }}
+                        {% if form_errors(registrationForm.email) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.email) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.gender, 'Gender', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.gender, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                            }
+                        }) }}
+                        {% if form_errors(registrationForm.gender) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.gender) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.dateOB, 'Date of Birth', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        <div class="grid grid-cols-3 gap-4">
+                            {{ form_widget(registrationForm.dateOB.day, {
+                                'attr': {
+                                    'class': 'px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                                }
+                            }) }}
+                            {{ form_widget(registrationForm.dateOB.month, {
+                                'attr': {
+                                    'class': 'px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                                }
+                            }) }}
+                            {{ form_widget(registrationForm.dateOB.year, {
+                                'attr': {
+                                    'class': 'px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'
+                                }
+                            }) }}
+                        </div>
+                        {% if form_errors(registrationForm.dateOB) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.dateOB) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <!-- Password Field -->
+                    <div class="col-span-2 relative">
+                        {{ form_label(registrationForm.password.first, 'Password', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        <div class="relative">
+                            {{ form_widget(registrationForm.password.first, {
+                                'attr': {
+                                    'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                    'placeholder': '••••••••',
+                                    'id': 'password-input'
+                                }
+                            }) }}
+                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" id="toggle-password">
+            <i class="far fa-eye" id="eye-icon"></i> <!-- Icône de l'œil -->
+        </span>
+                            <button type="button" class="absolute inset-y-0 right-10 pr-3 flex items-center cursor-pointer" id="generate-password">
+                                <i class="fas fa-key"></i> <!-- Icône de clé -->
+                            </button>
+                        </div>
+                        {% if form_errors(registrationForm.password.first) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.password.first) }}
+                            </div>
+                        {% endif %}
+                        <div class="password-requirements mt-2 text-sm text-gray-600 dark:text-gray-400" id="password-requirements">
+                            <p class="font-medium mb-1">Password must contain:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li id="length-requirement">At least 8 characters</li>
+                                <li id="uppercase-requirement">One uppercase letter</li>
+                                <li id="lowercase-requirement">One lowercase letter</li>
+                                <li id="number-requirement">One number</li>
+                                <li id="special-requirement">One special character (@$!%*?&)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const passwordInput = document.getElementById('password-input');
+                            const requirements = {
+                                length: document.getElementById('length-requirement'),
+                                uppercase: document.getElementById('uppercase-requirement'),
+                                lowercase: document.getElementById('lowercase-requirement'),
+                                number: document.getElementById('number-requirement'),
+                                special: document.getElementById('special-requirement'),
+                            };
+
+                            passwordInput.addEventListener('input', function () {
+                                const password = passwordInput.value;
+
+                                // Vérifier la longueur du mot de passe
+                                if (password.length >= 8) {
+                                    requirements.length.classList.add('valid');
+                                    requirements.length.classList.remove('invalid');
+                                } else {
+                                    requirements.length.classList.add('invalid');
+                                    requirements.length.classList.remove('valid');
+                                }
+
+                                // Vérifier la présence d'une lettre majuscule
+                                if (/[A-Z]/.test(password)) {
+                                    requirements.uppercase.classList.add('valid');
+                                    requirements.uppercase.classList.remove('invalid');
+                                } else {
+                                    requirements.uppercase.classList.add('invalid');
+                                    requirements.uppercase.classList.remove('valid');
+                                }
+
+                                // Vérifier la présence d'une lettre minuscule
+                                if (/[a-z]/.test(password)) {
+                                    requirements.lowercase.classList.add('valid');
+                                    requirements.lowercase.classList.remove('invalid');
+                                } else {
+                                    requirements.lowercase.classList.add('invalid');
+                                    requirements.lowercase.classList.remove('valid');
+                                }
+
+                                // Vérifier la présence d'un chiffre
+                                if (/\d/.test(password)) {
+                                    requirements.number.classList.add('valid');
+                                    requirements.number.classList.remove('invalid');
+                                } else {
+                                    requirements.number.classList.add('invalid');
+                                    requirements.number.classList.remove('valid');
+                                }
+
+                                // Vérifier la présence d'un caractère spécial
+                                if (/[@$!%*?&]/.test(password)) {
+                                    requirements.special.classList.add('valid');
+                                    requirements.special.classList.remove('invalid');
+                                } else {
+                                    requirements.special.classList.add('invalid');
+                                    requirements.special.classList.remove('valid');
+                                }
+                            });
+                        });
+                    </script>
+                    <style>
+                        #toggle-password, #generate-password {
+                            right: 10px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            color: #6b7280; /* Couleur grise */
+                        }
+
+                        #generate-password {
+                            right: 40px; /* Espacement entre les icônes */
+                        }
+
+                        #toggle-password:hover, #generate-password:hover {
+                            color: #3b82f6; /* Couleur bleue au survol */
+                        }
+                    </style>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const generatePasswordButton = document.getElementById('generate-password');
+                            const passwordInput = document.getElementById('password-input');
+
+                            generatePasswordButton.addEventListener('click', function () {
+                                const password = generatePassword();
+                                passwordInput.value = password;
+
+                                // Déclencher l'événement input pour mettre à jour les vérifications
+                                const event = new Event('input', { bubbles: true });
+                                passwordInput.dispatchEvent(event);
+                            });
+
+                            function generatePassword() {
+                                const length = 12;
+                                const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$!%*?&";
+                                let password = "";
+                                for (let i = 0; i < length; i++) {
+                                    password += charset.charAt(Math.floor(Math.random() * charset.length));
+                                }
+                                return password;
+                            }
+                        });
+                    </script>
+
+                    <style>
+                        #password-requirements li {
+                            transition: color 0.3s ease;
+                        }
+
+                        #password-requirements li.valid {
+                            color: green;
+                        }
+
+                        #password-requirements li.invalid {
+                            color: red;
+                        }
+                    </style>
+
+
+                    <!-- Confirm Password -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.password.second, 'Confirm Password', {
+                            'label_attr': {'class': 'block mb-2'}
+                        }) }}
+                        {{ form_widget(registrationForm.password.second, {
+                            'attr': {
+                                'class': 'w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all',
+                                'placeholder': '••••••••'
+                            }
+                        }) }}
+                        {% if form_errors(registrationForm.password.second) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.password.second) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Section des centres d'intérêt -->
+                    <div class="col-span-2">
+                        {{ form_label(registrationForm.interests, 'Centres d\'intérêt', {
+                            'label_attr': {'class': 'block mb-4 text-lg font-medium text-gray-700 dark:text-gray-300'}
+                        }) }}
+
+                        {% if form_errors(registrationForm.interests) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.interests) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="interestsGrid">
+                            {% for interest in registrationForm.interests %}
+                                <label class="interest-card relative cursor-pointer">
+                                    {{ form_widget(interest, { 'attr': {'class': 'hidden peer'} }) }}
+                                    <div class="h-40 w-full rounded-lg border-2 overflow-hidden transition-all
+                    peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-500
+                    hover:shadow-xl shadow-lg dark:border-slate-600">
+                                        <img src="{{ interest.vars.attr['data-cover'] }}"
+                                             alt="{{ interest.vars.label }}"
+                                             class="w-full h-full object-cover brightness-75">
+                                        <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black via-black/70 to-transparent shadow-lg">
+                                            <span class="text-white font-semibold text-sm">{{ interest.vars.label }}</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            {% endfor %}
+                        </div>
+
+                        <style>
+                            #interestsGrid {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                                gap: 10px;
+                                justify-content: center;
+                            }
+
+                            /* Style des cartes */
+                            .interest-card {
+                                position: relative;
+                                width: 180px;
+                                height: 180px;
+                                overflow: hidden;
+                                border-radius: 10px;
+                                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+                                background-color: white;
+                            }
+
+                            /* Image bien ajustée */
+                            .interest-card img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+
+                            /* Ombre et effet de sélection */
+                            .interest-card .overlay {
+                                position: absolute;
+                                bottom: 0;
+                                left: 0;
+                                width: 100%;
+                                background: rgba(0, 0, 0, 0.6);
+                                padding: 5px;
+                                text-align: center;
+                                border-bottom-left-radius: 10px;
+                                border-bottom-right-radius: 10px;
+                            }
+
+                            .interest-card .overlay span {
+                                color: white;
+                                font-weight: bold;
+                                font-size: 14px;
+                                transition: color 0.3s ease-in-out;
+                            }
+
+                            /* ✅ Changer la couleur du texte en vert lorsque sélectionné */
+                            .peer:checked + div span {
+                                color: limegreen !important;
+                            }
+
+                        </style>
+                    </div>
+
+
+
+
+
+                    <!-- Terms Agreement -->
+                    <div class="col-span-2">
+                        <label class="inline-flex items-center">
+                            {{ form_widget(registrationForm.agreeTerms)}}
+                            <span class="ml-2 text-sm">
+                                I agree to the
+                                <a href="#" class="text-blue-700 hover:underline dark:text-blue-400">Terms of Service</a>
+                            </span>
+                        </label>
+                        {% if form_errors(registrationForm.agreeTerms) %}
+                            <div class="form-error">
+                                {{ form_errors(registrationForm.agreeTerms) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-span-2">
+                        <button type="submit" class="w-full px-6 py-3.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Social Login Separator -->
+                <div class="text-center flex items-center gap-4">
+                    <hr class="flex-1 border-slate-200 dark:border-slate-700">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Or continue with</span>
+                    <hr class="flex-1 border-slate-200 dark:border-slate-700">
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="flex gap-3" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 400 ;repeat: true">
+                    <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#1877F2] rounded-lg transition-all hover:bg-[#166FE5]">
+                        <ion-icon name="logo-facebook" class="text-xl"></ion-icon>
+                        Facebook
+                    </a>
+                    <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#EA4335] rounded-lg transition-all hover:bg-[#D33828]">
+                        <ion-icon name="logo-google" class="text-xl"></ion-icon>
+                        Google
+                    </a>
+                </div>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+
+        <!-- Right Panel (Image Slider) -->
+        <div class="flex-1 relative bg-primary max-md:hidden">
+            <div class="relative w-full h-full" tabindex="-1" uk-slideshow="animation: slide; autoplay: true">
+                <ul class="uk-slideshow-items w-full h-full">
+                    <li class="w-full">
+                        <img
+                                src="assets/images/imagesignup.jpg"
+                                alt="Community Connection"
+                                class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left"
+                        >
+                        <div class="absolute bottom-0 w-full uk-transition-slide-bottom-small z-10">
+                            <div class="max-w-xl w-full mx-auto pb-32 px-5 z-30 relative" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                <img
+                                        src="assets/images/logo-icon.png"
+                                        class="w-12"
+                                        alt="App Icon"
+                                >
+                                <h4 class="!text-white text-2xl font-semibold mt-7" uk-slideshow-parallax="y: 600,0,0">
+                                    Join Our Community
+                                </h4>
+                                <p class="!text-white text-lg mt-7 leading-8" uk-slideshow-parallax="y: 800,0,0">
+                                    Connect with like-minded people and share your experiences in real-time.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full h-96 bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 left-0"></div>
+                    </li>
+                </ul>
+
+                <!-- Slider Navigation Dots -->
+                <div class="flex justify-center absolute bottom-8 left-0 right-0">
+                    <ul class="inline-flex gap-2 uk-dotnav uk-slideshow-nav"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

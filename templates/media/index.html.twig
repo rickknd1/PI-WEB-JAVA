@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Media index{% endblock %}
+
+{% block body %}
+    <h1>Media index</h1>
+
+
+            {% for medium in media %}
+                <div>
+                    <p>Type: {{ medium.type }}</p>
+                    {% if medium.type == 'image' %}
+                        <img src="{{ medium.link }}" alt="Image" class="img-fluid">
+                    {% elseif medium.type == 'video' %}
+                        <video controls>
+                            <source src="{{ medium.link }}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de cette vidéo.
+                        </video>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+
+    <a href="{{ path('app_media_new') }}">Create new</a>
+{% endblock %}

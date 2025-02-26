@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommunityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommunityRepository::class)]
@@ -28,6 +30,31 @@ class Community
     #[ORM\ManyToOne(inversedBy: 'communities')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $id_categorie = null;
+
+    /**
+     * @var Collection<int, Events>
+     */
+    #[ORM\OneToMany(targetEntity: Events::class, mappedBy: 'id_community', cascade: ["remove"], orphanRemoval: true)]
+    private Collection $events;
+
+    /**
+     * @var Collection<int, ChatRooms>
+     */
+    #[ORM\OneToMany(targetEntity: ChatRooms::class, mappedBy: 'community', cascade: ["remove"], orphanRemoval: true)]
+    private Collection $chatRooms;
+
+    #[ORM\Column]
+    private ?int $nbr_membre = null;
+
+    #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: "community", cascade: ["remove"], orphanRemoval: true)]
+    private Collection $membreComunities;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->chatRooms = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -90,6 +117,72 @@ class Community
     public function setIdCategorie(?Categories $id_categorie): static
     {
         $this->id_categorie = $id_categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Events>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+    public function getChatrooms(): Collection
+    {
+        return $this->chatRooms;
+    }
+
+    public function addEvent(Events $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setIdCommunity($this);
+        }
+
+        return $this;
+    }
+    public function addChatrooms(ChatRooms $chatRooms): static
+    {
+        if (!$this->chatRooms->contains($chatRooms)) {
+            $this->chatRooms->add($chatRooms);
+            $chatRooms->setCommunity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Events $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getIdCommunity() === $this) {
+                $event->setIdCommunity(null);
+            }
+        }
+
+        return $this;
+    }
+    public function removeChatrooms(ChatRooms $chatRooms): static
+    {
+        if ($this->events->removeElement($chatRooms)) {
+            // set the owning side to null (unless already changed)
+            if ($chatRooms->getCommunity() === $this) {
+                $chatRooms->setCommunity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNbrMembre(): ?int
+    {
+        return $this->nbr_membre;
+    }
+
+    public function setNbrMembre(int $nbr_membre): static
+    {
+        $this->nbr_membre = $nbr_membre;
 
         return $this;
     }

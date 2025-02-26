@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.subscription-container {
+    display: flex;
+    gap: 100px; /* Espacement entre les sections */
+}
+.subscription-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Aligne le contenu et le bouton */
+}
+.subscription-card h2 {
+    font-size: 24px;
+}
+.subscription-card ul {
+    padding: 0;
+    margin: 20px 0; /* Espacement supplémentaire */
+}
+.subscription-card ul li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center; /* Aligne le texte et le tick */
+    gap: 10px; /* Espace entre le tick et le texte */
+}
+.subscription-card ul li::before {
+    content: "✔️"; /* Symbole de tick */
+    color: #28a745; /* Couleur verte pour le tick */
+    font-size: 18px;
+}
+.subscription-card .button-container {
+    margin-top: auto; /* Pousse le bouton vers le bas */
+}
+.subscription-card button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%; /* Bouton de largeur égale */
+}
+.subscription-card button:hover {
+    background-color: #0056b3;
+}
+.premium {
+    border: 2px solid #ffcc00;
+}
+.premium button {
+    background-color: #ffcc00;
+    color: #000;
+}
+.premium button:hover {
+    background-color: #e6b800;
+}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la ville{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Détails de la Ville</h1>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <h5 class="card-title">Informations sur la Ville</h5>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Nom</th>
+                        <td>{{ ville.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Description</th>
+                        <td>{{ ville.description }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Position</th>
+                        <td>{{ ville.position }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{{ path('ville_index_front') }}" class="btn btn-secondary"><i class="la la-arrow-left"></i> Retour</a>
+    </div>
+    <h2 class="mt-5 mb-4 text-center">Lieux Culturels</h2>
+    {% if lieu_culturels is not empty %}
+        <div class="row">
+            {% for lieu in lieu_culturels %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ lieu.nom }}</h5>
+                            <p class="card-text">{{ lieu.description|slice(0, 100) }}...</p>
+                            <a href="{{ path('app_lieu_culturel_detail_front', {id: lieu.id}) }}" class="btn btn-primary btn-sm"><i class="la la-eye"></i> Voir</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Aucun lieu culturel trouvé.</p>
+    {% endif %}
+</div>
+{% endblock %}

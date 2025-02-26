@@ -1,0 +1,73 @@
+{% extends 'ville/adminVille.html.twig' %}
+
+{% block titleVille %}Liste des villes{% endblock %}
+{% block nbrVille %}{{ villes | length }}{% endblock %}
+
+{% block ville %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col" class="col-4" >Description</th>
+                <th scope="col" class="col-2">Position</th>
+                <th scope="col" >Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ville in villes %}
+                <tr>
+                    <td>{{ ville.id }}</td>
+                    <td>{{ ville.nom }}</td>
+                    <td>description</td>
+                    <td class="">{{ ville.position }}</td>
+                    <td>
+                        <a href="{{ path('ville_show', {id: ville.id }) }}">
+                            <button type="button" data-toggle="tooltip" title="Show Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-eye"></i>
+                            </button>
+                        </a>
+                        <a href="{{ path('ville_edit', {id: ville.id }) }}">
+                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                        </a>
+                        <form method="POST" action="{{ path('ville_delete', {'id': ville.id}) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ville.id) }}">
+                            <button type="submit" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                <i class="la la-times"></i>
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block addVille %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'form'}}) }}
+    
+    <div class="form-group">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom de la ville'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une description'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.position, 'Position', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.position, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la position'}}) }}
+        {{ form_errors(form.position) }}
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

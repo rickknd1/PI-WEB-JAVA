@@ -1,0 +1,72 @@
+{% extends "abonnement/adminAbb.html.twig" %}
+
+{% block title %}{{ abonnements.nom|upper }}{% endblock title %}
+{% block titleAbb %}{{ abonnements.nom }}{% endblock %}
+
+{% block  AbbEdit %}
+
+    {{ form(form) }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const collectionHolder = document.querySelector('.avantages');
+
+            // Add the "Add Advantage" button
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Add Advantage';
+            addButton.type = 'button'; // Prevent form submission
+            collectionHolder.appendChild(addButton);
+
+            addButton.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Get the data-prototype (hidden form template) and replace placeholders
+                const prototype = collectionHolder.dataset.prototype;
+                const newIndex = collectionHolder.children.length - 1; // New field index (account for the button)
+                const newForm = prototype.replace(/__name__/g, newIndex); // Replace placeholder with actual index
+
+                // Create a new div and append the new field
+                const newDiv = document.createElement('div');
+                newDiv.innerHTML = newForm;
+
+                // Update the label for the new advantage field
+                const label = newDiv.querySelector('label');
+                if (label) {
+                    label.textContent = `Advantage ${newIndex + 1}`; // Set dynamic label (Advantage 1, Advantage 2, ...)
+                }
+
+                // Create a delete link for the new field
+                const deleteLink = document.createElement('a');
+                deleteLink.href = '#';
+                deleteLink.textContent = 'Delete';
+                deleteLink.classList.add('delete-field'); // Add a class for styling
+
+                // Append delete link to the new field div
+                newDiv.appendChild(deleteLink);
+
+                // Append the new form field and delete link to the container
+                collectionHolder.appendChild(newDiv);
+
+                // Add event listener to the delete link
+                deleteLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    newDiv.remove(); // Remove the form field and its delete link
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .delete-field {
+            color: red;
+            font-size: 14px;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .delete-field:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+{% endblock %}

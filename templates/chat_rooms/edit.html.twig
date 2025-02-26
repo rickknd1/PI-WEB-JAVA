@@ -1,0 +1,10 @@
+{% extends "chat_rooms/adminChat.html.twig" %}
+
+{% block title %}{{ chatroom.nom|upper }}{% endblock title %}
+{% block titleChat %}{{ chatroom.nom }}{% endblock %}
+
+{% block  chatroomsEdit %}
+
+    {{ form(form) }}
+
+{% endblock  chatroomsEdit %}

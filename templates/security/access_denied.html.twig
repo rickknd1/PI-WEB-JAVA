@@ -1,0 +1,11 @@
+{% extends 'home/home.html.twig' %}
+
+{% block title %}Access Denied{% endblock %}
+
+{% block Access %}
+    <div class="container text-center">
+        <h1 class="text-danger">Access Denied</h1>
+        <p>You do not have permission to access this page.</p>
+        <a href="{{ path('home') }}" class="btn btn-primary">Return Home</a>
+    </div>
+{% endblock %}

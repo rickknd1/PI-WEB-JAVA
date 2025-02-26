@@ -720,7 +720,6 @@
 
     <div class="max-w-[680px] mx-auto">
 
-        {% for post in posts %}
             <!--  post image-->
             <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2">
 
@@ -750,7 +749,7 @@
                 <!-- post image -->
                 <a href="#preview_modal" uk-toggle>
                     <div class="relative w-full lg:h-96 h-full sm:px-4">
-                        <img src="{{ path('app_post_show', {'id': post.id}) }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
+                        <img src="assets/images/post/img-2.jpg" alt="" class="sm:rounded-lg w-full h-full object-cover">
                     </div>
                 </a>
 
@@ -759,7 +758,7 @@
                     <div>
                         <div class="flex items-center gap-2.5">
                             <button type="button" class="button-icon text-red-500 bg-red-100 dark:bg-slate-700"> <ion-icon class="text-lg" name="heart"></ion-icon> </button>
-                            <a href="{{ path('app_like', { id: post.id }) }}">1,300</a>
+                            <a href="#">1,300</a>
                         </div>
                         <div    class="p-1 px-2 bg-white rounded-full drop-shadow-md w-[212px] dark:bg-slate-700 text-2xl"
                                 uk-drop="offset:10;pos: top-left; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-bottom-left">
@@ -1110,7 +1109,6 @@
             </div>
 
         </div>
-    {% endfor %}
     </div>
 
     <!-- sidebar -->

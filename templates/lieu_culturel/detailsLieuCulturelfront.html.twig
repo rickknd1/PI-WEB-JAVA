@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du lieu culturel{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Détails du Lieu Culturel</h1>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <h5 class="card-title">Informations sur le Lieu Culturel</h5>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Nom</th>
+                        <td>{{ lieu_culturel.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Description</th>
+                        <td>{{ lieu_culturel.description }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Image de couverture</th>
+                        <td>
+                            {% if lieu_culturel.cover %}
+                                <img src="{{  lieu_culturel.cover }}" alt="{{ lieu_culturel.nom }}" width="200">
+                            {% else %}
+                                Pas d'image
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{{ path('ville_show_front', {id: lieu_culturel.ville.id}) }}" class="btn btn-secondary"><i class="la la-arrow-left"></i> Retour</a>
+    </div>
+
+
+                        {% for medium in media %}
+                <div>
+                    <p>Type: {{ medium.type }}</p>
+                    {% if medium.type == 'image' %}
+                        <img src="{{  medium.link }}" alt="Image" class="img-fluid">
+                    {% elseif medium.type == 'video' %}
+                        <video controls>
+                            <source src="{{ asset('uploads/media/' ~ medium.link) }}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de cette vidéo.
+                        </video>
+                    {% endif %}
+                </div>
+            {% endfor %}
+</div>
+{% endblock %}

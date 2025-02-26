@@ -1,0 +1,116 @@
+{% extends 'abonnement/adminAbb.html.twig' %}
+
+{% block titleAbb %}Abonnements {% endblock %}
+{% block nbrAbb %}{{ abonnements|length }}{% endblock %}
+{% block abb %}
+    <div class="relative overflow-x-auto">
+        <table class="table table-head-bg-primary mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prix</th>
+                <th scope="col" >Advantages</th>
+                <th scope="col" >Type</th>
+                <th scope="col" >Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for abb in abonnements %}
+                <tr>
+                    <td>{{ abb.id }}</td>
+                    <td>{{ abb.nom }}</td>
+                    <td>{{ abb.prix }}</td>
+                    <td>
+                        {% for avantage in abb.avantages %}
+                            {{ avantage }}<br>
+                        {% else %}
+                            <em>No advantages added</em>
+                        {% endfor %}
+                    </td>
+                    <td>{{ abb.type }}</td>
+                    <td>
+
+                        <a href="{{ path('abonnement.edit' , {id: abb.id } ) }}">
+                            <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
+                                <i class="la la-edit"></i>
+                            </button>
+                        </a>
+                        <a href="{{ path('abonnement.delete' , {id: abb.id } ) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce abonnement ?');">
+                            <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                <i class="la la-times"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block  addAbb %}
+{{ form(form) }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const collectionHolder = document.querySelector('.avantages');
+
+            // Add the "Add Advantage" button
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Add Advantage';
+            addButton.type = 'button'; // Prevent form submission
+            collectionHolder.appendChild(addButton);
+
+            addButton.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Get the data-prototype (hidden form template) and replace placeholders
+                const prototype = collectionHolder.dataset.prototype;
+                const newIndex = collectionHolder.children.length - 1; // New field index (account for the button)
+                const newForm = prototype.replace(/__name__/g, newIndex); // Replace placeholder with actual index
+
+                // Create a new div and append the new field
+                const newDiv = document.createElement('div');
+                newDiv.innerHTML = newForm;
+
+                // Update the label for the new advantage field
+                const label = newDiv.querySelector('label');
+                if (label) {
+                    label.textContent = `Advantage ${newIndex + 1}`; // Set dynamic label (Advantage 1, Advantage 2, ...)
+                }
+
+                // Create a delete link for the new field
+                const deleteLink = document.createElement('a');
+                deleteLink.href = '#';
+                deleteLink.textContent = 'Delete';
+                deleteLink.classList.add('delete-field'); // Add a class for styling
+
+                // Append delete link to the new field div
+                newDiv.appendChild(deleteLink);
+
+                // Append the new form field and delete link to the container
+                collectionHolder.appendChild(newDiv);
+
+                // Add event listener to the delete link
+                deleteLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    newDiv.remove(); // Remove the form field and its delete link
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .delete-field {
+            color: red;
+            font-size: 14px;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .delete-field:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+{% endblock %}
