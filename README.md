@@ -11,3 +11,6 @@ Projet d'intégration Web java de 3eme année
   symfony check:requirements<br />
   composer require webapp<br />
 8-Start yout server and test ( using command : php -S localhost:8000 -t public )<br />
+
+
+system mailing : ./bin/mailpit 

@@ -148,6 +148,9 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         ),
         'E' => 
         array (
+            'Endroid\\QrCode\\' => 15,
+            'Endroid\\QrCodeBundle\\' => 21,
+            'Endroid\\Installer\\' => 18,
             'Egulias\\EmailValidator\\' => 23,
         ),
         'D' => 
@@ -169,10 +172,15 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
             'Doctrine\\Bundle\\FixturesBundle\\' => 31,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
             'DeepCopy\\' => 9,
+            'DASPRiD\\Enum\\' => 13,
         ),
         'C' => 
         array (
             'Composer\\Semver\\' => 16,
+        ),
+        'B' => 
+        array (
+            'BaconQrCode\\' => 12,
         ),
         'A' => 
         array (
@@ -560,6 +568,18 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             0 => __DIR__ . '/..' . '/knplabs/knp-paginator-bundle/src',
         ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
+        'Endroid\\QrCodeBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code-bundle/src',
+        ),
+        'Endroid\\Installer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/installer/src',
+        ),
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
@@ -632,9 +652,17 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
+        'DASPRiD\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+        ),
         'Composer\\Semver\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/semver/src',
+        ),
+        'BaconQrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
         'App\\Tests\\' => 
         array (

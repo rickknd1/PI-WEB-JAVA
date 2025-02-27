@@ -49,6 +49,20 @@ class Community
     #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: "community", cascade: ["remove"], orphanRemoval: true)]
     private Collection $membreComunities;
 
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $statut = true;
+
+    public function isStatut(): ?bool
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(bool $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
     public function __construct()
     {
         $this->events = new ArrayCollection();

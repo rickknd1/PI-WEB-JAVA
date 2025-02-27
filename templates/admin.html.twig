@@ -176,7 +176,7 @@
                 </div>
             </div>
             <ul class="nav">
-                <li class="nav-item {% if app.request.attributes.get('_route') == 'app_admin' %}active{% endif %}">
+                <li class="nav-item {% if app.request.attributes.get('_route') starts with 'app_admin' %}active{% endif %}">
                     <a href="{{ path('app_admin') }}" >
                         <i class="la la-dashboard"></i>
                         <p>Dashboard</p>
@@ -266,6 +266,7 @@
     {% block  gamAdmin %}{% endblock %}
     {% block userAdmin %}{% endblock %}    
     {% block  villeAdmin %}{% endblock %}
+    {% block waitlistdetail %}{% endblock %}
 
 </div>
 </body>

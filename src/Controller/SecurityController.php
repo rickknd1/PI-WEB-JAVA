@@ -13,15 +13,24 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
+        $referer = $request->headers->get('referer');
         $session = $request->getSession();
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
 
-        $targetPath = $session->get('_security.target_path', null);
+        $targetPath = $session->get('_security.main.target_path', null);
+
+        $referer = $request->headers->get('referer');
 
         if ($this->getUser()) {
-            return $this->redirect($targetPath ?: $this->generateUrl('app_post_index'));
+            if ($targetPath) {
+                return $this->redirect($targetPath);
+            }
+            if ($referer) {
+                return $this->redirect($referer);
+            }
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('security/login.html.twig', [

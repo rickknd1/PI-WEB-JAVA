@@ -10,6 +10,12 @@ parameters:
     uploads_directory: '%kernel.project_dir%/public/uploads/media'
 
 services:
+    App\EventListener\AuthenticationListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+    App\Service\QrCodeService:
+        arguments:
+            $builder: '@Endroid\QrCode\Builder\Builder'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

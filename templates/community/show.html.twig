@@ -80,9 +80,22 @@
                                     </button>
                                     <div  class="w-[240px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click;offset:10">
                                         <nav>
-                                            <a href="#"> <ion-icon class="text-xl" name="share-outline"></ion-icon> Share  </a>
-                                            <a href="#"> <ion-icon class="text-xl" name="link-outline"></ion-icon>  Copy link </a>
-                                            <a href="#"> <ion-icon class="text-xl" name="flag-outline"></ion-icon>  Report group</a>
+                                            <a href="" uk-toggle="target: #qr_code"> <ion-icon class="text-xl" name="share-outline"></ion-icon> Share  </a>
+                                            <a href="#" onclick="copyCurrentLink(event)">
+                                                <ion-icon class="text-xl" name="link-outline"></ion-icon> Copy link
+                                            </a>
+                                            <script>
+                                                function copyCurrentLink(event) {
+                                                    event.preventDefault();
+                                                    const currentURL = window.location.href;
+                                                    navigator.clipboard.writeText(currentURL).then(() => {
+                                                        alert("Link copied to clipboard!");
+                                                    }).catch(err => {
+                                                        console.error("Failed to copy link: ", err);
+                                                    });
+                                                }
+                                            </script>
+                                            <a href=""> <ion-icon class="text-xl" name="flag-outline"></ion-icon>  Report group</a>
                                             {% if comm.id in ownCommIds %}
                                                 <hr>
                                                 <a href="{{path('community.front.del',{id:comm.id})}}" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl" name="trash"></ion-icon> Delete comunity </a>
@@ -584,6 +597,25 @@
             </div>
             <div class="space-y-5 mt-7">
                 <h3 class="font-medium">Cannot {% if app.request.attributes.get('_route') == 'community.events' %} participate {% else %} enter {% endif%} in this {% if app.request.attributes.get('_route') == 'community.events' %} event {% else %} chat {% endif%} as it is private</h3>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:p-20" id="qr_code" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium">Share event</h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                <img src="data:image/svg+xml;base64,{{ qrCode }}" />
+                <a href="{{ path('download_qrcode', {id: comm.id}) }}" class="btn btn-primary" download>
+                    📥 Télécharger le QR Code
+                </a>
             </div>
         </div>
     </div>

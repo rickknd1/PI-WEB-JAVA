@@ -6,6 +6,7 @@ use App\Entity\ChatRooms;
 use App\Entity\Community;
 use App\Entity\Events;
 use App\Entity\MembreComunity;
+use App\Event\CommunityCreatedEvent;
 use App\Form\ChatRoomsType;
 use App\Form\CommunityType;
 use App\Form\EventsType;
@@ -15,25 +16,37 @@ use App\Repository\CommunityRepository;
 use App\Repository\EventsRepository;
 use App\Repository\MembreComunityRepository;
 use App\Repository\VisitorsRepository;
+use App\Service\QrCodeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class CommunityController extends AbstractController{
     #[Route('/community', name: 'community.index.front')]
     #[Route('admin/community', name: 'community.index')]
-    public function index(Request $request,CommunityRepository $repository,EntityManagerInterface $em, SluggerInterface $slugger,CategoriesRepository $categoriesRepository,MembreComunityRepository $membreComunityRepository): Response
+    public function index(Request $request,EntityManagerInterface $em,
+                          CommunityRepository $communityRepository,CategoriesRepository $categoriesRepository,MembreComunityRepository $membreComunityRepository,
+                          SluggerInterface $slugger,MailerInterface $mailer,
+                          EventDispatcherInterface $eventDispatcher): Response
     {
         $routeName = $request->attributes->get('_route');
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('welcome');
+        }
         if ($routeName=== "community.index" && !in_array('ROLE_ADMIN', $user->getRoles())) {
             return $this->redirectToRoute('access_denied');
         }
+
 
         $userId = $user->getId();
         $userComm = $membreComunityRepository->findByUserId($userId);
@@ -47,10 +60,10 @@ final class CommunityController extends AbstractController{
             array_filter($userComm, fn($item) => $item->getStatus() === 'owner')
         );
         $cats = $categoriesRepository->findAll();
-        $communitiesFront = $repository->findAll();
+        $communitiesFront = $communityRepository->findBy(['statut' => 1]);
         $page = $request->query->getInt('page', 1);
         $limit = 2;
-        $communities = $repository->paginateCommunity($page , $limit);
+        $communities = $communityRepository->paginateCommunity($page , $limit);
         $maxPage = ceil($communities->count() / $limit);
 
         $community = new Community();
@@ -77,8 +90,10 @@ final class CommunityController extends AbstractController{
             }
             if ($routeName === 'community.index.front'){
                 $community->setNbrMembre(1);
+                $community->setStatut(0);
             }else{
                 $community->setNbrMembre(0);
+                $community->setStatut(1);
             }
 
             $community->setCreatedAt(new \DateTimeImmutable());
@@ -93,6 +108,8 @@ final class CommunityController extends AbstractController{
                 $membreComunity->setIdCommunity($community);
                 $membreComunity->setStatus('owner');
                 $membreComunity->setDateAdhesion(new \DateTime());
+
+                $eventDispatcher->dispatch(new CommunityCreatedEvent($community, $user), CommunityCreatedEvent::NAME);
 
                 $em->persist($membreComunity);
                 $em->flush();
@@ -160,6 +177,7 @@ final class CommunityController extends AbstractController{
         if (in_array($community->getId(), $moderatedCommIds) || in_array($community->getId(), $ownCommIds) ||in_array('ROLE_ADMIN', $user->getRoles())) {
             $form = $this->createForm(CommunityType::class, $community);
             $form->handleRequest($request);
+            $originalCover = $community->getCover();
             if ($form->isSubmitted() && $form->isValid()) {
                 $coverFile = $form->get('cover')->getData();
                 if ($coverFile) {
@@ -185,6 +203,8 @@ final class CommunityController extends AbstractController{
                     }
 
                     $community->setCover('/uploads/' . $newFilename);
+                }else{
+                    $community->setCover($originalCover);
                 }
                 $em->flush();
                 $this->addFlash('success', 'Community updated!');
@@ -200,12 +220,14 @@ final class CommunityController extends AbstractController{
                 'community' => $community,
                 'form' => $form->createView(),
                 'user'=> $user,
+                'cover' => $originalCover,
             ]);
         }else{
             return $this->render('community/edit.html.twig', [
                 'community' => $community,
                 'form' => $form->createView(),
                 'user'=> $user,
+                'cover' => $originalCover,
             ]);
         }
 
@@ -257,10 +279,17 @@ final class CommunityController extends AbstractController{
     #[Route('/community/{id}/events', name: 'community.events' , requirements: ['id'=>'\d+'])]
     #[Route('/community/{id}/chat_rooms', name: 'community.detail', requirements: ['id' => '\d+'])]
     #[Route('/community/{id}/members', name: 'community.members', requirements: ['id' => '\d+'])]
-    public function detail(Request $request,Community $community,EventsRepository $eventsRepository,EntityManagerInterface $em, SluggerInterface $slugger,CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository,MembreComunityRepository $membreComunityRepository): Response
+    #[Route('/community/{id}', name: 'community.show', requirements: ['id' => '\d+'])]
+    public function detail(Request $request,Community $community,EventsRepository $eventsRepository,EntityManagerInterface $em,
+                           CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository,MembreComunityRepository $membreComunityRepository,
+                           QrCodeService $qrCodeService,SluggerInterface $slugger): Response
     {
+        $qrCode = base64_encode($qrCodeService->generateQrCode($community));
         $referer = $request->headers->get('referer');
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $userId = $user->getId();
         $userComm = $membreComunityRepository->findByUserId($userId);
         $userCommIds = array_map(fn($item) => $item->getCommunity()->getId(), $userComm);
@@ -380,6 +409,12 @@ final class CommunityController extends AbstractController{
             'ownCommIds' => $ownCommIds,
             'form_event' => $form_event->createView(),
             'form_chat' => $form_chat->createView(),
+            'qrCode' => $qrCode
         ]);
+    }
+    #[Route('/download-qrcode/{id}', name: 'download_qrcode')]
+    public function downloadQrCode(Community $community, QrCodeService $qrCodeService): Response
+    {
+        return $qrCodeService->downloadQrCode($community);
     }
 }

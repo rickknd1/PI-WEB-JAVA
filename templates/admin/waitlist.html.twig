@@ -1,0 +1,76 @@
+{% extends "admin.html.twig" %}
+
+{% block waitlistdetail %}
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h1 class="card-title">
+                                    {{ user.username }} Request
+                                </h1>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-8">
+                                        <ul class="list-unstyled mt-2">
+                                            <li class="mb-3">
+                                                <strong>Community name :</strong> {{ community.nom }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Description :</strong> {{ community.description }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Categorie :</strong> {{ community.idCategorie.nom }}
+                                            </li>
+                                            <li class="mb-3">
+                                                <strong>Statut :</strong>
+                                                {% if community.statut == 1 %}
+                                                    <span class="badge badge-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge badge-warning">En attente</span>
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img class="img-circle" src="{{ community.cover }}" alt="cover" style="width: 200px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <ul class="list-unstyled mt-2">
+                                        <li class="mb-3">
+                                            <strong>Email:</strong> {{ user.email }}
+                                        </li>
+                                        <li class="mb-3">
+                                            <strong>Rôles:</strong>
+                                            {% for role in user.roles %}
+                                                <span class="badge badge-primary">{{ role }}</span>
+                                            {% endfor %}
+                                        </li>
+                                        <li class="mb-3">
+                                            <strong>Nom d'utilisateur:</strong> {{ user.username }}
+                                        </li>
+                                        <li class="mb-3">
+                                            <strong>Genre:</strong> {{ user.gender }}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-action">
+                                    <a href="{{ path('app_admin') }}" class="btn btn-primary">
+                                        <i class="la la-arrow-left"></i> Back
+                                    </a>
+                                    <a href="{{ path('app_admin.accept',{id: community.id}) }}" class="btn btn-warning">
+                                        <i class="la la-edit"></i> Valide
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

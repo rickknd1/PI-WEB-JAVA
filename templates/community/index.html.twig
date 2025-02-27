@@ -18,8 +18,9 @@
                 <th scope="col">Nom Cat</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Cover</th>
-                <th scope="col" class="col-4" >Description</th>
+                <th scope="col" class="col-2" >Description</th>
                 <th scope="col" class="col-2">Date de creation</th>
+                <th scope="col" class="col-2">Statut</th>
                 <th scope="col" >Actions</th>
             </tr>
             </thead>
@@ -33,13 +34,18 @@
                     <td><img class="img-thumbnail" src="{{ comm.cover }}"></td>
                     <td>Description</td>
                     <td class="">{{ comm.createdAt | date('d-m-Y') }}</td>
+                    {% if comm.statut == 1 %}
+                        <td><span class="badge badge-success">Active</span></td>
+                    {% else %}
+                        <td><span class="badge badge-warning">En attente</span></td>
+                    {% endif %}
                     <td>
                         <a href="{{ path('community.edit', {id: comm.id }) }}">
                             <button type="button" data-toggle="tooltip" title="Edit Task" class="btn btn-link <btn-simple-primary">
                                 <i class="la la-edit"></i>
                             </button>
                         </a>
-                            <a href="{{ path('community.del', {id: comm.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet communaute ?');">
+                        <a href="{{ path('community.del', {id: comm.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet communaute ?');">
                             <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
                                 <i class="la la-times"></i>
                             </button>

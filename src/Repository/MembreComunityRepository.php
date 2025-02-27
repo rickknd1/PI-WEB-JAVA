@@ -23,6 +23,21 @@ class MembreComunityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findOwnersForNoActiveCommunities()
+    {
+        return $this->createQueryBuilder('mc')
+            ->select('u.username', 'c.id AS community_id')
+            ->innerJoin('mc.community', 'c')
+            ->innerJoin('mc.id_user', 'u')
+            ->where('c.statut = :statut')
+            ->andWhere('mc.status = :status')
+            ->setParameter('statut', 0)
+            ->setParameter('status', 'owner')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 //    /**
 //     * @return MembreComunity[] Returns an array of MembreComunity objects
