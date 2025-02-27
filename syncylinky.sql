@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 26 fév. 2025 à 00:56
+-- Généré le : jeu. 27 fév. 2025 à 23:43
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -108,6 +108,14 @@ CREATE TABLE `comment` (
   `updated_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `comment`
+--
+
+INSERT INTO `comment` (`id`, `post_id`, `user_id`, `content`, `created_at`, `updated_at`) VALUES
+(1, 2, 4, 'first comment', '2025-02-27 15:54:04', '2025-02-27 15:54:04'),
+(2, 1, 2, 'Bonne continuation', '2025-02-27 15:55:34', '2025-02-27 15:55:34');
+
 -- --------------------------------------------------------
 
 --
@@ -121,21 +129,22 @@ CREATE TABLE `community` (
   `description` varchar(255) NOT NULL,
   `cover` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-  `nbr_membre` int(11) NOT NULL
+  `nbr_membre` int(11) NOT NULL,
+  `statut` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `community`
 --
 
-INSERT INTO `community` (`id`, `id_categorie_id`, `nom`, `description`, `cover`, `created_at`, `nbr_membre`) VALUES
-(1, 1, 'Padel Connection', 'Only padel connection player', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcaIgobDhF9s_plhsJ_0IY81OIaFNlkrhcWA&s', '2025-02-02 22:38:16', 1),
-(3, 3, 'DJ\'s', 'Afro House , Tech House , Melodic House', 'https://cdn.sanity.io/images/pge26oqu/production/6d18acf96d51efcc13a5c566f490d52066c6a9ff-1500x1001.jpg?rect=250,0,1001,1001&w=750&h=750', '2025-02-02 22:54:09', 1),
-(6, 18, 'theatrie comedie', '100% comedie', '/uploads/images-67ae9f195a8a0.png', '2025-02-14 02:40:41', 0),
-(7, 17, 'Enssemble tour du monde', 'we can do it', '/uploads/1345804-inline-67aea029f3b88.jpg', '2025-02-14 02:45:14', 1),
-(10, 1, 'FootBall', 'faire du football', '/uploads/2774679-travailler-dans-le-football-610x370-67b88de58b17c.jpg', '2025-02-19 19:23:17', 1),
-(13, 1, 'Street workout', 'only warriors', '/uploads/street-workout-poterne-massy-jm-molina-web-67b8868f9a665.jpg', '2025-02-21 14:58:39', 2),
-(14, 2, 'Oriental', 'Dance Oriental', '/uploads/danse-orientale-67b8cc9fad79e.jpg', '2025-02-21 19:57:35', 3);
+INSERT INTO `community` (`id`, `id_categorie_id`, `nom`, `description`, `cover`, `created_at`, `nbr_membre`, `statut`) VALUES
+(1, 1, 'Padel Connection', 'Only padel connection player', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcaIgobDhF9s_plhsJ_0IY81OIaFNlkrhcWA&s', '2025-02-02 22:38:16', 1, 1),
+(3, 3, 'DJ\'s', 'Afro House , Tech House , Melodic House', 'https://cdn.sanity.io/images/pge26oqu/production/6d18acf96d51efcc13a5c566f490d52066c6a9ff-1500x1001.jpg?rect=250,0,1001,1001&w=750&h=750', '2025-02-02 22:54:09', 1, 1),
+(6, 18, 'theatrie comedie', '100% comedie', '/uploads/images-67ae9f195a8a0.png', '2025-02-14 02:40:41', 0, 1),
+(7, 17, 'Enssemble tour du monde', 'we can do it', '/uploads/1345804-inline-67aea029f3b88.jpg', '2025-02-14 02:45:14', 1, 1),
+(10, 1, 'FootBall', 'faire du football', '/uploads/2774679-travailler-dans-le-football-610x370-67b88de58b17c.jpg', '2025-02-19 19:23:17', 1, 1),
+(13, 1, 'Street workout', 'only warriors', '/uploads/street-workout-poterne-massy-jm-molina-web-67b8868f9a665.jpg', '2025-02-21 14:58:39', 2, 1),
+(14, 2, 'Oriental', 'Dance Oriental', '/uploads/danse-orientale-67b8cc9fad79e.jpg', '2025-02-21 19:57:35', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -333,6 +342,14 @@ CREATE TABLE `post` (
   `update_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `post`
+--
+
+INSERT INTO `post` (`id`, `user_id`, `content`, `file`, `created_at`, `update_at`) VALUES
+(1, 1, 'First Post SyncYLinkY', '/uploads/logo-building-67bfb949bd833.jpg', '2025-02-27 02:00:57', '2025-02-27 02:00:57'),
+(2, 2, 'Seconde Post', NULL, '2025-02-27 15:52:44', '2025-02-27 15:52:44');
+
 -- --------------------------------------------------------
 
 --
@@ -447,7 +464,7 @@ CREATE TABLE `visitors` (
 --
 
 INSERT INTO `visitors` (`id`, `nbr_visitors`) VALUES
-(1, 125);
+(1, 157);
 
 --
 -- Index pour les tables déchargées
@@ -618,19 +635,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `chat_rooms`
 --
 ALTER TABLE `chat_rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `community`
 --
 ALTER TABLE `community`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT pour la table `events`
@@ -666,7 +683,7 @@ ALTER TABLE `media`
 -- AUTO_INCREMENT pour la table `membre_comunity`
 --
 ALTER TABLE `membre_comunity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT pour la table `messenger_messages`
@@ -678,7 +695,7 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT pour la table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `reaction`
