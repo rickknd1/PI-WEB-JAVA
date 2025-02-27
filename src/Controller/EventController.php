@@ -153,7 +153,7 @@ final class EventController extends AbstractController{
 
     #[Route('/admin/event/{id}', name: 'event.show', requirements: ['id'=>'\d+'])]
     #[Route('/event/{id}', name: 'event.front.show', requirements: ['id'=>'\d+'])]
-    public function detail(Request $request,int $id, EntityManagerInterface $em,CommunityRepository $repository): Response
+    public function detail(Request $request,int $id, EntityManagerInterface $em,EventsRepository $repository): Response
     {
         $routeName = $request->attributes->get('_route');
         $user = $this->getUser();

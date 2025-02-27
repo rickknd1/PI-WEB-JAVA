@@ -8,17 +8,11 @@
 
         <!-- cover -->
         <div class="relative overflow-hidden lg:h-72 h-36 w-full">
-            <img src="assets/images/group/group-cover-4.jpg" alt="" class="h-full w-full object-cover inset-0">
+            <img src="{{ event.cover }}" alt="" class="h-full w-full object-cover inset-0">
 
             <!-- overly -->
             <div class="w-full bottom-0 absolute left-0 bg-gradient-to-t from -black/60 pt-10 z-10"></div>
 
-            <div class="absolute bottom-0 right-0 m-4 z-20">
-                <div class="flex items-center gap-3">
-                    <button class="button bg-white/20 text-white flex items-center gap-2 backdrop-blur-small">Crop</button>
-                    <button class="button bg-black/10 text-white flex items-center gap-2 backdrop-blur-small">Edit</button>
-                </div>
-            </div>
 
         </div>
 
@@ -29,19 +23,20 @@
                 <div class="md:w-20 md:h-20 w-12 h-12 overflow-hidden bg-white shadow-md rounded-md z-10 mb-5">
                     <div class="w-full md:h-5 bg-rose-500 h-3"></div>
                     <div class="grid place-items-center text-black font-semibold md:text-3xl text-lg h-full md:pb-5 pb-3">
-                        14
+                        {{ event.startedAt|date('d') }}
                     </div>
                 </div>
 
                 <div class="flex lg:items-center justify-between max-lg:flex-col max-lg:gap-2">
 
                     <div class="flex-1">
-                        <p class="text-sm font-semibold text-rose-600 mb-1.5"> 7 OCT AT 07:00 – 11 OCT AT 12:00 </p>
-                        <h3 class="md:text-2xl text-base font-bold text-black dark:text-white"> Webinar - Raising Ducks For Egg Production </h3>
+                        <p class="text-sm font-semibold text-rose-600 mb-1.5">{{ event.startedAt | date('j M') }} at {{ event.startedAt | date('H:i') }} – {{ event.finishAt | date('j M') }} at {{ event.finishAt | date('H:i') }} </p>
+                        <h3 class="md:text-2xl text-base font-bold text-black dark:text-white"> {{ event.nom }} </h3>
+                        <p class="text-sm font-semibold mb-1.5">{{ event.lieu }}</p>
                         <p  class="font-normal text-gray-500 mt-2 flex gap-2 dark:text-white/80">
-                            <span> Free </span>
+                            <span> {{ event.acces }} </span>
                             <span> • </span>
-                            <span> Online event </span>
+                            <span> {{ event.type }} </span>
                         </p>
                     </div>
 
@@ -119,20 +114,18 @@
 
     <div class="flex 2xl:gap-12 gap-10 mt-8 max-lg:flex-col" id="js-oversized">
 
-        <div class="flex-1 space-y-4">
+        <div class="flex-1 space-y-4 ">
 
             <div class="box p-5 px-6 relative">
 
                 <h3 class="font-semibold text-lg text-black dark:text-white"> About </h3>
 
                 <div class="space-y-4 leading-7 tracking-wide mt-4 text-black text-sm dark:text-white">
-                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat</p>
-                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat</p>
+                    <p> {{ event.description }}</p>
                 </div>
 
             </div>
 
-            <!-- comments -->
             <div class="box p-5 px-6 relative">
                 <h3 class="font-semibold text-lg text-black dark:text-white"> Discussions </h3>
 
@@ -175,7 +168,6 @@
 
                 </div>
 
-                <!-- add comment -->
                 <div class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1 -m-6 mt-0 bg-secondery/60 dark:border-slate-700/40">
 
                     <img src="assets/images/avatars/avatar-7.jpg" alt="" class="w-6 h-6 rounded-full">
@@ -199,11 +191,9 @@
 
                     <button type="submit" class="text-sm rounded-full py-1.5 px-3.5 bg-secondery"> Replay</button>
                 </div>
-
-
             </div>
-
         </div>
+
 
         <div class="lg:w-[400px]">
 

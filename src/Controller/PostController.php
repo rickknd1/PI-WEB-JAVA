@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\Visitors;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -19,8 +20,23 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class PostController extends AbstractController
 {
     #[Route(name: 'app_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository,CommentRepository $commentRepository): Response
+    public function index(PostRepository $postRepository,CommentRepository $commentRepository,VisitorsRepository $repository,EntityManagerInterface $em): Response
     {
+        // Récupérer les visiteurs existants
+        $visitor = $repository->findAll();
+
+        if (empty($visitor)) {
+            // Si aucun visiteur en base, créer une nouvelle entrée
+            $newVisitor = new Visitors();
+            $newVisitor->setNbrVisitors(1);
+            $em->persist($newVisitor);
+            $em->flush();
+        } else {
+            // Sinon, incrémenter le nombre de visiteurs
+            $visitor[0]->setNbrVisitors($visitor[0]->getNbrVisitors() + 1);
+            $em->persist($visitor[0]);
+            $em->flush();
+        }
         $user = $this->getUser();
         $comments = $commentRepository->findAll();
         return $this->render('post/feed.html.twig', [

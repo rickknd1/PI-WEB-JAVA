@@ -159,7 +159,11 @@
                     <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
                         {% for event in events %}
                             <div class="card flex flex-col h-full">
-                                <a href="timeline-page.html">
+                                {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
+                                    <a href="{{ path('event.front.show',{id: event.id }) }} ">
+                                {% else %}
+                                    <a href="{{ path('event.front.show',{id: event.id }) }} " {% if event.acces == 'Private' %}uk-toggle="target: #acces"{% endif %}>
+                                {% endif %}
                                     <div class="card-media sm:aspect-[2/1.7] h-40">
                                         <img src="{{ event.cover }}" alt="">
                                         <div class="card-overly"></div>
@@ -167,7 +171,11 @@
                                 </a>
                                 <div class="card-body flex-1">
                                     <div class="side-list-info {% if event.acces == 'Public' %} text-green-700 {% else %} text-red-600 {% endif %}">{{ event.acces }}</div>
-                                    <a href="timeline-page.html"> <h4 class="card-title"> {{ event.nom }} </h4> </a>
+                                    {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
+                                        <a href="{{ path('event.front.show',{id: event.id }) }}"> <h4 class="card-title"> {{ event.nom }} </h4> </a>
+                                    {% else %}
+                                        <a href="{{ path('event.front.show',{id: event.id }) }}"> <h4 class="card-title" {% if event.acces == 'Private' %}uk-toggle="target: #acces"{% endif %}> {{ event.nom }} </h4> </a>
+                                    {% endif %}
                                     <p class="card-text">{{ event.type }}</p>
                                     <div class="side-list-info"> {{ event.startedAt | date('d/m h:i')}} -> {{ event.finishAt| date('d/m h:i') }}</div>
                                 </div>

@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
         $targetPath = $session->get('_security.target_path', null);
 
         if ($this->getUser()) {
-            return $this->redirect($targetPath ?: $this->generateUrl('home'));
+            return $this->redirect($targetPath ?: $this->generateUrl('app_post_index'));
         }
 
         return $this->render('security/login.html.twig', [

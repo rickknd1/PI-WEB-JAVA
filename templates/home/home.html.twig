@@ -40,7 +40,7 @@
                         <ion-icon name="close-outline" class="hidden text-2xl group-aria-expanded:block"></ion-icon>
                     </button>
                     <div id="logo">
-                        <a href="{{ path('home') }}">
+                        <a href="{{ path('app_post_index') }}">
                             <img src="/assets/images/logos/logo TYPO orange.svg" alt="" class="w-16 md:block hidden dark:!hidden">
                             <img src="/assets/images/logos/logo TYPO orange.svg" alt="" class="dark:md:block hidden w-40">
                             <img src="/assets/images/logos/logo TYPO orange.svg" class="hidden max-md:block w-16 dark:!hidden" alt="">
@@ -530,7 +530,7 @@
                 <nav id="side">
 
                     <ul>
-                        <li class="">
+                        <li class="{% if app.request.attributes.get('_route') starts with 'app_post' %} active {% endif %}">
                             <a href="{{ path('app_post_index') }}">
                                 <img src="/assets/images/icons/home.png" alt="feeds" class="w-6">
                                 <span> Feed </span>

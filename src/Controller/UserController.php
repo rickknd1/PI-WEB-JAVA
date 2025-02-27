@@ -27,8 +27,6 @@ final class UserController extends AbstractController{
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($newuser);
             $entityManager->flush();
-
-
             return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
         } else {
             foreach ($form->getErrors(true) as $error) {
