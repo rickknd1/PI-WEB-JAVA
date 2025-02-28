@@ -62,6 +62,7 @@ Users can receive suggestions based on their interests.
 ### - Role Verification
 - **Each role has specific functionalities.**
 - **Event/Chat Access Control**
+- **Url navigation security**
 
 ### - Link Sharing
 - Copy a link directly.
