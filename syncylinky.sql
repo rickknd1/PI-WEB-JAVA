@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 27 fév. 2025 à 23:43
+-- Généré le : sam. 01 mars 2025 à 04:50
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -91,7 +91,30 @@ CREATE TABLE `chat_rooms` (
 INSERT INTO `chat_rooms` (`id`, `community_id`, `nom`, `cover`, `type`, `created_at`) VALUES
 (1, 1, 'FInd Partner', '/uploads/Capture-d-ecran-2023-12-27-002902-67aa5599a537e.png', 'Public', '2025-02-10 20:38:01'),
 (3, 3, 'Unreleased', '/uploads/ddd-67aeb86dee348.jpg', 'Public', '2025-02-14 04:28:45'),
-(6, 14, 'Lady\'s Only', '/uploads/360-F-358288750-W5ObJ9CvKAsjNUv4OlxhMa6QuPUWed20-67bceeac2fdc0.jpg', 'Private', '2025-02-24 23:11:56');
+(6, 14, 'Lady\'s Only', '/uploads/360-F-358288750-W5ObJ9CvKAsjNUv4OlxhMa6QuPUWed20-67bceeac2fdc0.jpg', 'Private', '2025-02-24 23:11:56'),
+(10, 10, 'Find Team', '/uploads/mini-all-convos-67c2673674f7e.png', 'Public', '2025-03-01 02:47:34');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chat_room_membres`
+--
+
+CREATE TABLE `chat_room_membres` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `chat_room_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `chat_room_membres`
+--
+
+INSERT INTO `chat_room_membres` (`id`, `user_id`, `chat_room_id`) VALUES
+(4, 2, 10),
+(5, 1, 10),
+(6, 4, 10),
+(7, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -142,7 +165,7 @@ INSERT INTO `community` (`id`, `id_categorie_id`, `nom`, `description`, `cover`,
 (3, 3, 'DJ\'s', 'Afro House , Tech House , Melodic House', 'https://cdn.sanity.io/images/pge26oqu/production/6d18acf96d51efcc13a5c566f490d52066c6a9ff-1500x1001.jpg?rect=250,0,1001,1001&w=750&h=750', '2025-02-02 22:54:09', 1, 1),
 (6, 18, 'theatrie comedie', '100% comedie', '/uploads/images-67ae9f195a8a0.png', '2025-02-14 02:40:41', 0, 1),
 (7, 17, 'Enssemble tour du monde', 'we can do it', '/uploads/1345804-inline-67aea029f3b88.jpg', '2025-02-14 02:45:14', 1, 1),
-(10, 1, 'FootBall', 'faire du football', '/uploads/2774679-travailler-dans-le-football-610x370-67b88de58b17c.jpg', '2025-02-19 19:23:17', 1, 1),
+(10, 1, 'FootBall', 'faire du football', '/uploads/2774679-travailler-dans-le-football-610x370-67b88de58b17c.jpg', '2025-02-19 19:23:17', 3, 1),
 (13, 1, 'Street workout', 'only warriors', '/uploads/street-workout-poterne-massy-jm-molina-web-67b8868f9a665.jpg', '2025-02-21 14:58:39', 2, 1),
 (14, 2, 'Oriental', 'Dance Oriental', '/uploads/danse-orientale-67b8cc9fad79e.jpg', '2025-02-21 19:57:35', 3, 1);
 
@@ -309,7 +332,40 @@ INSERT INTO `membre_comunity` (`id`, `id_user_id`, `status`, `date_adhesion`, `c
 (17, 1, 'owner', '2025-02-21 19:57:35', 14),
 (18, 2, 'moderator', '2025-02-21 19:57:47', 14),
 (20, 4, 'membre', '2025-02-21 20:01:00', 14),
-(26, 1, 'membre', '2025-02-21 23:09:32', 7);
+(26, 1, 'membre', '2025-02-21 23:09:32', 7),
+(36, 1, 'membre', '2025-02-28 23:41:18', 10),
+(37, 4, 'membre', '2025-03-01 02:59:08', 10);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `chat_room_id` int(11) NOT NULL,
+  `content` longtext NOT NULL,
+  `sent_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `messages`
+--
+
+INSERT INTO `messages` (`id`, `user_id`, `chat_room_id`, `content`, `sent_at`) VALUES
+(2, 2, 10, 'Welcome To Our chat 🥳', '2025-03-01 02:50:22'),
+(3, 1, 10, 'You\'re welcome 🥰', '2025-03-01 02:51:35'),
+(4, 1, 10, 'searching team tonight', '2025-03-01 02:52:00'),
+(5, 2, 10, 'Dispo 23h', '2025-03-01 02:52:15'),
+(6, 4, 10, 'In with GoalKeeper😎', '2025-03-01 02:59:48'),
+(7, 1, 10, '❤️', '2025-03-01 03:11:11'),
+(8, 4, 10, '❤️', '2025-03-01 03:11:25'),
+(9, 4, 10, 'Rest one place in team', '2025-03-01 04:02:55'),
+(10, 1, 10, 'in', '2025-03-01 04:10:49'),
+(11, 4, 10, '❤️', '2025-03-01 04:13:35'),
+(12, 1, 3, 'Rihanna - Pon de Replay (Sico Vox Afro House Remix) [UNRELEASED]', '2025-03-01 04:39:42');
 
 -- --------------------------------------------------------
 
@@ -464,7 +520,7 @@ CREATE TABLE `visitors` (
 --
 
 INSERT INTO `visitors` (`id`, `nbr_visitors`) VALUES
-(1, 157);
+(1, 161);
 
 --
 -- Index pour les tables déchargées
@@ -488,6 +544,14 @@ ALTER TABLE `categories`
 ALTER TABLE `chat_rooms`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_7DDCF70DFDA7B0BF` (`community_id`);
+
+--
+-- Index pour la table `chat_room_membres`
+--
+ALTER TABLE `chat_room_membres`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_4B8336FDA76ED395` (`user_id`),
+  ADD KEY `IDX_4B8336FD1819BCFA` (`chat_room_id`);
 
 --
 -- Index pour la table `comment`
@@ -553,6 +617,14 @@ ALTER TABLE `membre_comunity`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_88F7DAC079F37AE5` (`id_user_id`),
   ADD KEY `IDX_88F7DAC0FDA7B0BF` (`community_id`);
+
+--
+-- Index pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_DB021E96A76ED395` (`user_id`),
+  ADD KEY `IDX_DB021E961819BCFA` (`chat_room_id`);
 
 --
 -- Index pour la table `messenger_messages`
@@ -635,7 +707,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `chat_rooms`
 --
 ALTER TABLE `chat_rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT pour la table `chat_room_membres`
+--
+ALTER TABLE `chat_room_membres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `comment`
@@ -683,7 +761,13 @@ ALTER TABLE `media`
 -- AUTO_INCREMENT pour la table `membre_comunity`
 --
 ALTER TABLE `membre_comunity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT pour la table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `messenger_messages`
@@ -738,6 +822,13 @@ ALTER TABLE `chat_rooms`
   ADD CONSTRAINT `FK_7DDCF70DFDA7B0BF` FOREIGN KEY (`community_id`) REFERENCES `community` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `chat_room_membres`
+--
+ALTER TABLE `chat_room_membres`
+  ADD CONSTRAINT `FK_4B8336FD1819BCFA` FOREIGN KEY (`chat_room_id`) REFERENCES `chat_rooms` (`id`),
+  ADD CONSTRAINT `FK_4B8336FDA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
 -- Contraintes pour la table `comment`
 --
 ALTER TABLE `comment`
@@ -787,6 +878,13 @@ ALTER TABLE `media`
 ALTER TABLE `membre_comunity`
   ADD CONSTRAINT `FK_88F7DAC079F37AE5` FOREIGN KEY (`id_user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `FK_88F7DAC0FDA7B0BF` FOREIGN KEY (`community_id`) REFERENCES `community` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `FK_DB021E961819BCFA` FOREIGN KEY (`chat_room_id`) REFERENCES `chat_rooms` (`id`),
+  ADD CONSTRAINT `FK_DB021E96A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `post`
