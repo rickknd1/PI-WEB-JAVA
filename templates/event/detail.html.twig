@@ -33,6 +33,18 @@
                         <p class="text-sm font-semibold text-rose-600 mb-1.5">{{ event.startedAt | date('j M') }} at {{ event.startedAt | date('H:i') }} – {{ event.finishAt | date('j M') }} at {{ event.finishAt | date('H:i') }} </p>
                         <h3 class="md:text-2xl text-base font-bold text-black dark:text-white"> {{ event.nom }} </h3>
                         <p class="text-sm font-semibold mb-1.5">{{ event.lieu }}</p>
+                        {% if weather.forecastday is defined and weather.forecastday|length > 0 %}
+                            {% for w in weather.forecastday %}
+                                {% for hour in w.hour %}
+                                    {% if hour.time == event.startedAt|date('Y-m-d H:00') %}
+                                        <p class="text-sm font-semibold mb-1.5" style="display: inline-block;">{{ hour.temp_c }}°C</p>
+                                        <img src="{{ hour.condition.icon }}" style="display: inline-block; width: 30px; height: 30px;">
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <p>No weather data available.</p>
+                        {% endif %}
                         <p  class="font-normal text-gray-500 mt-2 flex gap-2 dark:text-white/80">
                             <span> {{ event.acces }} </span>
                             <span> • </span>

@@ -84,10 +84,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: 'id_user')]
     private Collection $membreComunities;
 
+    /**
+     * @var Collection<int, ChatRoomMembres>
+     */
+    #[ORM\OneToMany(targetEntity: ChatRoomMembres::class, mappedBy: 'user')]
+    private Collection $chatRoomMembres;
+
+    /**
+     * @var Collection<int, Messages>
+     */
+    #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'user')]
+    private Collection $messages;
+
     public function __construct()
     {
         $this->interests = new ArrayCollection();
         $this->membreComunities = new ArrayCollection();
+        $this->chatRoomMembres = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -245,6 +259,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($membreComunity->getIdUser() === $this) {
                 $membreComunity->setIdUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChatRoomMembres>
+     */
+    public function getChatRoomMembres(): Collection
+    {
+        return $this->chatRoomMembres;
+    }
+
+    public function addChatRoomMembre(ChatRoomMembres $chatRoomMembre): static
+    {
+        if (!$this->chatRoomMembres->contains($chatRoomMembre)) {
+            $this->chatRoomMembres->add($chatRoomMembre);
+            $chatRoomMembre->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChatRoomMembre(ChatRoomMembres $chatRoomMembre): static
+    {
+        if ($this->chatRoomMembres->removeElement($chatRoomMembre)) {
+            // set the owning side to null (unless already changed)
+            if ($chatRoomMembre->getUser() === $this) {
+                $chatRoomMembre->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Messages>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Messages $message): static
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Messages $message): static
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
             }
         }
 

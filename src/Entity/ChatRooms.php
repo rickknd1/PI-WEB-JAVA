@@ -27,10 +27,27 @@ class ChatRooms
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-
     #[ORM\ManyToOne(targetEntity: Community::class, inversedBy: "chatRooms")]
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Community $community = null;
+
+    /**
+     * @var Collection<int, ChatRoomMembres>
+     */
+    #[ORM\OneToMany(targetEntity: ChatRoomMembres::class, mappedBy: 'chatRoom', cascade: ['remove'])]
+    private Collection $chatRoomMembres;
+
+    /**
+     * @var Collection<int, Messages>
+     */
+    #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'chatRoom', orphanRemoval: true, cascade: ['remove'])]
+    private Collection $messages;
+
+    public function __construct()
+    {
+        $this->chatRoomMembres = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,6 +110,66 @@ class ChatRooms
     public function setCommunity(?Community $community): self
     {
         $this->community = $community;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ChatRoomMembres>
+     */
+    public function getChatRoomMembres(): Collection
+    {
+        return $this->chatRoomMembres;
+    }
+
+    public function addChatRoomMembre(ChatRoomMembres $chatRoomMembre): static
+    {
+        if (!$this->chatRoomMembres->contains($chatRoomMembre)) {
+            $this->chatRoomMembres->add($chatRoomMembre);
+            $chatRoomMembre->setChatRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChatRoomMembre(ChatRoomMembres $chatRoomMembre): static
+    {
+        if ($this->chatRoomMembres->removeElement($chatRoomMembre)) {
+            // set the owning side to null (unless already changed)
+            if ($chatRoomMembre->getChatRoom() === $this) {
+                $chatRoomMembre->setChatRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Messages>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Messages $message): static
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setChatRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Messages $message): static
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getChatRoom() === $this) {
+                $message->setChatRoom(null);
+            }
+        }
+
         return $this;
     }
 }

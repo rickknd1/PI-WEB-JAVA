@@ -149,10 +149,22 @@
                                     <a href="timeline-page.html"> <h4 class="card-title"> {{ chat.nom }} </h4> </a>
                                     <p class="card-text">{{ chat.type }}</p>
                                     {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
-                                        <a href="" class="button bg-secondery !w-auto"> View</a>
+                                        <a href="{{ path('chatroom.chat',{id:chat.id}) }}" class="button bg-secondery !w-auto"> View</a>
                                         <a href="{{ path('chatroom.front.del',{id: chat.id }) }}" class="button bg-red-600 !w-auto"> Delete </a>
                                     {% else %}
-                                        <button type="button" class="button bg-primary text-white"{% if chat.type == 'Private' %} uk-toggle="target: #acces" {% endif %}>Join</button>
+                                        {% if comm.id in userCommIds %}
+                                            {% if chat.id in userChats %}
+                                                <a href="{{ path('chatroom.chat',{id:chat.id}) }}">
+                                                    <button type="button" class="button bg-secondery">View</button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ path('join.chatroom', {id:chat.id} ) }}">
+                                                    <button type="button" class="button bg-primary text-white"{% if chat.type == 'Private' %} uk-toggle="target: #acces" {% endif %}>Join</button>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            <button type="button" class="button bg-primary text-white" uk-toggle="target: #acces_chat">Join</button>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
@@ -196,7 +208,7 @@
                                     <div class="flex gap-2">
                                         {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
                                             <a href="{{ path('event.front.show',{id: event.id }) }}" class="button bg-secondery !w-auto flex-1"> View</a>
-                                            <a href="{{ path('event.front.del',{id: event.id }) }}" class="button bg-red-600 !w-auto flex-1"> Delete </a>
+                                            <a href="{{ path('event.front.del',{id: event.id }) }}" class="button bg-red-600 !w-auto flex-1"> Delete</a>
                                         {% else %}
                                             <button type="button" class="button bg-primary text-white flex-1" {% if event.acces == 'Private' %} uk-toggle="target: #acces" {% endif %}>Participe</button>
                                         {% endif %}
@@ -597,6 +609,22 @@
             </div>
             <div class="space-y-5 mt-7">
                 <h3 class="font-medium">Cannot {% if app.request.attributes.get('_route') == 'community.events' %} participate {% else %} enter {% endif%} in this {% if app.request.attributes.get('_route') == 'community.events' %} event {% else %} chat {% endif%} as it is private</h3>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:p-20" id="acces_chat" uk-modal="">
+        <div class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white p-7 shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+            <div class="text-center py-3 border-b -m-7 mb-0 dark:border-slate-700">
+                <h2 class="text-sm font-medium">Private Event </h2>
+                <!-- close button -->
+                <button type="button" class="button__ico absolute top-0 right-0 m-2.5 uk-modal-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-5 mt-7">
+                <h3 class="font-medium">Cannot enter in this chat. Please Join the community first</h3>
             </div>
         </div>
     </div>

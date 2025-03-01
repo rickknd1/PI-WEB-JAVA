@@ -7,6 +7,7 @@ use App\Form\EventsType;
 use App\Repository\CommunityRepository;
 use App\Repository\EventsRepository;
 use App\Repository\MembreComunityRepository;
+use App\Service\WeatherApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -153,7 +154,7 @@ final class EventController extends AbstractController{
 
     #[Route('/admin/event/{id}', name: 'event.show', requirements: ['id'=>'\d+'])]
     #[Route('/event/{id}', name: 'event.front.show', requirements: ['id'=>'\d+'])]
-    public function detail(Request $request,int $id, EntityManagerInterface $em,EventsRepository $repository): Response
+    public function detail(Request $request,int $id, EntityManagerInterface $em,EventsRepository $repository,WeatherApiService $weatherApiService): Response
     {
         $routeName = $request->attributes->get('_route');
         $user = $this->getUser();
@@ -161,9 +162,12 @@ final class EventController extends AbstractController{
             return $this->redirectToRoute('access_denied');
         }
         $event=$repository->find($id);
+        $city='Tunis';
+        $weather = $weatherApiService->getFutureWeather($city,$event->getStartedAt()->format('Y-m-d'));
         return $this->render('event/detail.html.twig', [
             'event'=>$event,
             'user'=>$user,
+            'weather'=>$weather,
         ]);
     }
 }

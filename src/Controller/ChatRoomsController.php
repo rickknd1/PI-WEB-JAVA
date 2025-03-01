@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\ChatRoomMembres;
 use App\Entity\ChatRooms;
+use App\Entity\MembreComunity;
+use App\Entity\Messages;
 use App\Form\ChatRoomsType;
+use App\Repository\ChatRoomMembresRepository;
 use App\Repository\ChatRoomsRepository;
 use App\Repository\MembreComunityRepository;
+use App\Repository\MessagesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -165,5 +170,61 @@ final class ChatRoomsController extends AbstractController{
             'chatroom' => $chatroom,
             'user' => $this->getUser(),
         ]);
+    }
+
+    #[Route('/join/chat/{id}',name: 'join.chatroom', requirements: ['id'=>'\d+'])]
+    public function joinChatRoom(ChatRooms $chatroom, EntityManagerInterface $em,Request $request): Response
+    {
+        $referer = $request->headers->get('referer');
+        $user = $this->getUser();
+
+        $chatRoomMembre = new ChatRoomMembres();
+        $chatRoomMembre->setChatroom($chatroom);
+        $chatRoomMembre->setUser($user);
+        $em->persist($chatRoomMembre);
+        $em->flush();
+        if ($referer) {
+            return $this->redirect($referer);
+        }else{
+            return $this->redirectToRoute('access_denied');
+        }
+
+    }
+
+    #[Route('/chat/{id}', name: 'chatroom.chat', requirements: ['id'=>'\d+'])]
+    public function show(int $id,ChatRoomMembresRepository $chatRoomMembresRepository,ChatRoomsRepository $chatRoomsRepository,
+                         MessagesRepository $messagesRepository): Response
+    {
+
+        $user = $this->getUser();
+        $userchats = $chatRoomMembresRepository->findBy(['user' => $user]);
+        $chat = $chatRoomsRepository->find($id);
+        $messages = $messagesRepository->findBy(['chatRoom' => $chat], ['sentAt' => 'ASC']);
+        $allmessages = $messagesRepository->findAll();
+        return $this->render('chat_rooms/chat.html.twig', [
+            'user' => $user,
+            'userchats' => $userchats,
+            'chat' => $chat,
+            'messages' => $messages,
+            'allmessages' => $allmessages,
+        ]);
+    }
+    #[Route('/message/{id}', name: 'send.msg', requirements: ['id'=>'\d+'], methods: ['POST'])]
+    public function send(int $id,Request $request, ChatRoomsRepository $chatRoomsRepository, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $chatRoom = $chatRoomsRepository->find($id);
+        $content = $request->request->get('message');
+
+        $message = new Messages();
+        $message->setChatRoom($chatRoom);
+        $message->setUser($user);
+        $message->setContent($content);
+        $message->setSentAt(new \DateTimeImmutable());
+        $em->persist($message);
+        $em->flush();
+
+        return $this->redirectToRoute('chatroom.chat', ['id' => $id]);
+
     }
 }

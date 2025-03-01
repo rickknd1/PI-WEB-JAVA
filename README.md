@@ -60,9 +60,16 @@ Users can receive suggestions based on their interests.
 - A new task is added to the admin dashboard to **approve** or **reject** the request.
 
 ### - Role Verification
-- **Each role has specific functionalities.**
+- **Each community role has specific functionalities.**
 - **Event/Chat Access Control**
 - **Url navigation security**
+
+### - Weather
+- Showing temperature and weather conditions for each event.
+
+### - Chatroom for Community Members
+- Only community members can join and participate in the chat.
+- Users can send and receive messages with support for emojis.
 
 ### - Link Sharing
 - Copy a link directly.

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ChatRoomMembres;
 use App\Entity\ChatRooms;
 use App\Entity\Community;
 use App\Entity\Events;
@@ -11,6 +12,7 @@ use App\Form\ChatRoomsType;
 use App\Form\CommunityType;
 use App\Form\EventsType;
 use App\Repository\CategoriesRepository;
+use App\Repository\ChatRoomMembresRepository;
 use App\Repository\ChatRoomsRepository;
 use App\Repository\CommunityRepository;
 use App\Repository\EventsRepository;
@@ -282,7 +284,7 @@ final class CommunityController extends AbstractController{
     #[Route('/community/{id}', name: 'community.show', requirements: ['id' => '\d+'])]
     public function detail(Request $request,Community $community,EventsRepository $eventsRepository,EntityManagerInterface $em,
                            CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository,MembreComunityRepository $membreComunityRepository,
-                           QrCodeService $qrCodeService,SluggerInterface $slugger): Response
+                           QrCodeService $qrCodeService,SluggerInterface $slugger,ChatRoomMembresRepository $chatRoomMembresRepository): Response
     {
         $qrCode = base64_encode($qrCodeService->generateQrCode($community));
         $referer = $request->headers->get('referer');
@@ -390,11 +392,19 @@ final class CommunityController extends AbstractController{
             }
             $chatroom->setCreatedAt(new \DateTimeImmutable());
             $chatroom->setCommunity($community);
+
+            $chatRoomMembre = new ChatRoomMembres();
+            $chatRoomMembre->setChatRoom($chatroom);
+            $chatRoomMembre->setUser($user);
+            $em->persist($chatRoomMembre);
+
             $em->persist($chatroom);
             $em->flush();
             $this->addFlash('success', 'Chatroom created!');
             return $this->redirect($referer);
         }
+        $userChats = $chatRoomMembresRepository->findBy(['user' => $user]);
+        $userChatRoomIds = array_map(fn($userChat) => $userChat->getChatRoom()->getId(), $userChats);
 
         return $this->render('community/show.html.twig', [
             'comm' => $community,
@@ -409,7 +419,8 @@ final class CommunityController extends AbstractController{
             'ownCommIds' => $ownCommIds,
             'form_event' => $form_event->createView(),
             'form_chat' => $form_chat->createView(),
-            'qrCode' => $qrCode
+            'qrCode' => $qrCode,
+            'userChats' => $userChatRoomIds,
         ]);
     }
     #[Route('/download-qrcode/{id}', name: 'download_qrcode')]
