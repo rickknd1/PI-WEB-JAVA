@@ -178,24 +178,37 @@
             </div>
             <div class="space-y-5 mt-7">
                 {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
                 <div>
                     {{ form_label(form.nom) }}
-                    {{ form_widget(form.nom, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté'}}) }}
-                    {{ form_errors(form.nom) |raw}}
+                    {{ form_widget(form.nom, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Nom de la communauté', 'id': 'title'}}) }}
+                    {{ form_errors(form.nom) | raw }}
                 </div>
                 <br>
+
+                <div>
+                    <label for="keywords" class="block">Mots-clés (ex: musique, gaming, sport)</label>
+                    <input type="text" id="keywords" class="w-full mt-3 border p-2" placeholder="Entrez des mots-clés" />
+                </div>
+                <br>
+
                 <div>
                     {{ form_label(form.description) }}
-                    {{ form_widget(form.description, {'attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
-                    {{ form_errors(form.description) |raw}}
+                    <button type="button" id="generateButton" class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Générer une description ✨
+                    </button>
+                    {{ form_widget(form.description, {'attr': {'id': 'description', 'class': 'w-full mt-3', 'placeholder': 'Description'} }) }}
+                    {{ form_errors(form.description) | raw }}
                 </div>
                 <br>
+
                 <div>
                     {{ form_label(form.id_categorie) }}
                     {{ form_widget(form.id_categorie, {'attr': {'class': 'form-select'}}) }}
-                    {{ form_errors(form.id_categorie)|raw }}
+                    {{ form_errors(form.id_categorie) | raw }}
                 </div>
                 <br>
+
                 <div>
                     {{ form_label(form.cover) }}
                     <br>
@@ -203,15 +216,56 @@
                     {{ form_errors(form.cover) }}
                 </div>
                 <br>
+
                 <div class="flex justify-between items-center">
                     <div class="flex items-start gap-2">
                         <ion-icon name="time-outline" class="text-3xl text-sky-600  rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
-                        <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after  ADMIN VERIFICATION </p>
+                        <p class="text-sm text-gray-500 font-medium">
+                            Your community will be available <br> after ADMIN VERIFICATION
+                        </p>
                     </div>
                     {{ form_widget(form.save,{'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+
                 </div>
-                    {{ form_rest(form) }}
+                {{ form_rest(form) }}
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        document.getElementById("generateButton").addEventListener("click", function() {
+                            const keywords = document.getElementById("keywords").value.trim();
+                            const title = document.getElementById("community_nom").value.trim();
+                            const descriptionField = document.getElementById("community_description");
+
+                            if (!keywords) {
+                                alert("Veuillez entrer des mots-clés.");
+                                return;
+                            }
+
+                            fetch("{{ path('generate_description') }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({title , keywords }),
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.description) {
+                                        if (descriptionField) {
+                                            descriptionField.value = data.description;
+                                        } else {
+                                            console.error("Champ de description introuvable !");
+                                        }
+                                    } else {
+                                        alert("Erreur: " + (data.error || "Impossible de générer la description."));
+                                    }
+                                })
+                                .catch(error => console.error("Erreur:", error));
+                        });
+                    });
+                </script>
             </div>
         </div>
     </div>
 {% endblock %}
+
+

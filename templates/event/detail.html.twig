@@ -34,11 +34,11 @@
                         <h3 class="md:text-2xl text-base font-bold text-black dark:text-white"> {{ event.nom }} </h3>
                         <p class="text-sm font-semibold mb-1.5">{{ event.lieu }}</p>
                         {% if weather.forecastday is defined and weather.forecastday|length > 0 %}
-                            {% for w in weather.forecastday %}
-                                {% for hour in w.hour %}
-                                    {% if hour.time == event.startedAt|date('Y-m-d H:00') %}
-                                        <p class="text-sm font-semibold mb-1.5" style="display: inline-block;">{{ hour.temp_c }}°C</p>
-                                        <img src="{{ hour.condition.icon }}" style="display: inline-block; width: 30px; height: 30px;">
+                            {% for forecast in weather.forecastday %}
+                                {% for hours in forecast.hour %}
+                                    {% if hours.time == event.startedAt|date('Y-m-d H:00') %}
+                                        <p class="text-sm font-semibold mb-1.5" style="display: inline-block;">{{ hours.temp_c }}°C</p>
+                                        <img src="{{ hours.condition.icon }}" style="display: inline-block; width: 30px; height: 30px;">
                                     {% endif %}
                                 {% endfor %}
                             {% endfor %}

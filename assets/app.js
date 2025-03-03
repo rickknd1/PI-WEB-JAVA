@@ -10,3 +10,4 @@ window.Turbo = Turbo;
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+const { GoogleGenerativeAI } = require('@google/generative-ai');

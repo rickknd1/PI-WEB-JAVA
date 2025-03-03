@@ -164,10 +164,17 @@ final class EventController extends AbstractController{
         $event=$repository->find($id);
         $city='Tunis';
         $weather = $weatherApiService->getFutureWeather($city,$event->getStartedAt()->format('Y-m-d'));
+
         return $this->render('event/detail.html.twig', [
             'event'=>$event,
             'user'=>$user,
             'weather'=>$weather,
         ]);
+    }
+    #[Route('/meet', name: 'meet', requirements: ['id'=>'\d+'])]
+    public function meet(Request $request,int $id, EntityManagerInterface $em,EventsRepository $repository,WeatherApiService $weatherApiService): Response
+    {
+        $data=json_decode($request->getContent(),true);
+        return $this->json($data);
     }
 }

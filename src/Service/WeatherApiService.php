@@ -16,23 +16,43 @@ class WeatherApiService
     public function getFutureWeather(string $city, string $date): array
     {
         $currentDate = new \DateTime();
-        if($date < $currentDate){
-            $url = sprintf('http://api.weatherapi.com/v1/history.json?key=%s&q=%s&dt=%s',
+        $dateObject = new \DateTime($date);
+
+        $interval = $currentDate->diff($dateObject);
+        $days = $interval->days;
+
+        if ($dateObject < $currentDate) {
+            $url = sprintf(
+                'http://api.weatherapi.com/v1/history.json?key=%s&q=%s&dt=%s',
                 $this->apiKey,
                 $city,
                 $date
             );
-        }else{
-            $url = sprintf('http://api.weatherapi.com/v1/future.json?key=%s&q=%s&dt=%s',
+        } elseif ($days < 15) {
+            $days = max($days, 14);
+            $url = sprintf(
+                'http://api.weatherapi.com/v1/forecast.json?key=%s&q=%s&days=%s&aqi=no&alerts=no',
+                $this->apiKey,
+                $city,
+                $days
+            );
+        } else {
+            $url = sprintf(
+                'http://api.weatherapi.com/v1/future.json?key=%s&q=%s&dt=%s',
                 $this->apiKey,
                 $city,
                 $date
             );
         }
 
-        $response = $this->client->request('GET', $url);
-        $data = $response->toArray();
+        try {
+            $response = $this->client->request('GET', $url);
+            $data = $response->toArray();
+        } catch (\Exception $e) {
+            return [];
+        }
 
         return $data['forecast'] ?? [];
     }
+
 }

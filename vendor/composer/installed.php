@@ -3,7 +3,7 @@
         'name' => 'symfony/skeleton',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ca7a52505795cee1354c5e470f3e729efa305692',
+        'reference' => 'f84a5038699310025ecb5a8558954ea149d12675',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -217,6 +217,24 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'google-gemini-php/client' => array(
+            'pretty_version' => '1.0.15',
+            'version' => '1.0.15.0',
+            'reference' => '6dca9a5e6a6de39b230fe4593a8d041efd02e34e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../google-gemini-php/client',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'google-gemini-php/symfony' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => '64595aa8488acf2b8660fafaf8d2337e38416cf6',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../google-gemini-php/symfony',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'knplabs/knp-components' => array(
             'pretty_version' => 'v5.1.0',
             'version' => '5.1.0.0',
@@ -289,6 +307,15 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
+        'nyholm/psr7' => array(
+            'pretty_version' => '1.8.2',
+            'version' => '1.8.2.0',
+            'reference' => 'a71f2b11690f4b24d099d6b16690a90ae14fc6f3',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nyholm/psr7',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'phar-io/manifest' => array(
             'pretty_version' => '2.0.4',
             'version' => '2.0.4.0',
@@ -317,6 +344,21 @@
             'dev_requirement' => false,
             'provided' => array(
                 0 => '*',
+            ),
+        ),
+        'php-http/discovery' => array(
+            'pretty_version' => '1.20.0',
+            'version' => '1.20.0.0',
+            'reference' => '82fe4c73ef3363caed49ff8dd1539ba06044910d',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../php-http/discovery',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'php-http/message-factory-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
             ),
         ),
         'phpdocumentor/reflection-common' => array(
@@ -469,10 +511,52 @@
                 0 => '1.0',
             ),
         ),
+        'psr/http-client' => array(
+            'pretty_version' => '1.0.3',
+            'version' => '1.0.3.0',
+            'reference' => 'bb5906edc1c324c9a05aa0873d40117941e5fa90',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-client',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
+                0 => '*',
+                1 => '1.0',
+            ),
+        ),
+        'psr/http-factory' => array(
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
+            'reference' => '2b4765fddfe3b508ac62f829e852b1501d3f6e8a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-factory',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'psr/http-factory-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
                 0 => '1.0',
+                1 => '*',
+            ),
+        ),
+        'psr/http-message' => array(
+            'pretty_version' => '2.0',
+            'version' => '2.0.0.0',
+            'reference' => '402d35bcb92c70c026d1a6a9883f06b2ead23d71',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-message',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'psr/http-message-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/link' => array(
@@ -1271,7 +1355,7 @@
         'symfony/skeleton' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ca7a52505795cee1354c5e470f3e729efa305692',
+            'reference' => 'f84a5038699310025ecb5a8558954ea149d12675',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

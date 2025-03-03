@@ -1,0 +1,60 @@
+<section class="service-section">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>Our <span>Blocs</span></h3>
+            <p>Tracking immunizations has never been easier or more secure with Florida SHOTS™. To print your child's record, you will need</p>
+        </div>
+
+        <div class="sortable-masonry">
+            <div class="filters text-center">
+                <ul class="filter-tabs filter-btns clearfix">
+                    {% for bloc in blocs %}
+                        <li class="filter" data-filter=".{{ bloc.nom }}">
+                            <div class="tab-btn"><i class="flaticon-medical"></i>{{ bloc.nom }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="row items-container clearfix">
+                {% for spec in specialites %}
+                    <div class="col-md-4 col-sm-6 col-xs-12 masonry-item {{ spec.idBloc.nom }}">
+                        <div class="inner-box">
+                            <div class="image-content text-center">
+                                <span>{{ spec.idBloc.nom }}</span>
+                                <a href="service-details"><h6>{{ spec.nom }}</h6></a>
+                                <p>{{ spec.description }}</p>
+                                <div class="link-btn">
+                                    <a href="service-details" class="btn-style-two">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.masonry-item').hide();
+
+        if ($('.filter').first().length) {
+            $('.filter').first().addClass('active');
+            var firstBlocFilter = $('.filter').first().data('filter');
+            $(firstBlocFilter).show();
+        }
+
+        $('.filter').on('click', function() {
+            $('.filter').removeClass('active');
+            $(this).addClass('active');
+            var filterClass = $(this).data('filter');
+            $('.masonry-item').hide();
+            if (filterClass) {
+                $(filterClass).show();
+            }
+        });
+    });
+</script>

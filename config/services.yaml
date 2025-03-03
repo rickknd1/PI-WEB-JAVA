@@ -10,6 +10,10 @@ parameters:
     uploads_directory: '%kernel.project_dir%/public/uploads/media'
 
 services:
+    App\Service\CommunityDescriptionService:
+        arguments:
+            $gemini: '@Google\GeminiPhp\Gemini'
+
     App\EventListener\AuthenticationListener:
         tags:
             - { name: kernel.event_listener, event: kernel.request }

@@ -69,7 +69,7 @@
                                     <div class="text-xs font-light text-gray-500 dark:text-white/70">{% if chatMessages is not empty %}{{ chatMessages|last.sentAt|date('H:i') }}{% else %}{% endif %}</div>
                                     <div class="text-xs font-light text-gray-500 dark:text-white/70">@{{ chat.chatRoom.community.nom }}</div>
                                 </div>
-                                <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{% if chatMessages is not empty %}{{ chatMessages|last.content }}{% else %}No Messages{% endif %}</div>
+                                <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{% if chatMessages is not empty %} <span class="text-xs font-light text-gray-500 dark:text-white/70"> {{ chatMessages|last.user.username }}</span> : {{ chatMessages|last.content }}{% else %}No Messages{% endif %}</div>
                             </div>
                         </a>
                     {% endfor %}

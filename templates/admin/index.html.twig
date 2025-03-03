@@ -137,6 +137,11 @@
                                                                 <i class="las la-eye"></i>
                                                             </a>
                                                         </button>
+                                                        <a href="{{ path('community.del', {id: comm.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet communaute ?');">
+                                                            <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                                                                <i class="la la-times"></i>
+                                                            </button>
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>
