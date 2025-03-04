@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserType extends AbstractType
 {
@@ -41,19 +42,19 @@ class UserType extends AbstractType
                 'format' => 'yyyy-MM-dd', // Format de la date
                 'required' => true, // Rend le champ obligatoire
             ])
-            ->add('pp' ,FileType::class,[
-                'label' => 'Choisissez une image',
+            ->add('pp', FileType::class, [
+                'label' => 'Photo de profil',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new Assert\File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-                        'mimeTypesMessage' => 'Please upload a valid image (jpeg, png, gif, webp)',
-                    ]),
-                    new Assert\NotBlank([
-                        'message' => 'Cover cannot be empty'
-                    ]),
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image au format JPG ou PNG',
+                    ])
                 ],
             ])
             ->add('gender', ChoiceType::class, [

@@ -35,18 +35,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private string $role = 'ROLE_USER'; // Par défaut, un utilisateur a le rôle ROLE_USER
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $pp = null;
 
+    // Getters et setters
     public function getPp(): ?string
     {
         return $this->pp;
     }
-    public function setPp(string $pp): static
+
+    public function setPp(?string $pp): self
     {
         $this->pp = $pp;
 
         return $this;
+    }
+
+    // Méthode pour obtenir l'URL de la photo de profil (avec gestion du défaut)
+    public function getPpUrl(): string
+    {
+        if ($this->pp) {
+            return '/uploads/profile_pictures/' . $this->pp;
+        }
+
+        return 'uploads/default-pp.png';
     }
     #[ORM\Column]
     #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
@@ -96,6 +108,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: MembreComunity::class, mappedBy: 'id_user')]
     private Collection $membreComunities;
+
+
 
     public function __construct()
     {
@@ -263,4 +277,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $banned = false;
+
+    public function isBanned(): bool
+    {
+        return $this->banned;
+    }
+
+    public function setBanned(bool $banned): self
+    {
+        $this->banned = $banned;
+        return $this;
+    }
+
 }
