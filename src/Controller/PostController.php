@@ -20,7 +20,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class PostController extends AbstractController
 {
     #[Route(name: 'app_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository,CommentRepository $commentRepository,VisitorsRepository $repository,EntityManagerInterface $em): Response
+    public function index(PostRepository $postRepository,CommentRepository $commentRepository,VisitorsRepository $repository,
+                          EntityManagerInterface $em,Request $request,SluggerInterface $slugger): Response
     {
         // Récupérer les visiteurs existants
         $visitor = $repository->findAll();
@@ -39,10 +40,44 @@ final class PostController extends AbstractController
         }
         $user = $this->getUser();
         $comments = $commentRepository->findAll();
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $coverFile = $form->get('file')->getData();
+
+            if ($coverFile) {
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'File upload failed!');
+                    return $this->redirectToRoute('app_post_new');
+                }
+
+                $post->setFile('/uploads/' . $newFilename);
+            }
+            $post->setUser($user);
+            $post->setCreatedAt(new \DateTimeImmutable());
+            $post->setUpdateAt(new \DateTimeImmutable());
+            $em->persist($post);
+            $em->flush();
+
+            $this->addFlash('success', 'Post créé avec succès !');
+
+            return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('post/feed.html.twig', [
             'posts' => $postRepository->findAll(),
             'comments' => $comments,
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -51,9 +86,9 @@ final class PostController extends AbstractController
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request);
-        $user = $this->getUser();
 
+        $user = $this->getUser();
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $coverFile = $form->get('file')->getData();
 
@@ -124,18 +159,52 @@ final class PostController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_post_feed', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_feed', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/feed', name: 'app_feed')]
-    public function feed(EntityManagerInterface $em, PostRepository $rep): Response
+    public function feed(EntityManagerInterface $em, PostRepository $rep,Request $request,SluggerInterface $slugger): Response
     {
         $posts = $rep->findAll();
         $user =$this->getUser();
 
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $coverFile = $form->get('file')->getData();
+
+            if ($coverFile) {
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'File upload failed!');
+                    return $this->redirectToRoute('app_post_new');
+                }
+
+                $post->setFile('/uploads/' . $newFilename);
+            }
+            $post->setUser($user);
+            $post->setCreatedAt(new \DateTimeImmutable());
+            $post->setUpdateAt(new \DateTimeImmutable());
+            $em->persist($post);
+            $em->flush();
+
+            $this->addFlash('success', 'Post créé avec succès !');
+
+            return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('post/feed.html.twig', [
             'posts' => $posts,
             'user' => $user,
+            'form' => $form->createView(),
         ]);
     }
 

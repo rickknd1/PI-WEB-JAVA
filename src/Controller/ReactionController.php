@@ -85,7 +85,7 @@ final class ReactionController extends AbstractController
     #[Route('/post/{id}/like', name: 'app_like')]
     public function like(Post $post, EntityManagerInterface $em, UserRepository $userRepository, ReactionRepository $reactionRepository): Response
     {
-        $user = $userRepository->find(1);
+        $user = $this->getUser();
 
         $existingReaction = $reactionRepository->findOneBy([
             'post' => $post,
