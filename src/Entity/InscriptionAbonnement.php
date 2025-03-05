@@ -17,8 +17,10 @@ class InscriptionAbonnement
     #[ORM\JoinColumn(nullable: false)]
     private ?user $user = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Abonnements::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'abonnement_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Abonnements $abonnement = null;
+
 
     #[ORM\Column]
     private ?\DateTimeImmutable $subscribed_at = null;

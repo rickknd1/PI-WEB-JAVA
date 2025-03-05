@@ -9,8 +9,12 @@
                 <ion-icon name="sparkles-sharp" class="text-5xl mb-6 text-sky-500 opacity-70 rotate-12"></ion-icon>
                 <h1 class="lg:text-5xl lg:font-bold md:text-3xl text-xl font-semibold bg-gradient-to-tr from-indigo-500 to-sky-400 bg-clip-text !text-transparent leading-relaxed">  With SyncYLinKY  Premium</h1>
                 <p class="text-sm text-gray-500 mt-2 dark:text-white/80"> Exclusive features and benefits on SyncYLinKY are accessible to you. </p>
+                {% for abonnement in abonnements %}
+                    {% if userabb and userabb.abonnement.id == abonnement.id %}
+                        <p class="text-sm text-gray-500 mt-2 dark:text-white/80">Expired at : {{ userabb.expiredAt|date() }}</p>
+                    {% endif %}
+                {% endfor %}
             </div>
-
 
             <!-- pricing label with slider -->
             <div class="overflow-hidden uk-slider-container py-2">
@@ -40,18 +44,37 @@
                 <br>
                 {% if not userabb %}
                     <div class="space-y-5 mt-7 create-btn hidden">
-                        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'id': 'subscription-form'}}) }}
+
                         {{ form_row(form.mode_paiement) }}
                         <br>
                         {{ form_row(form.renouvellement_auto) }}
                         <br>
-                        {{ form_row(form.abonnement_id) }} <!-- Keep this in the form -->
+                        {{ form_row(form.abonnement_id) }}
                         <br>
+
                         <div class="flex justify-between items-center">
-                            {{ form_widget(form.save, {'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
+                            <button type="button" class="button bg-blue-500 text-white px-8" id="checkout-button">
+                                Checkout
+                            </button>
                         </div>
+
                         {{ form_end(form) }}
                     </div>
+
+                    <script>
+                        document.getElementById('checkout-button').addEventListener('click', function() {
+                            let abonnementId = document.getElementById('incription_abonnement_abonnement_id').value;
+                            let mp = document.getElementById('incription_abonnement_mode_paiement').value;
+                            let ra = document.getElementById('incription_abonnement_renouvellement_auto').value;
+                            if (!abonnementId) {
+                                alert("Veuillez sélectionner un abonnement !");
+                                return;
+                            }
+
+                            window.location.href = "/checkout/" + abonnementId + '/' + mp + '/' + ra;
+                        });
+                    </script>
                 {% endif %}
             </div>
             <div>

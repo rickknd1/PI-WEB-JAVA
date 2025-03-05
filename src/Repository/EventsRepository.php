@@ -27,6 +27,17 @@ class EventsRepository extends ServiceEntityRepository
             ->setHint(Paginator::HINT_ENABLE_DISTINCT, false)
         );
     }
+    public function findEventsByUserCommunities(int $userId): array
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin('e.id_community', 'c')
+            ->innerJoin('c.membreComunities', 'mc')
+            ->where('mc.id_user = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 //    /**
 //     * @return Events[] Returns an array of Events objects

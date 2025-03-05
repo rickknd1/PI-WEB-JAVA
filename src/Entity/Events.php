@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventsRepository::class)]
@@ -42,6 +44,18 @@ class Events
 
     #[ORM\Column(length: 255)]
     private ?string $acces = 'public';
+
+    /**
+     * @var Collection<int, ParticipationEvent>
+     */
+    #[ORM\OneToMany(targetEntity: ParticipationEvent::class, mappedBy: 'event', cascade: ['remove'])]
+    private Collection $participationEvents;
+
+
+    public function __construct()
+    {
+        $this->participationEvents = new ArrayCollection();
+    }
 
     public function getAcces(): ?string
     {
@@ -164,6 +178,36 @@ class Events
     public function setLink(string $link): static
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipationEvent>
+     */
+    public function getParticipationEvents(): Collection
+    {
+        return $this->participationEvents;
+    }
+
+    public function addParticipationEvent(ParticipationEvent $participationEvent): static
+    {
+        if (!$this->participationEvents->contains($participationEvent)) {
+            $this->participationEvents->add($participationEvent);
+            $participationEvent->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipationEvent(ParticipationEvent $participationEvent): static
+    {
+        if ($this->participationEvents->removeElement($participationEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($participationEvent->getEvent() === $this) {
+                $participationEvent->setEvent(null);
+            }
+        }
 
         return $this;
     }

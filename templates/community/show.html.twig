@@ -76,7 +76,7 @@
                                 {% endif %}
                                 <div>
                                     <button type="button" class="rounded-lg bg-secondery flex px-2.5 py-2 dark:bg-dark2">
-                                        <ion-icon name="ellipsis-horizontal" class="text-xl">
+                                        <ion-icon name="ellipsis-horizontal" class="text-xl"></ion-icon>
                                     </button>
                                     <div  class="w-[240px]" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click;offset:10">
                                         <nav>
@@ -139,14 +139,31 @@
                     <div class="grid sm:grid-cols-3 grid-cols-2 gap-3" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
                         {% for chat in chatRooms %}
                             <div class="card">
-                                <a href="timeline-page.html">
+                                {% if comm.id in userCommIds and chat.type =='Public'%}
+                                    <a href="{{ path('chatroom.chat',{id:chat.id}) }}">
                                     <div class="card-media sm:aspect-[2/1.7] h-40">
                                         <img src="{{ chat.cover }}" alt="">
                                         <div class="card-overly"></div>
                                     </div>
-                                </a>
+                                    </a>
+                                {% else %}
+                                    <a href="#" uk-toggle="target: #acces_chat">
+                                        <div class="card-media sm:aspect-[2/1.7] h-40">
+                                            <img src="{{ chat.cover }}" alt="">
+                                            <div class="card-overly"></div>
+                                        </div>
+                                    </a>
+                                {% endif %}
                                 <div class="card-body">
-                                    <a href="timeline-page.html"> <h4 class="card-title"> {{ chat.nom }} </h4> </a>
+                                    {% if comm.id in userCommIds and chat.type =='Public'%}
+                                        <a href="{{ path('chatroom.chat',{id:chat.id}) }}">
+                                            <h4 class="card-title"> {{ chat.nom }} </h4>
+                                        </a>
+                                    {% else %}
+                                        <a href="#" uk-toggle="target: #acces_chat">
+                                            <h4 class="card-title"> {{ chat.nom }} </h4>
+                                        </a>
+                                    {% endif %}
                                     <p class="card-text">{{ chat.type }}</p>
                                     {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
                                         <a href="{{ path('chatroom.chat',{id:chat.id}) }}" class="button bg-secondery !w-auto"> View</a>
@@ -154,7 +171,7 @@
                                     {% else %}
                                         {% if comm.id in userCommIds %}
                                             {% if chat.id in userChats %}
-                                                <a href="{{ path('chatroom.chat',{id:chat.id}) }}">
+                                                <a href="{{ path('chatroom.chat',{id:chat.id}) }}" >
                                                     <button type="button" class="button bg-secondery">View</button>
                                                 </a>
                                             {% else %}
@@ -197,12 +214,24 @@
                                 <div class="card-body flex-1">
                                     <div class="side-list-info {% if event.acces == 'Public' %} text-green-700 {% else %} text-red-600 {% endif %}">{{ event.acces }}</div>
                                     {% if comm.id in ownCommIds or comm.id in moderatedCommIds %}
-                                        <a href="{{ path('event.front.show',{id: event.id }) }}"> <h4 class="card-title"> {{ event.nom }} </h4> </a>
+                                        <a href="{{ path('event.front.show',{id: event.id }) }}"> <h3 class="card-title"> {{ event.nom }} </h3> </a>
                                     {% else %}
-                                        <a href="{{ path('event.front.show',{id: event.id }) }}"> <h4 class="card-title" {% if event.acces == 'Private' %}uk-toggle="target: #acces"{% endif %}> {{ event.nom }} </h4> </a>
+                                        <a href="{{ path('event.front.show',{id: event.id }) }}"> <h3 class="card-title" {% if event.acces == 'Private' %}uk-toggle="target: #acces"{% endif %}> {{ event.nom }} </h3> </a>
                                     {% endif %}
                                     <p class="card-text">{{ event.type }}</p>
                                     <div class="side-list-info"> {{ event.startedAt | date('d/m h:i')}} -> {{ event.finishAt| date('d/m h:i') }}</div>
+                                    {% set numParticipants = 0 %}
+                                    {% set numInterested = 0 %}
+                                    {% for participation in allpartcipate %}
+                                        {% if participation.event.id == event.id %}
+                                            {% if participation.type == 'Participate' %}
+                                                {% set numParticipants = numParticipants + 1 %}
+                                            {% elseif participation.type == 'Interested' %}
+                                                {% set numInterested = numInterested + 1 %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <div class="side-list-info"> {{ numInterested }} Interested ·  {{ numParticipants }} Participated</div>
                                 </div>
                                 <div class="card-footer p-4">
                                     <div class="flex gap-2">
@@ -210,7 +239,29 @@
                                             <a href="{{ path('event.front.show',{id: event.id }) }}" class="button bg-secondery !w-auto flex-1"> View</a>
                                             <a href="{{ path('event.front.del',{id: event.id }) }}" class="button bg-red-600 !w-auto flex-1"> Delete</a>
                                         {% else %}
-                                            <button type="button" class="button bg-primary text-white flex-1" {% if event.acces == 'Private' %} uk-toggle="target: #acces" {% endif %}>Participe</button>
+                                            {% if "now"|date("U") < event.startedAt|date("U") %}
+                                                <button type="button" class="button bg-secondery !w-auto" {% if event.acces == 'Private' %} uk-toggle="target: #acces" {% endif %}>
+                                                    <a href="{{ path('interested.event',{id:event.id}) }}">
+                                                        {% if event.id in  userInterestedIds %}
+                                                            <i class="fas fa-star"></i>
+                                                        {% else %}
+                                                            <i class="far fa-star"></i>
+                                                        {% endif %}
+                                                    </a>
+                                                </button>
+                                                {% if event.id in userParticipationId %}
+                                                    <button type="button" class="button bg-primary text-white flex-1" {% if event.acces == 'Private' %} uk-toggle="target: #acces" {% endif %}>
+                                                        <i class="fas fa-check"></i>
+                                                        <a href="{{ path('join.event',{id:event.id}) }}"> Participated</a>
+                                                    </button>
+                                                {% else %}
+                                                    <button type="button" class="button bg-secondery text-white flex-1" {% if event.acces == 'Private' %} uk-toggle="target: #acces" {% endif %}>
+                                                        <a href="{{ path('join.event',{id:event.id}) }}">Participe</a>
+                                                    </button>
+                                                {% endif %}
+                                            {% else %}
+                                                <p class="button bg-gray-400 text-white flex-1">Event Passed</p>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -341,22 +392,6 @@
 
                     </div>
 
-                    <!-- group media  -->
-                    <div class="box p-5 px-6">
-                        <div class="flex items-baseline justify-between text-black dark:text-white">
-                            <h3 class="font-bold text-base"> Recent Events </h3>
-                            <a href="{{ path('community.events',{id: comm.id }) }}" class="text-sm text-blue-500">See all</a>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-1 text-center text-sm mt-4 mb-2 rounded-lg overflow-hidden">
-                            {% for event in events %}
-                                <div class="relative w-full aspect-[4/3]">
-                                    <img src="{{ event.cover }}" alt="" class="object-cover w-full h-full inset-0">
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
                     <!-- related group  -->
                     <div class="box p-5 px-6">
 
@@ -386,6 +421,42 @@
                             {% endfor %}
                         </div>
                     </div>
+                    {% for memb in membres %}
+                        {% if memb.status == 'owner' %}
+                            <div class="box p-5 px-6">
+
+                                <div class="box p-5 px-6 space-y-4">
+                                    <h3 class="font-bold text-base text-black"> Created by </h3>
+                                    <div class="side-list-item">
+                                        <a href="#">
+                                            <img src="/assets/images/avatars/avatar-4.jpg" alt="" class="side-list-image rounded-full">
+                                        </a>
+                                        <div class="flex-1">
+                                            <a href="#"><h4 class="side-list-title"> {{ memb.idUser.username }}</h4></a>
+                                            <div class="side-list-info">Owner </div>
+                                        </div>
+                                        <a href="#" class="bg-secondery/60 button rounded-full">Profile</a>
+                                    </div>
+
+                                    <ul class="text-gray-600 space-y-4 text-sm dark:text-white/80">
+
+                                        <li class="flex items-center gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"></path>
+                                            </svg>
+                                            <div> <span class="font-semibold text-black dark:text-white"> 3,240 </span> friends  </div>
+                                        </li>
+                                        <li class="flex items-center gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"></path>
+                                            </svg>
+                                            <div> on SyncyLinky since  <span class="font-semibold text-black dark:text-white"> 2025</span> </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -462,11 +533,6 @@
                     </div>
                     <br>
                     <div>
-                        {{ form_label(form_event.description) }}
-                        {{ form_widget(form_event.description, {'id': 'event_desc', 'attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
-                        {{ form_errors(form_event.description) |raw }}
-                    </div>
-                    <div>
                         {{ form_label(form_event.startedAt) }}
                         {{ form_widget(form_event.startedAt, {'id': 'event_start', 'attr': {'class': 'w-full mt-3'}}) }}
                         {{ form_errors(form_event.startedAt) |raw }}
@@ -482,6 +548,14 @@
                         {{ form_errors(form_event.lieu) |raw }}
                     </div>
                     <br>
+                    <div>
+                        {{ form_label(form_event.description) }}
+                        <button type="button" id="generateButton" class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Générer une description ✨
+                        </button>
+                        {{ form_widget(form_event.description, {'id': 'event_desc', 'attr': {'class': 'w-full mt-3', 'placeholder': 'Description'}}) }}
+                        {{ form_errors(form_event.description) |raw }}
+                    </div>
                     <div>
                         {{ form_label(form_event.type) }}
                         {{ form_widget(form_event.type, {'id': 'event_type', 'attr': {'class': 'form-select'}}) }}
@@ -509,15 +583,49 @@
                     </div>
                     <br>
                     <div class="flex justify-between items-center">
-                        <div class="flex items-start gap-2">
-                            <ion-icon name="time-outline" class="text-3xl text-sky-600 rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
-                            <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after ADMIN VERIFICATION </p>
-                        </div>
                         {{ form_widget(form_event.save, {'id': 'event_save', 'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
                     </div>
                     {{ form_widget(form_event.id_community, {'attr': {'style': 'display: none;'}}) }}
                     {{ form_end(form_event) }}
                 </form>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        document.getElementById("generateButton").addEventListener("click", function() {
+
+                            const Nom = document.getElementById("event_nom").value.trim();
+                            const date = document.getElementById("event_start").value.trim();
+                            const lieu = document.getElementById("event_lieu").value.trim();
+                            const descriptionField = document.getElementById("event_desc");
+                            descriptionField.value = 'Generating .......'
+
+                            if (!Nom || !date || !lieu) {
+                                alert("Veuillez entrer les information.");
+                                return;
+                            }
+
+                            fetch("{{ path('generate_description_event') }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({Nom , date , lieu }),
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.description) {
+                                        if (descriptionField) {
+                                            descriptionField.value = data.description;
+                                        } else {
+                                            console.error("Champ de description introuvable !");
+                                        }
+                                    } else {
+                                        alert("Erreur: " + (data.error || "Impossible de générer la description."));
+                                    }
+                                })
+                                .catch(error => console.error("Erreur:", error));
+                        });
+                    });
+                </script>
             </div>
 
                 <script>
@@ -584,10 +692,6 @@
                     <br>
 
                     <div class="flex justify-between items-center">
-                        <div class="flex items-start gap-2">
-                            <ion-icon name="time-outline" class="text-3xl text-sky-600 rounded-full bg-blue-50 dark:bg-transparent"></ion-icon>
-                            <p class="text-sm text-gray-500 font-medium"> Your community will be available <br> after ADMIN VERIFICATION </p>
-                        </div>
                         {{ form_widget(form_chat.save, {'id': 'chat_save', 'attr': {'class': 'button bg-blue-500 text-white px-8'}}) }}
                     </div>
                     {{ form_widget(form_chat.community, {'attr': {'style': 'display: none;'}}) }}

@@ -6,18 +6,31 @@ use App\Entity\Abonnements;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class AbonnementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prix')
+            ->add('nom', TextType::class,[
+                'constraints' => new Assert\Length([
+                    'min' => 3,
+                    'minMessage' => 'Votre nom est trop court ! Min 3 character',
+                ]),
+            ])
+            ->add('prix', NumberType::class, [
+                'constraints' => new Assert\GreaterThanOrEqual([
+                        'value' => 10,
+                        'message' => 'Le prix ne peut pas être inférieur à 10.',
+                ]),
+            ])
             ->add('avantages', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'entry_options' => ['attr' => ['class' => 'advantage-field']],

@@ -27,17 +27,18 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('password')->getData();
 
-            // Définit le username avec la valeur de l'email
+
             $user->setUsername($user->getEmail());
 
-            // Encoder le mot de passe
+
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
-            // Persister l'utilisateur en base de données
+            $user->setPp('/assets/images/avatars/avatar-1.jpg');
+
+
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Se connecter automatiquement après l'enregistrement (si nécessaire)
             return $security->login($user, UserAuthenticator::class, 'main');
         }
 

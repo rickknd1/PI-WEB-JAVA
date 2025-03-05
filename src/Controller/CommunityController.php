@@ -7,6 +7,7 @@ use App\Entity\ChatRooms;
 use App\Entity\Community;
 use App\Entity\Events;
 use App\Entity\MembreComunity;
+use App\Entity\ParticipationEvent;
 use App\Event\CommunityCreatedEvent;
 use App\Form\ChatRoomsType;
 use App\Form\CommunityType;
@@ -17,6 +18,7 @@ use App\Repository\ChatRoomsRepository;
 use App\Repository\CommunityRepository;
 use App\Repository\EventsRepository;
 use App\Repository\MembreComunityRepository;
+use App\Repository\ParticipationEventRepository;
 use App\Repository\VisitorsRepository;
 use App\Service\QrCodeService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -284,7 +286,9 @@ final class CommunityController extends AbstractController{
     #[Route('/community/{id}', name: 'community.show', requirements: ['id' => '\d+'])]
     public function detail(Request $request,Community $community,EventsRepository $eventsRepository,EntityManagerInterface $em,
                            CommunityRepository $communityRepository,ChatRoomsRepository $chatRoomsRepository,MembreComunityRepository $membreComunityRepository,
-                           QrCodeService $qrCodeService,SluggerInterface $slugger,ChatRoomMembresRepository $chatRoomMembresRepository): Response
+                           QrCodeService $qrCodeService,SluggerInterface $slugger,ChatRoomMembresRepository $chatRoomMembresRepository,
+                           ParticipationEventRepository $participationEventRepository
+    ): Response
     {
         $qrCode = base64_encode($qrCodeService->generateQrCode($community));
         $referer = $request->headers->get('referer');
@@ -405,6 +409,13 @@ final class CommunityController extends AbstractController{
         }
         $userChats = $chatRoomMembresRepository->findBy(['user' => $user]);
         $userChatRoomIds = array_map(fn($userChat) => $userChat->getChatRoom()->getId(), $userChats);
+        $userParticipation = $participationEventRepository->findBy(['user' => $user, 'type' => 'Participate']);
+        $userParticipationIds = array_map(fn($userParticipation) => $userParticipation->getEvent()->getId(), $userParticipation);
+
+        $userInterested = $participationEventRepository->findBy(['user' => $user, 'type' => 'Interested']);
+        $userInterestedIds = array_map(fn($userInterested) => $userInterested->getEvent()->getId(), $userInterested);
+
+        $allpartcipate = $participationEventRepository->findAll();
 
         return $this->render('community/show.html.twig', [
             'comm' => $community,
@@ -421,6 +432,11 @@ final class CommunityController extends AbstractController{
             'form_chat' => $form_chat->createView(),
             'qrCode' => $qrCode,
             'userChats' => $userChatRoomIds,
+            'userParticipationId' => $userParticipationIds,
+            'userParticipation' => $userParticipation,
+            'userInterested' => $userInterested,
+            'userInterestedIds' => $userInterestedIds,
+            'allpartcipate' => $allpartcipate,
         ]);
     }
     #[Route('/download-qrcode/{id}', name: 'download_qrcode')]

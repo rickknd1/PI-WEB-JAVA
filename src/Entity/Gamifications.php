@@ -21,9 +21,10 @@ class Gamifications
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Abonnements::class)]
-    #[ORM\JoinColumn(name: "type_abonnement", referencedColumnName: "id")]
+    #[ORM\ManyToOne(targetEntity: Abonnements::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(name: "type_abonnement", referencedColumnName: "id", onDelete: "CASCADE")]
     private ?Abonnements $type_abonnement = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;

@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Event\MessageSentEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ChatRoomsController extends AbstractController{
     #[Route('admin/chatrooms', name: 'chatrooms.index')]
@@ -181,6 +183,7 @@ final class ChatRoomsController extends AbstractController{
         $chatRoomMembre = new ChatRoomMembres();
         $chatRoomMembre->setChatroom($chatroom);
         $chatRoomMembre->setUser($user);
+        $user->incrementPoints(10);
         $em->persist($chatRoomMembre);
         $em->flush();
         if ($referer) {
@@ -226,5 +229,25 @@ final class ChatRoomsController extends AbstractController{
 
         return $this->redirectToRoute('chatroom.chat', ['id' => $id]);
 
+    }
+    private EventDispatcherInterface $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function sendMessage(Request $request, int $chatRoomId,ChatRoomsRepository $chatRoomsRepository): Response
+    {
+        $message = new Messages();
+        $message->setContent($request->request->get('message'))
+            ->setUser($this->getUser())
+            ->setChatRoom($this->$chatRoomsRepository->find($chatRoomId))
+            ->setSentAt(new \DateTimeImmutable());
+
+        $event = new MessageSentEvent($message);
+        $this->eventDispatcher->dispatch($event, MessageSentEvent::NAME);
+
+        return $this->redirectToRoute('chatroom.chat', ['id' => $chatRoomId]);
     }
 }

@@ -1,0 +1,26 @@
+{% extends "home/home.html.twig" %}
+
+{% block pay %}
+    <script>
+        (function(t,e,s,n){
+            var o,a,c;
+            t.SMCX = t.SMCX || [];
+            e.getElementById(n) || (
+                o = e.getElementsByTagName(s),
+                    a = o[o.length - 1],
+                    c = e.createElement(s),
+                    c.type = "text/javascript",
+                    c.async = !0,
+                    c.id = n,
+                    c.src = "https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd7ZTyRKGuzcxD0JPjqwhfq44zXzVuAuY1X7IyTZ9lurf.js",
+                    a.parentNode.insertBefore(c, a)
+            );
+        })(window, document, "script", "smcx-sdk");
+
+        window.SMCX = window.SMCX || [];
+        window.SMCX.push({
+            surveyUrl: "https://www.surveymonkey.com/r/YOUR_SURVEY_ID",
+            redirectUrl: "{{ path('app_post_index') }}"
+        });
+    </script>
+{% endblock %}

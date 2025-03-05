@@ -30,7 +30,7 @@ class SecurityController extends AbstractController
             if ($referer) {
                 return $this->redirect($referer);
             }
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('app_post_index');
         }
 
         return $this->render('security/login.html.twig', [

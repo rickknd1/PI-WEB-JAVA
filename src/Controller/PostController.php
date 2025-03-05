@@ -5,8 +5,13 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Visitors;
 use App\Form\PostType;
+use App\Repository\ChatRoomMembresRepository;
+use App\Repository\ChatRoomsRepository;
 use App\Repository\CommentRepository;
+use App\Repository\EventsRepository;
+use App\Repository\GamificationsRepository;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use App\Repository\VisitorsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +26,9 @@ final class PostController extends AbstractController
 {
     #[Route(name: 'app_post_index', methods: ['GET'])]
     public function index(PostRepository $postRepository,CommentRepository $commentRepository,VisitorsRepository $repository,
-                          EntityManagerInterface $em,Request $request,SluggerInterface $slugger): Response
+                          EntityManagerInterface $em,Request $request,SluggerInterface $slugger,UserRepository $userRepository,
+                            ChatRoomMembresRepository $chatRoomMembresRepository,EventsRepository $eventsRepository,GamificationsRepository $gamificationsRepository
+    ): Response
     {
         // Récupérer les visiteurs existants
         $visitor = $repository->findAll();
@@ -39,7 +46,11 @@ final class PostController extends AbstractController
             $em->flush();
         }
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $comments = $commentRepository->findAll();
+
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
 
@@ -71,13 +82,23 @@ final class PostController extends AbstractController
 
             $this->addFlash('success', 'Post créé avec succès !');
 
+
             return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
         }
+        $users = $userRepository->findAll();
+        $userchats = $chatRoomMembresRepository->findBy(['user' => $user]);
+        $events = $eventsRepository->findEventsByUserCommunities($user->getId());
+
+        $gamifications = $gamificationsRepository->findAll();
         return $this->render('post/feed.html.twig', [
             'posts' => $postRepository->findAll(),
             'comments' => $comments,
             'user' => $user,
+            'users' => $users,
             'form' => $form->createView(),
+            'userchats' => $userchats,
+            'events' => $events,
+            'gamifications' => $gamifications,
         ]);
     }
 

@@ -231,9 +231,11 @@
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("generateButton").addEventListener("click", function() {
+
                             const keywords = document.getElementById("keywords").value.trim();
                             const title = document.getElementById("community_nom").value.trim();
                             const descriptionField = document.getElementById("community_description");
+                            descriptionField.value = 'Generating .......'
 
                             if (!keywords) {
                                 alert("Veuillez entrer des mots-clés.");

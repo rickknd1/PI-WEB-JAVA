@@ -3,7 +3,7 @@
         'name' => 'symfony/skeleton',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f84a5038699310025ecb5a8558954ea149d12675',
+        'reference' => '7766562a2de554e30b79ce9251de2a4b3eb73441',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -749,6 +749,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'stripe/stripe-php' => array(
+            'pretty_version' => 'v16.6.0',
+            'version' => '16.6.0.0',
+            'reference' => 'd6de0a536f00b5c5c74f36b8f4d0d93b035499ff',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../stripe/stripe-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/asset' => array(
             'pretty_version' => 'v7.2.0',
             'version' => '7.2.0.0',
@@ -1355,7 +1364,7 @@
         'symfony/skeleton' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f84a5038699310025ecb5a8558954ea149d12675',
+            'reference' => '7766562a2de554e30b79ce9251de2a4b3eb73441',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

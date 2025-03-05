@@ -96,12 +96,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'user')]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, ParticipationEvent>
+     */
+    #[ORM\OneToMany(targetEntity: ParticipationEvent::class, mappedBy: 'user')]
+    private Collection $participationEvents;
+
+    #[ORM\Column(type: "integer")]
+    private ?int $points = 0;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $pp = null;
+
+    public function getPp(): ?string
+    {
+        return $this->pp;
+    }
+
+    public function setPp(?string $pp): self
+    {
+        $this->pp = $pp;
+
+        return $this;
+    }
+
+    public function getPoints(): ?int
+    {
+        return $this->points;
+    }
+
+    public function setPoints(int $points): static
+    {
+        $this->points = $points;
+        return $this;
+    }
+
+    public function incrementPoints(int $points): static
+    {
+        $this->points += $points;
+        return $this;
+    }
+    public function decrementPoints(int $points): static
+    {
+        $this->points -= $points;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->interests = new ArrayCollection();
         $this->membreComunities = new ArrayCollection();
         $this->chatRoomMembres = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->participationEvents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -319,6 +366,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($message->getUser() === $this) {
                 $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipationEvent>
+     */
+    public function getParticipationEvents(): Collection
+    {
+        return $this->participationEvents;
+    }
+
+    public function addParticipationEvent(ParticipationEvent $participationEvent): static
+    {
+        if (!$this->participationEvents->contains($participationEvent)) {
+            $this->participationEvents->add($participationEvent);
+            $participationEvent->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipationEvent(ParticipationEvent $participationEvent): static
+    {
+        if ($this->participationEvents->removeElement($participationEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($participationEvent->getUser() === $this) {
+                $participationEvent->setUser(null);
             }
         }
 

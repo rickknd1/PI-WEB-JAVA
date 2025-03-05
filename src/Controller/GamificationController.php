@@ -6,6 +6,7 @@ use App\Entity\Abonnements;
 use App\Entity\Gamifications;
 use App\Form\GamificationType;
 use App\Repository\GamificationsRepository;
+use App\Repository\InscriptionAbonnementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,5 +58,36 @@ final class GamificationController extends AbstractController{
             'form' => $form->createView(),
             'user' => $user,
         ]);
+    }
+    #[Route('/gamification/{id}', name: 'gamification')]
+    public function gamification(Gamifications $gamifications,Request $request,EntityManagerInterface $em,):Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('abonnement/gamification.html.twig', [
+            'user' => $user,
+            'gamifications' => $gamifications,
+        ]);
+    }
+    #[Route('/gamification/active/{point}', name: 'gamification.active')]
+    public function gamificationActive(int $point, Request $request, EntityManagerInterface $em, InscriptionAbonnementRepository $inscriptionAbonnementRepository): Response
+    {
+        $referer = $request->headers->get('referer');
+        $user = $this->getUser();
+        $user->setPoints($user->getPoints() - $point);
+
+        $inscriptionAbonnement = $inscriptionAbonnementRepository->findOneBy(['user' => $user]);
+
+        if (!$inscriptionAbonnement) {
+            throw $this->createNotFoundException('No subscription found for this user.');
+        }
+
+        $inscriptionAbonnement->setExpiredAt((new \DateTimeImmutable())->modify('+1 month'));
+
+        $em->persist($inscriptionAbonnement);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirect($referer);
     }
 }
