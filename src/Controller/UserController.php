@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 final class UserController extends AbstractController
 {
@@ -21,36 +22,55 @@ final class UserController extends AbstractController
         UserRepository $userRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        PaginatorInterface $paginator
     ): Response {
-        $users = $userRepository->findAll();
+        // Pagination des utilisateurs
+        $query = $userRepository->createQueryBuilder('u')->getQuery();
+        $users = $paginator->paginate($query, $request->query->getInt('page', 1), 3);
 
+        // Statistiques
+        $totalUsers = $userRepository->count([]);
+        $activeUsers = $userRepository->count(['isActive' => true]);
+        $bannedUsers = $userRepository->count(['banned' => true]);
+
+        // Données pour le graphique
+        $chartLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        $chartData = [10, 20, 30, 40, 50, 60]; // Exemple de données
+
+        // Activités récentes
+        $recentActivities = $userRepository->findRecentActivities(10);
+
+        // Créez une nouvelle instance de l'entité User
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, [
-            'attr' => ['novalidate' => 'novalidate'],
-        ]);
+
+        // Créez le formulaire
+        $form = $this->createForm(UserType::class, $user);
+
+        // Traitez la soumission du formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleProfilePicture($form, $user, $slugger);
-
+            // Enregistrez l'utilisateur en base de données
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Utilisateur créé avec succès');
-            return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
-        } else {
-            foreach ($form->getErrors(true) as $error) {
-                $this->addFlash('error', $error->getMessage());
-            }
+            // Redirigez vers la même page après la création
+            return $this->redirectToRoute('user.admin');
         }
 
         return $this->render('user/index.html.twig', [
-            'user' => $user,
-            'users' => $users,
             'form' => $form->createView(),
+            'users' => $users,
+            'totalUsers' => $totalUsers,
+            'activeUsers' => $activeUsers,
+            'bannedUsers' => $bannedUsers,
+            'chartLabels' => $chartLabels,
+            'chartData' => $chartData,
+            'recentActivities' => $recentActivities,
         ]);
     }
+
 
     #[Route('/admin/user/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(

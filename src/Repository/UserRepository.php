@@ -33,6 +33,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function findRecentActivities(int $limit = 10): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.lastActivityAt', 'DESC') // Remplacez "lastActivityAt" par le champ approprié
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

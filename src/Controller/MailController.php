@@ -13,7 +13,7 @@ class MailController extends AbstractController
     public function sendTestEmail(MailerInterface $mailer): Response
     {
         $email = (new Email())
-            ->from('kayzeurdylan@gmail.com')
+            ->from('kayzeurdylan@gmail.com','syncylinky')
             ->to('destinataire@example.com')
             ->subject('Test d\'envoi d\'e-mail')
             ->text('Ceci est un e-mail de test envoyé depuis Symfony.');

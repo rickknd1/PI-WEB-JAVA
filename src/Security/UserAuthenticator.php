@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Security;
 
 use App\Repository\UserRepository;
@@ -17,11 +16,15 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
 class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    public const OAUTH_GOOGLE_ROUTE = 'app_google_oauth';
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
@@ -31,27 +34,45 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->getPayload()->getString('email');
+        if ($request->attributes->get('_route') === self::OAUTH_GOOGLE_ROUTE) {
+            // Authentification OAuth
+            $email = $request->query->get('email');
+            return new Passport(
+                new UserBadge($email, function($userIdentifier) {
+                    $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
 
-        $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+                    if ($user && $user->isBanned()) {
+                        throw new CustomUserMessageAuthenticationException('Votre compte a été banni. Contactez un administrateur.');
+                    }
 
-        return new Passport(
-            new UserBadge($email, function($userIdentifier) {
-                $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
+                    return $user;
+                }),
+                new PasswordCredentials('') // Pas de mot de passe pour OAuth
+            );
+        } else {
+            // Authentification traditionnelle (email/mot de passe)
+            $email = $request->getPayload()->getString('email');
+            $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
-                if ($user && $user->isBanned()) {
-                    throw new CustomUserMessageAuthenticationException('Votre compte a été banni. Contactez un administrateur.');
-                }
+            return new Passport(
+                new UserBadge($email, function($userIdentifier) {
+                    $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
 
-                return $user;
-            }),
-            new PasswordCredentials($request->getPayload()->getString('password')),
-            [
-                new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
-                new RememberMeBadge(),
-            ]
-        );
+                    if ($user && $user->isBanned()) {
+                        throw new CustomUserMessageAuthenticationException('Votre compte a été banni. Contactez un administrateur.');
+                    }
+
+                    return $user;
+                }),
+                new PasswordCredentials($request->getPayload()->getString('password')),
+                [
+                    new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
+                    new RememberMeBadge(),
+                ]
+            );
+        }
     }
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // Redirection vers la page cible si elle est définie
@@ -77,4 +98,10 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
+    public function start(Request $request, AuthenticationException $authException = null): Response
+    {
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+    }
+
 }

@@ -3,9 +3,65 @@
 {% block title %}Password Reset Email Sent{% endblock %}
 
 {% block body %}
-    <p>
-        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+    <div class="sm:flex">
+        <!-- Left Panel -->
+        <div class="relative lg:w-[580px] md:w-96 w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 dark:bg-slate-900 z-10">
+            <div class="w-full lg:max-w-sm mx-auto space-y-10" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+
+                <!-- Logo dynamique pour le dark mode -->
+                <a href="{{ path('home') }}">
+                    <img src="/assets/images/logos/logo TYPOsvg.svg" class="w-40 absolute top-10 left-30 dark:hidden" alt="Logo SyncYLinkY">
+                    <img src="/assets/images/logos/logo TYPOsvg.svg" class="w-40 absolute top-10 left-30 hidden dark:!block" alt="Logo SyncYLinkY dark">
+                </a>
+
+                <!-- En-tête -->
+                <div>
+                    <h2 class="text-2xl font-semibold mb-1.5">Password Reset Email Sent</h2>
+                    <p class="text-sm text-gray-700 font-normal dark:text-gray-300">
+                        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+                        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                    </p>
+                    <p class="text-sm text-gray-700 font-normal dark:text-gray-300 mt-4">
+                        If you don't receive an email, please check your spam folder or <a href="{{ path('app_forgot_password_request') }}" class="text-blue-700 hover:text-blue-900 dark:text-blue-400">try again</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="flex-1 relative bg-primary max-md:hidden">
+            <div class="relative w-full h-full" tabindex="-1" uk-slideshow="animation: slide; autoplay: true">
+                <ul class="uk-slideshow-items w-full h-full">
+                    <li class="w-full">
+                        <img
+                                src="assets/images/imagesignup.jpg"
+                                alt="Presentation"
+                                class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left"
+                        >
+                        <div class="absolute bottom-0 w-full uk-transition-slide-bottom-small z-10">
+                            <div class="max-w-xl w-full mx-auto pb-32 px-5 z-30 relative" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                <img
+                                        src="/assets/images/logos/logo TYPO orange.svg"
+                                        class="w-30"
+                                        alt="Logo Icon"
+                                >
+                                <h4 class="!text-white text-2xl font-semibold mt-7" uk-slideshow-parallax="y: 600,0,0">
+                                    Connect With Friends
+                                </h4>
+                                <p class="!text-white text-lg mt-7 leading-8" uk-slideshow-parallax="y: 800,0,0">
+                                    Share your best moments and stay connected with your community.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full h-96 bg-gradient-to-t from-black/80 to-transparent absolute bottom-0 left-0"></div>
+                    </li>
+                </ul>
+
+                <!-- Slideshow Navigation -->
+                <div class="flex justify-center absolute bottom-8 left-0 right-0">
+                    <ul class="inline-flex gap-2 uk-dotnav uk-slideshow-nav"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

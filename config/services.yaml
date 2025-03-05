@@ -6,7 +6,7 @@
 parameters:
     cover_directory: '%kernel.project_dir%/public/uploads'
     profile_pictures_directory: '%kernel.project_dir%/public/uploads/profile_pictures'
-    app.mailer.from_email: 'reply@Syncylinky.com'
+    app.mailer.from_email: 'kayzeurdylan@gmail.com'
     app.mailer.from_name: 'Syncylinky'
 
 services:
