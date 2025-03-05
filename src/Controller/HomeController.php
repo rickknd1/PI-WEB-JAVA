@@ -34,4 +34,14 @@ final class HomeController extends AbstractController{
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/acceul', name: 'acceul')]
+    public function Acceuil(Request $request, EntityManagerInterface $em, VisitorsRepository $repository): Response
+    {
+
+        return $this->render('front/feed.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
 }

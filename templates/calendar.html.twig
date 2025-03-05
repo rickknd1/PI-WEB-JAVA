@@ -1,0 +1,45 @@
+{% extends 'ville/adminVille.html.twig' %}
+
+
+{% block  villeAdmin %}
+<style>
+    /* Réduire la taille du calendrier */
+    #calendar-container {
+        width: 800px;
+    margin-left: 276px;
+    }
+
+   
+  
+</style>
+    <h2> Calendar</h2>
+    <div id="calendar-container">
+        <div id="calendar"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        
+            
+            var calendarEl = document.getElementById('calendar');
+            if (!calendarEl) {
+              
+                return;
+            }
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'fr',
+                events: "/calendar/events",
+                eventClick: function(info) {
+                    alert("Event: " + info.event.title);
+                }
+            });
+
+            calendar.render();
+            
+        });
+    </script>
+{% endblock %}
+
+

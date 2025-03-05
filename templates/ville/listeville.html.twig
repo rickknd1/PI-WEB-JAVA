@@ -1,17 +1,33 @@
 {% extends 'ville/adminVille.html.twig' %}
 
-{% block titleVille %}Liste des villes{% endblock %}
-{% block nbrVille %}{{ villes | length }}{% endblock %}
+{% block titleVille %}Liste des villes  : {{ villes | length }}{% endblock %}
+{% block nbrVille %}
+<div class="input-group">
+    <input type="text" id="searchInput" name="search" placeholder="Search for a city..." class="form-control">
+    <div class="input-group-append">
+        <button type="submit" class="btn btn-primary">
+            <i class="la la-search"></i>
+        </button>
+        <button type="button" class="btn btn-secondary ml-2" id="calendarButton">
+            <i class="la la-calendar"></i>
+        </button>
+    </div>
+</div>
+
+
+{% endblock %}
 
 {% block ville %}
+
     <div class="relative overflow-x-auto">
         <table class="table table-head-bg-primary mt-4">
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Nom</th>
+                <th scope="col"> <i class="la la-map-marker"></i>Nom</th>
                 <th scope="col" class="col-4" >Description</th>
-                <th scope="col" class="col-2">Position</th>
+                <th scope="col" class="col-2"><i class="la la-map"></i>Position</th>
+                <th scope="col">Météo</th>
                 <th scope="col" >Actions</th>
             </tr>
             </thead>
@@ -20,8 +36,9 @@
                 <tr>
                     <td>{{ ville.id }}</td>
                     <td>{{ ville.nom }}</td>
-                    <td>description</td>
+                    <td>{{ville.description}}</td>
                     <td class="">{{ ville.position }}</td>
+                    <td id="weather-{{ ville.id }}"><i class="la la-spinner la-spin"></i>Loading...</td>
                     <td>
                         <a href="{{ path('ville_show', {id: ville.id }) }}">
                             <button type="button" data-toggle="tooltip" title="Show Task" class="btn btn-link <btn-simple-primary">
@@ -70,4 +87,89 @@
     </div>
 
     {{ form_end(form) }}
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            let searchValue = $(this).val();
+            $.ajax({
+                url: "{{ path('ville_search') }}",
+                type: 'GET',
+                data: { search: searchValue },
+                success: function (data) {
+                    let tableBody = $('tbody');
+                    tableBody.empty();
+
+                    if (data.length > 0) {
+                        data.forEach(function (ville) {
+                            let row = `<tr>
+                                <td>${ville.id}</td>
+                                <td>${ville.nom}</td>
+                                <td>${ville.description}</td>
+                                <td>${ville.position}</td>
+                                <td>
+                                    <a href="/ville/${ville.id}">
+                                        <button type="button" class="btn btn-link btn-simple-primary">
+                                            <i class="la la-eye"></i>
+                                        </button>
+                                    </a>
+                                    <a href="/ville/${ville.id}/edit">
+                                        <button type="button" class="btn btn-link btn-simple-primary">
+                                            <i class="la la-edit"></i>
+                                        </button>
+                                    </a>
+                                    <form method="POST" action="/ville/${ville.id}/delete" style="display:inline;">
+                                        <button type="submit" class="btn btn-link btn-simple-danger">
+                                            <i class="la la-times"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>`;
+                            tableBody.append(row);
+                        });
+                    } else {
+                        tableBody.append('<tr><td colspan="5" class="text-center">Aucune ville trouvée</td></tr>');
+                    }
+                }
+            });
+        });
+    });
+    
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("td[id^='weather-']").forEach(function (element) {
+            let villeId = element.id.split('-')[1];
+
+            fetch(`/ville/weather/${villeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.temperature !== undefined) {
+                        element.innerHTML = `
+    <div class="weather-card d-flex flex-column align-items-center p-3 rounded shadow-sm bg-white">
+        <h5 class="text-primary font-weight-bold">${data.temperature}°C</h5>
+        <p class="text-muted m-0">
+            <i class="la la-wind text-info"></i> ${data.windspeed} km/h
+        </p>
+    </div>
+`;
+                    } else {
+                        element.innerHTML = "Météo non disponible";
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur de récupération météo:", error);
+                    element.innerHTML = "Météo indisponible";
+                });
+        });
+    });
+</script>
+<script>
+    document.getElementById('calendarButton').addEventListener('click', function() {
+        window.location.href = "{{ path('calendar_view') }}";
+    });
+</script>
+
 {% endblock %}
