@@ -8,16 +8,32 @@ use App\Entity\Share;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Driver\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\Table(name: "post")]
+
+/**
+ * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @Vich\Uploadable
+ */
 class Post
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre ne peut pas être vide.')]
+    #[Assert\Length(
+        min: 5,
+        max: 255,
+        minMessage: 'Le titre doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.'
+    )]
+    private ?string $titre = null;
 
     #[Assert\NotBlank(message: "Le texte ne peut pas être vide.")]
     #[Assert\Length(
@@ -30,6 +46,15 @@ class Post
     private ?string $content = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    /**
+     * @var File|null
+     * @Vich\UploadableField(mapping="post_file", fileNameProperty="imageName")
+     * @Assert\File(
+     *     maxSize="5M",
+     *     mimeTypes={"image/jpeg", "image/png", "image/gif"},
+     *     mimeTypesMessage="Please upload a valid image file"
+     * )
+     */
     private ?string $file = null;
 
     #[ORM\Column]
@@ -41,17 +66,22 @@ class Post
     /**
      * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', cascade: ["remove"], orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'post')]
+    #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'post', cascade: ["remove"], orphanRemoval: true)]
     private Collection $shares;
 
-    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'post')]
+    #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'post', cascade: ["remove"], orphanRemoval: true)]
     private Collection $reactions;
 
     #[ORM\ManyToOne(inversedBy: 'post')]
     private ?User $user = null;
+
+    #[ORM\Column(type: "string", length: 20, options: ["default" => "public"])]
+    #[Assert\Choice(choices: ["public", "friends", "community"], message: "Choisissez une visibilité valide.")]
+    private string $visibility = "public";
+
 
     public function __construct()
     {
@@ -182,7 +212,7 @@ class Post
         return $this->reactions;
     }
 
-    public function addReaction(Reaction $reaction): self
+    public function addReaction(Reaction $reaction): static
     {
         $this->reactions[] = $reaction;
         $reaction->setPost($this);
@@ -190,7 +220,7 @@ class Post
     }
 
 
-    public function removeReaction(Reaction $reaction): self
+    public function removeReaction(Reaction $reaction): static
     {
         if ($this->reactions->removeElement($reaction)) {
             if ($reaction->getPost() === $this) {
@@ -209,6 +239,29 @@ class Post
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
+    }
+
+    public function setVisibility(string $visibility): self
+    {
+        $this->visibility = $visibility;
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
 
         return $this;
     }

@@ -10,16 +10,20 @@ use App\Repository\ChatRoomsRepository;
 use App\Repository\CommentRepository;
 use App\Repository\EventsRepository;
 use App\Repository\GamificationsRepository;
+use App\Repository\CommunityRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Repository\VisitorsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/post')]
 final class PostController extends AbstractController
@@ -147,8 +151,11 @@ final class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function show(Post $post): Response
+    public function show(Post $post, EntityManagerInterface $entityManager): Response
     {
+        $entityManager->remove($post);
+        $entityManager->flush();
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
@@ -249,4 +256,59 @@ final class PostController extends AbstractController
 
         return $this->redirectToRoute('app_feed');
     }
+
+    #[Route('/search', name: 'app_search')]
+    public function search(Request $request, UserRepository $userRepository, CommunityRepository $groupRepository, PostRepository $pageRepository): JsonResponse
+    {
+        $query = $request->query->get('q');
+
+        if (!$query) {
+            return new JsonResponse([]);
+        }
+
+        // Recherche dans Users, Groups et Pages
+        $users = $userRepository->searchByName($query);
+        $groups = $groupRepository->searchByName($query);
+        $pages = $pageRepository->searchByName($query);
+
+        $results = [];
+
+        foreach ($users as $user) {
+            $results[] = [
+                'type' => 'Friend',
+                'name' => $user->getFullName(),
+                'image' => '/uploads/avatars/' . $user->getAvatar(),
+            ];
+        }
+
+        foreach ($groups as $group) {
+            $results[] = [
+                'type' => 'Group',
+                'name' => $group->getName(),
+                'image' => '/uploads/groups/' . $group->getImage(),
+            ];
+        }
+
+        foreach ($pages as $page) {
+            $results[] = [
+                'type' => 'Page',
+                'name' => $page->getName(),
+                'image' => '/uploads/pages/' . $page->getImage(),
+            ];
+        }
+
+        return new JsonResponse($results);
+    }
+
+    #[Route('/recommendations', name: 'post_recommendations')]
+    public function recommendations(PostRepository $postRepository, Security $security): Response
+    {
+        $user = $security->getUser();
+        $recommendedPosts = $postRepository->findRecommendedPosts($user);
+
+        return $this->render('post/recommendations.html.twig', [
+            'recommendedPosts' => $recommendedPosts,
+        ]);
+    }
+
 }

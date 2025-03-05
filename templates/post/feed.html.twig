@@ -8,7 +8,11 @@
         <div class="bg-white rounded-xl shadow-sm md:p-4 p-2 space-y-4 text-sm font-medium border1 dark:bg-dark2">
             <div class="flex items-center md:gap-3 gap-1">
                 <div class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3" uk-toggle="target: #create-status">
-                    <div class="py-2.5 text-center dark:text-white"> What do you have in mind? </div>
+                    <div class="py-2.5 text-center dark:text-white"> <a href="{{ path('app_post_new') }}" class="btn btn-success">
+                            ➕ Nouveau Post
+                        </a>
+                        What do you have in mind?
+                    </div>
                 </div>
                 <div class="cursor-pointer hover:bg-opacity-80 p-1 px-1.5 rounded-xl transition-all bg-pink-100/60 hover:bg-pink-100 dark:bg-white/10 dark:hover:bg-white/20" uk-toggle="target: #create-status">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-pink-600 fill-pink-200/70" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -46,9 +50,15 @@
                                 <button type="button" class="button__ico w-8 h-8" aria-haspopup="true" aria-expanded="false"> <ion-icon class="text-xl md hydrated" name="ellipsis-horizontal" role="img" aria-label="ellipsis horizontal"></ion-icon> </button>
                                 <div class="w-[245px] uk-dropdown" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
                                     <nav>
-                                        <a href="#"> <ion-icon class="text-xl shrink-0 md hydrated" name="share-outline" role="img" aria-label="share outline"></ion-icon>  Modifier </a>
+                                        <a href={{ path('app_post_edit', {'id': post.id}) }}> <ion-icon class="text-xl shrink-0 md hydrated" name="share-outline" role="img" aria-label="share outline"></ion-icon>  Modifier </a>
                                         <hr>
-                                        <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl shrink-0 md hydrated" name="stop-circle-outline" role="img" aria-label="stop circle outline"></ion-icon>  Supprimer </a>
+                                        <form action="{{ path('app_post_delete', {'id': post.id}) }}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                            <button type="submit" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
+                                                <ion-icon class="text-xl shrink-0 md hydrated" name="stop-circle-outline" role="img"></ion-icon>
+                                                Supprimer
+                                            </button>
+                                        </form>
                                     </nav>
                                 </div>
                             </div>
@@ -58,7 +68,7 @@
                     <!-- post image -->
                     <a href="#preview_modal" uk-toggle>
                         <div class="sm:px-4 p-2.5 pt-0">
-                            <p class="font-normal"> {{ post.content }}</p>
+                            <p class="font-normal"> {{ post.content | trans}}</p>
                         </div>
                         <div class="relative w-full lg:h-96 h-full sm:px-4">
                             <img src="{{ post.file }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
@@ -77,13 +87,38 @@
                             <div    class="p-1 px-2 bg-white rounded-full drop-shadow-md w-[212px] dark:bg-slate-700 text-2xl"
                                     uk-drop="offset:10;pos: top-left; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-bottom-left">
 
-                                <div class="flex gap-2"  uk-scrollspy="target: > button; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
-                                    <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 👍 </span></button>
-                                    <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> ❤️ </span></button>
-                                    <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😂 </span></button>
-                                    <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😯 </span></button>
-                                    <button type="button" class="text-red-600 hover:scale-125 duration-300"> <span> 😢 </span></button>
+                                <div class="flex gap-2" uk-scrollspy="target: > button; cls: uk-animation-scale-up; delay: 100; repeat: true">
+                                    {% set reactions = {'like': '👍', 'love': '❤️', 'haha': '😂', 'wow': '😯', 'sad': '😢'} %}
+
+                                    {% for type, emoji in reactions %}
+                                        <button type="button"
+                                                class="text-red-600 hover:scale-125 duration-300"
+                                                onclick="sendReaction('{{ post.id }}', '{{ type }}')">
+                                            <span>{{ emoji }}</span>
+                                        </button>
+                                    {% endfor %}
                                 </div>
+
+                                <p id="reaction-count-{{ post.id }}"> </p>
+
+                                <script>
+                                    function sendReaction(postId, reactionType) {
+                                        fetch('/reaction/post/' + postId + '/like', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            },
+                                            body: JSON.stringify({ reaction: reactionType })
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                document.getElementById('reaction-count-' + postId).innerText = "Total réactions : " + data.totalReactions;
+                                            })
+                                            .catch(error => console.error('Erreur:', error));
+                                    }
+                                </script>
+
 
                                 <div class="w-2.5 h-2.5 absolute -bottom-1 left-3 bg-white rotate-45 hidden"></div>
                             </div>
@@ -107,7 +142,7 @@
                                             {{ comment.user.username }}
                                         </a>
                                     {% endif %}
-                                    <p class="mt-0.5"> {{ comment.content }}</p>
+                                    <p class="mt-0.5"> {{ comment.content |trans }}</p>
                                 </div>
                             </div>
                         {% endfor %}
@@ -162,7 +197,7 @@
                     </div>
 
                     <div class="sm:px-4 p-2.5 pt-0">
-                        <p class="font-normal"> {{ post.content }}</p>
+                        <p class="font-normal"> {{ post.content | trans }}</p>
                     </div>
 
                     <!-- post icons -->
@@ -241,6 +276,11 @@
                 </div>
             {% endif %}
         {% endfor %}
+
+        <div id="recommendations-container">
+            <p>Chargement des recommandations...</p>
+        </div>
+
 
         <!-- placeholder -->
         <div class="rounded-xl shadow-sm p-4 space-y-4 bg-slate-200/40 animate-pulse border1 dark:bg-dark2">

@@ -1,0 +1,18 @@
+{% for post in recommendedPosts %}
+    <div class="post">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        <small>Posté le {{ post.createdAt|date("d/m/Y") }}</small>
+    </div>
+{% else %}
+    <p>Aucune recommandation disponible.</p>
+{% endfor %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/recommendations")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("recommendations-container").innerHTML = html;
+            });
+    });
+</script>

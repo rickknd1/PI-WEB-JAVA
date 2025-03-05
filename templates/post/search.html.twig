@@ -1,0 +1,47 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#search--box input").on("keyup", function() {
+            let query = $(this).val().trim();
+            if (query.length < 2) {
+                $(".uk-open").hide();
+                return;
+            }
+
+            $.ajax({
+                url: "{{ path('app_search') }}",
+                type: "GET",
+                data: { q: query },
+                success: function(data) {
+                    let dropdown = $(".uk-open nav");
+                    dropdown.empty();
+
+                    if (data.length === 0) {
+                        dropdown.append('<p class="text-center text-gray-500">Aucun résultat</p>');
+                    } else {
+                        data.forEach(item => {
+                            dropdown.append(`
+                                <a href="#" class="relative px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
+                                    <img src="${item.image}" class="w-9 h-9 rounded-full">
+                                    <div>
+                                        <div>${item.name}</div>
+                                        <div class="text-xs text-blue-500 font-medium mt-0.5">${item.type}</div>
+                                    </div>
+                                </a>
+                            `);
+                        });
+                    }
+
+                    $(".uk-open").show();
+                }
+            });
+        });
+
+        // Cacher le dropdown si on clique ailleurs
+        $(document).on("click", function(e) {
+            if (!$(e.target).closest("#search--box, .uk-open").length) {
+                $(".uk-open").hide();
+            }
+        });
+    });
+</script>

@@ -20,4 +20,6 @@ return [
     Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
     Gemini\Symfony\GeminiBundle::class => ['all' => true],
 
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
+    JMS\TranslationBundle\JMSTranslationBundle::class => ['all' => true],
 ];

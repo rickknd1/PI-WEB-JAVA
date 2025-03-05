@@ -16,7 +16,8 @@ class Share
     #[ORM\Column]
     private ?\DateTimeImmutable $create_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'share')]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'share')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Post $post = null;
 
     public function getId(): ?int
