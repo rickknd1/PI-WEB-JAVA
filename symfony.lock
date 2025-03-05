@@ -26,6 +26,12 @@
             "./migrations/.gitignore"
         ]
     },
+    "friendsofsymfony/user-bundle": {
+        "version": "v4.0.0"
+    },
+    "jms/translation-bundle": {
+        "version": "2.6.0"
+    },
     "knplabs/knp-paginator-bundle": {
         "version": "v6.6.1"
     },
@@ -329,5 +335,17 @@
     },
     "twig/extra-bundle": {
         "version": "v3.19.0"
+    },
+    "vich/uploader-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.13",
+            "ref": "1b3064c2f6b255c2bc2f56461aaeb76b11e07e36"
+        },
+        "files": [
+            "./config/packages/vich_uploader.yaml"
+        ]
     }
 }

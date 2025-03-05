@@ -32,7 +32,8 @@ class Comment
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Comment')]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'Comment')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Post $post = null;
 
     /**

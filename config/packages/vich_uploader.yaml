@@ -1,0 +1,8 @@
+# config/packages/vich_uploader.yaml
+vich_uploader:
+    db_driver: orm  # Utilise l'ORM Doctrine pour gérer les entités
+    mappings:
+        post_file:
+            uri_prefix: /uploads/posts  # URL publique pour accéder aux fichiers
+            upload_destination: '%kernel.project_dir%/public/uploads/posts'  # Dossier de stockage local des fichiers
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer # Nom du fichier (utilise le nom original)

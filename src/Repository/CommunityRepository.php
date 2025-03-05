@@ -28,6 +28,16 @@ class CommunityRepository extends ServiceEntityRepository
         );
     }
 
+    public function searchByName(string $query)
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.name LIKE :query')
+            ->setParameter('query', "%$query%")
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Community[] Returns an array of Community objects
 //     */
