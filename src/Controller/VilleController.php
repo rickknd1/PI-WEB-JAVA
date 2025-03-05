@@ -30,6 +30,7 @@ class VilleController extends AbstractController
     #[Route('/admin/ville', name: 'ville_index', methods: ['GET', 'POST'])]
     public function index(VilleRepository $villeRepository, PaginatorInterface $paginator, Request $request,EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $villes = $paginator->paginate(
             $villeRepository->findAll(),
             $request->query->getInt('page', 1),
@@ -50,6 +51,7 @@ class VilleController extends AbstractController
             'villes' => $villes,
             'ville' => $ville,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -57,6 +59,7 @@ class VilleController extends AbstractController
     #[Route('/front/ville', name: 'ville_index_front', methods: ['GET', 'POST'])]
     public function index2(VilleRepository $villeRepository, PaginatorInterface $paginator, Request $request,EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $villes = $paginator->paginate(
             $villeRepository->findAll(),
             $request->query->getInt('page', 1),
@@ -77,6 +80,7 @@ class VilleController extends AbstractController
             'villes' => $villes,
             'ville' => $ville,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -96,6 +100,7 @@ class VilleController extends AbstractController
     #[Route('/ville/{id<\d+>}', name: 'ville_show', methods: ['GET'])]
 public function show(int $id, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
 {
+    $user = $this->getUser();
     $ville = $villeRepository->find($id);
 
     if (!$ville) {
@@ -109,6 +114,7 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
     return $this->render('ville/detailville.html.twig', [
         'ville' => $ville,
         'lieu_culturels' => $lieuCulturels,
+        'user' => $user,
     ]);
 }
 
@@ -116,6 +122,7 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
     #[Route('front/ville/{id}', name: 'ville_show_front', methods: ['GET'])]
     public function show2(Ville $ville, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         // Filtrer les lieux culturels par ville (en fonction de l'ID de la ville)
         $lieuCulturels = $entityManager
             ->getRepository(LieuCulturels::class)
@@ -124,6 +131,7 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
         return $this->render('ville/detailsvillefront.twig', [
             'ville' => $ville,
             'lieu_culturels' => $lieuCulturels,
+            'user' => $user,
         ]);
     }
     
@@ -131,6 +139,7 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
     #[Route('/admin/ville/{id}/edit', name: 'ville_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(VilleType::class, $ville);
         $form->handleRequest($request);
 
@@ -143,13 +152,14 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
         return $this->render('ville/modifierville.html.twig', [
             'ville' => $ville,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
     #[Route('/admin/ville/{id}', name: 'ville_delete', methods: ['POST'])]
     public function delete(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
     {
-        
+        $user = $this->getUser();
         if ($this->isCsrfTokenValid('delete' . $ville->getId(), $request->request->get('_token'))) {
             // Récupérer les lieux culturels associés à cette ville
             $lieuxCulturels = $ville->getLieux();
@@ -180,6 +190,7 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
     #[Route('/ville/search', name: 'ville_search', methods: ['GET'])]
     public function search(Request $request, VilleRepository $villeRepository): JsonResponse
     {
+        $user = $this->getUser();
         $query = $request->query->get('search', '');
     
         // If no search query, return all cities
@@ -201,7 +212,8 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
                 'id' => $ville->getId(),
                 'nom' => $ville->getNom(),
                 'description' => $ville->getDescription(),
-                'position' => $ville->getPosition()
+                'position' => $ville->getPosition(),
+                'user' => $user
             ];
         }
     
@@ -210,6 +222,8 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
     #[Route('/calendar/events', name: 'calendar_events', methods: ['GET'])]
     public function fetchEvents(EntityManagerInterface $entityManager): JsonResponse
     {
+        $user = $this->getUser();
+
         $villes = $entityManager->getRepository(Ville::class)->findAll();
         
         $events = [];
@@ -219,6 +233,7 @@ public function show(int $id, VilleRepository $villeRepository, EntityManagerInt
                 'title' => $ville->getNom(),
                 'start' => date('Y-m-d'), // You need a real date field here!
                 'description' => $ville->getDescription(),
+                'user' => $user
             ];
         }
 
@@ -232,6 +247,8 @@ public function viewCalendar(): Response
 #[Route('/ville/weather/{id}', name: 'ville_weather', methods: ['GET'])]
 public function getWeather(int $id, EntityManagerInterface $em): JsonResponse
 {
+    $user = $this->getUser();
+
     $ville = $em->getRepository(Ville::class)->find($id);
 
     if (!$ville) {
@@ -273,6 +290,8 @@ public function getWeather(int $id, EntityManagerInterface $em): JsonResponse
 #[Route('/villes', name: 'ville_list', methods: ['GET'])]
     public function list(EntityManagerInterface $em): JsonResponse
     {
+        $user = $this->getUser();
+
         $villes = $em->getRepository(Ville::class)->findAll();
         $data = [];
 
@@ -304,6 +323,7 @@ public function getWeather(int $id, EntityManagerInterface $em): JsonResponse
                 'description' => $ville->getDescription(),
                 'latitude' => $latitude,
                 'longitude' => $longitude,
+                'user'=>$user
             ];
         }
 

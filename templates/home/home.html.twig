@@ -440,34 +440,16 @@
                                 <span> messages </span>
                             </a>
                         </li>
-                        <li>
-                            <a href="video.html">
-                                <img src="/assets/images/icons/video.png" alt="messages" class="w-6">
-                                <span> video </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="event.html">
-                                <ion-icon class="text-xl" name="calendar"></ion-icon>
-                                <span> event </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="pages.html">
-                                <img src="/assets/images/icons/page.png" alt="pages" class="w-6">
-                                <span> Pages </span>
-                            </a>
-                        </li>
                         <li class="{% if app.request.attributes.get('_route') starts with 'categories' or app.request.attributes.get('_route') starts with 'community' or app.request.attributes.get('_route') starts with 'chatrooms' or app.request.attributes.get('_route') starts with 'event'%}active{% endif %}">
                             <a href="{{ path('community.index.front') }}">
                                 <ion-icon class="text-xl" name="people"></ion-icon>
                                 <span> community </span>
                             </a>
                         </li>
-                        <li>
-                            <a href="market.html">
+                        <li class="{% if app.request.attributes.get('_route') starts with 'ville' %} active {% endif %}">
+                            <a href="{{ path('ville_index_front') }}">
                                 <img src="/assets/images/icons/market.png" alt="market" class="w-7 -ml-1">
-                                <span> market </span>
+                                <span> Ville </span>
                             </a>
                         </li>
                         <li>
@@ -637,6 +619,7 @@
                     {% block Access %}{% endblock %}
                     {% block event %}{% endblock %}
                     {% block gamidetail %}{% endblock %}
+                    {% block ville %}{% endblock %}
                 </div>
             </div>
         </main>
