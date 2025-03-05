@@ -76,15 +76,15 @@ final class GamificationController extends AbstractController{
         $user = $this->getUser();
         $user->setPoints($user->getPoints() - $point);
 
-        $inscriptionAbonnement = $inscriptionAbonnementRepository->findOneBy(['user' => $user]);
+        $inscriptionAbonnement = $inscriptionAbonnementRepository->findBy(['user' => $user]);
 
         if (!$inscriptionAbonnement) {
             throw $this->createNotFoundException('No subscription found for this user.');
         }
 
-        $inscriptionAbonnement->setExpiredAt((new \DateTimeImmutable())->modify('+1 month'));
+        $inscriptionAbonnement[0]->setExpiredAt((new \DateTimeImmutable())->modify('+1 month'));
 
-        $em->persist($inscriptionAbonnement);
+        $em->persist($inscriptionAbonnement[0]);
         $em->persist($user);
         $em->flush();
 

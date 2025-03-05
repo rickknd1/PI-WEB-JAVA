@@ -24,11 +24,11 @@ class PostType extends AbstractType
             ->add('visibility', ChoiceType::class, [
                 'choices' => [
                     'Public' => 'public',
-                    'Amis' => 'friends',
-                    'Communauté' => 'community',
+                    'Private' => 'private',
+                    'Restricted' => 'restricted',
                 ],
-                'expanded' => true, // Afficher en boutons radio
-                'multiple' => false, // Une seule option sélectionnable
+                'required' => true, // Set to false if optional
+                'empty_data' => 'public', // Default value if nothing is selected
             ])
             ->add('titre', TextType::class, [
                 'label' => 'Titre',

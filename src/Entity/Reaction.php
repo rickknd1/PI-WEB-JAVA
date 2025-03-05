@@ -19,12 +19,11 @@ class Reaction
     private ReactionChoise $type;
 
     #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'reactions')]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Post $post = null;
 
-    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'Comment')]
-    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    #[ORM\ManyToOne(inversedBy: 'Comment')]
     private ?Comment $comment = null;
+
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;

@@ -66,8 +66,9 @@ class Post
     /**
      * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post')]
     private Collection $comments;
+
 
     #[ORM\OneToMany(targetEntity: Share::class, mappedBy: 'post', cascade: ["remove"], orphanRemoval: true)]
     private Collection $shares;

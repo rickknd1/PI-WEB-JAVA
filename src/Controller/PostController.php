@@ -28,7 +28,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/post')]
 final class PostController extends AbstractController
 {
-    #[Route(name: 'app_post_index', methods: ['GET'])]
+    #[Route(name: 'app_post_index',methods: ['GET', 'POST'])]
     public function index(PostRepository $postRepository,CommentRepository $commentRepository,VisitorsRepository $repository,
                           EntityManagerInterface $em,Request $request,SluggerInterface $slugger,UserRepository $userRepository,
                             ChatRoomMembresRepository $chatRoomMembresRepository,EventsRepository $eventsRepository,GamificationsRepository $gamificationsRepository
@@ -36,6 +36,7 @@ final class PostController extends AbstractController
     {
         // Récupérer les visiteurs existants
         $visitor = $repository->findAll();
+        $user = $this->getUser();
 
         if (empty($visitor)) {
             // Si aucun visiteur en base, créer une nouvelle entrée
@@ -49,15 +50,15 @@ final class PostController extends AbstractController
             $em->persist($visitor[0]);
             $em->flush();
         }
-        $user = $this->getUser();
+
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
+
         $comments = $commentRepository->findAll();
 
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $coverFile = $form->get('file')->getData();
@@ -78,14 +79,14 @@ final class PostController extends AbstractController
 
                 $post->setFile('/uploads/' . $newFilename);
             }
-            $post->setUser($user);
+            $post->setVisibility($form->get('visibility')->getData() ?? 'public');
+            $post->setUser($this->getUser());
             $post->setCreatedAt(new \DateTimeImmutable());
             $post->setUpdateAt(new \DateTimeImmutable());
             $em->persist($post);
             $em->flush();
 
             $this->addFlash('success', 'Post créé avec succès !');
-
 
             return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -147,23 +148,27 @@ final class PostController extends AbstractController
         return $this->render('post/new.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
     #[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
     public function show(Post $post, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $entityManager->remove($post);
         $entityManager->flush();
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'user' => $user
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_post_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Post $post, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -176,18 +181,22 @@ final class PostController extends AbstractController
         return $this->render('post/edit.html.twig', [
             'post' => $post,
             'form' => $form,
+            'user' => $user
         ]);
     }
 
     #[Route('/{id}', name: 'app_post_delete', methods: ['POST'])]
-    public function delete(Request $request, Post $post, EntityManagerInterface $entityManager): Response
+    public function delete(Post $post,Request $request , EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($post);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_feed', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_post_index', [
+            'user' => $user
+        ], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/feed', name: 'app_feed')]
