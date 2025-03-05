@@ -1,6 +1,33 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+<style>
+    #map {
+        width: 50%; 
+        height: 500px !important; 
+        margin: 20px auto; 
+        border-radius: 15px; /* Smooth rounded corners */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+        border: 2px solid #ff6f00; /* Add a stylish border */
+    }
+
+   
+
+    /* Change the map popup style */
+    .leaflet-popup-content {
+        font-size: 14px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    
+
+    @keyframes bounce {
+        from { transform: translateY(0); }
+        to { transform: translateY(-5px); }
+    }
+</style>
+
 <body class="bg-white dark:bg-slate-950 overflow-x-hidden">
  
     <!-- header -->
@@ -184,8 +211,13 @@
    
 
     </main>
+    <div id="map" ></div>
+  
+
 {% endblock body %}
 {% block last %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <!-- Uikit js you can use cdn  https://getuikit.com/docs/installation  or fine the latest  https://getuikit.com/docs/installation -->
     <script src="assets/js/uikit.min.js"></script>
     <script src="assets/js/script.js"></script>
@@ -212,5 +244,44 @@
 
         // Whenever the user explicitly chooses to respect the OS preference
         localStorage.removeItem('theme')
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Initializing Leaflet Map..."); // Debugging
+    
+            // Ensure the map container exists
+            if (!document.getElementById("map")) {
+                console.error("Map container #map not found!");
+                return;
+            }
+    
+            // Initialize the map
+            var map = L.map('map').setView([14.6928, -17.4467], 6); // Dakar, Senegal
+    
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+    
+            console.log("Fetching city data...");
+    
+            // Fetch cities dynamically from Symfony API
+            fetch("{{ path('ville_list') }}")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Cities fetched:", data); // Debugging output
+    
+                    data.forEach(ville => {
+                        if (ville.latitude && ville.longitude) {
+                            L.marker([ville.latitude, ville.longitude])
+                                .addTo(map)
+                                .bindPopup(`<b>${ville.nom}</b><br>${ville.description}`);
+                        } else {
+                            console.warn(`No coordinates found for ${ville.nom}`);
+                        }
+                    });
+                })
+                .catch(error => console.error("Error fetching city data:", error));
+        });
     </script>
 {% endblock last %}
