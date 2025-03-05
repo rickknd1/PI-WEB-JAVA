@@ -73,6 +73,35 @@ class PostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findSimilarPosts(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.likes', 'l')
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findRecommendedPosts(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.likes', 'l')
+            ->innerJoin('l.user', 'u')
+            ->where('u IN (
+            SELECT DISTINCT l2.user FROM App\Entity\Like l2
+            WHERE l2.post IN (
+                SELECT l3.post FROM App\Entity\Like l3 WHERE l3.user = :user
+            ) AND l2.user != :user
+        )')
+            ->setParameter('user', $user)
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 
 
 

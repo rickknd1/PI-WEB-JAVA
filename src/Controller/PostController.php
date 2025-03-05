@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use App\Repository\VisitorsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -181,4 +182,16 @@ final class PostController extends AbstractController
 
         return new JsonResponse($results);
     }
+
+    #[Route('/recommendations', name: 'post_recommendations')]
+    public function recommendations(PostRepository $postRepository, Security $security): Response
+    {
+        $user = $security->getUser();
+        $recommendedPosts = $postRepository->findRecommendedPosts($user);
+
+        return $this->render('post/recommendations.html.twig', [
+            'recommendedPosts' => $recommendedPosts,
+        ]);
+    }
+
 }
