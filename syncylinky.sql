@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 01 mars 2025 à 04:50
+-- Généré le : jeu. 06 mars 2025 à 04:25
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -40,8 +40,7 @@ CREATE TABLE `abonnements` (
 --
 
 INSERT INTO `abonnements` (`id`, `nom`, `prix`, `avantages`, `type`) VALUES
-(1, 'Free', 0, 'a:2:{i:0;s:16:\"Evenement public\";i:1;s:11:\"Communautes\";}', 'Normal'),
-(2, 'Premium', 10, 'a:3:{i:0;s:16:\"Evenement privee\";i:1;s:6:\"No Ads\";i:2;s:23:\"Systeme de gamification\";}', 'Premium');
+(3, 'Premium', 20, 'a:2:{i:0;s:16:\"Evenement privee\";i:1;s:6:\"No Ads\";}', 'Premium');
 
 -- --------------------------------------------------------
 
@@ -114,7 +113,8 @@ INSERT INTO `chat_room_membres` (`id`, `user_id`, `chat_room_id`) VALUES
 (4, 2, 10),
 (5, 1, 10),
 (6, 4, 10),
-(7, 1, 3);
+(7, 1, 3),
+(9, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -137,7 +137,8 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`id`, `post_id`, `user_id`, `content`, `created_at`, `updated_at`) VALUES
 (1, 2, 4, 'first comment', '2025-02-27 15:54:04', '2025-02-27 15:54:04'),
-(2, 1, 2, 'Bonne continuation', '2025-02-27 15:55:34', '2025-02-27 15:55:34');
+(2, 1, 2, 'Bonne continuation', '2025-02-27 15:55:34', '2025-02-27 15:55:34'),
+(15, 11, 6, 'Bravo', '2025-03-06 03:53:17', '2025-03-06 03:53:17');
 
 -- --------------------------------------------------------
 
@@ -161,13 +162,14 @@ CREATE TABLE `community` (
 --
 
 INSERT INTO `community` (`id`, `id_categorie_id`, `nom`, `description`, `cover`, `created_at`, `nbr_membre`, `statut`) VALUES
-(1, 1, 'Padel Connection', 'Only padel connection player', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcaIgobDhF9s_plhsJ_0IY81OIaFNlkrhcWA&s', '2025-02-02 22:38:16', 1, 1),
+(1, 1, 'Padel Connection', 'Only padel connection player', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcaIgobDhF9s_plhsJ_0IY81OIaFNlkrhcWA&s', '2025-02-02 22:38:16', 2, 1),
 (3, 3, 'DJ\'s', 'Afro House , Tech House , Melodic House', 'https://cdn.sanity.io/images/pge26oqu/production/6d18acf96d51efcc13a5c566f490d52066c6a9ff-1500x1001.jpg?rect=250,0,1001,1001&w=750&h=750', '2025-02-02 22:54:09', 1, 1),
 (6, 18, 'theatrie comedie', '100% comedie', '/uploads/images-67ae9f195a8a0.png', '2025-02-14 02:40:41', 0, 1),
-(7, 17, 'Enssemble tour du monde', 'we can do it', '/uploads/1345804-inline-67aea029f3b88.jpg', '2025-02-14 02:45:14', 1, 1),
+(7, 17, 'Enssemble tour du monde', 'we can do it', '/uploads/1345804-inline-67aea029f3b88.jpg', '2025-02-14 02:45:14', 0, 1),
 (10, 1, 'FootBall', 'faire du football', '/uploads/2774679-travailler-dans-le-football-610x370-67b88de58b17c.jpg', '2025-02-19 19:23:17', 3, 1),
 (13, 1, 'Street workout', 'only warriors', '/uploads/street-workout-poterne-massy-jm-molina-web-67b8868f9a665.jpg', '2025-02-21 14:58:39', 2, 1),
-(14, 2, 'Oriental', 'Dance Oriental', '/uploads/danse-orientale-67b8cc9fad79e.jpg', '2025-02-21 19:57:35', 3, 1);
+(14, 2, 'Oriental', 'Dance Oriental', '/uploads/danse-orientale-67b8cc9fad79e.jpg', '2025-02-21 19:57:35', 3, 1),
+(29, 1, 'Pilate', 'Rejoignez notre communauté Pilate pour femmes axée sur le fitness !  Participez à des événements spéciaux, des challenges, et discutez fitness et bien-être dans nos chatrooms dédiés.  Perfectionnez votre corps et votre esprit grâce à la méthode Pilate.', '/uploads/benefits-pilates-67c6278817d3a.jpg', '2025-03-03 23:04:56', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -222,7 +224,10 @@ INSERT INTO `events` (`id`, `id_community_id`, `nom`, `description`, `started_at
 (8, 3, 'DJ Course', 'for begginers', '2025-02-10 18:01:00', '2025-02-11 00:07:00', 'tunis', 'En Ligne', '/uploads/Capture-d-ecran-2025-01-03-145702-67aa31311df62.png', 'https:/link.com', 'Public'),
 (10, 3, 'Tunisiasme', 'streaming', '2025-02-14 03:56:00', '2025-02-16 03:56:00', 'gammarth', 'Presentiel', '/uploads/PROFILE-no-fill-67aeb0ee3066b.jpg', NULL, 'Public'),
 (13, 14, 'Formation With M.olga', 'Lady\'s only', '2025-02-25 22:40:00', '2025-02-27 22:40:00', 'Aqua Viva', 'Presentiel', '/uploads/imagdes-67bce74f208b8.jpg', NULL, 'Private'),
-(14, 14, 'Workshop Mixte', 'girls and boys', '2025-02-26 00:35:00', '2025-02-27 19:40:00', 'Dance Lab', 'Presentiel', '/uploads/couple-danseur-oriental-homme-femme-mixte-male-67bcf43a6b9ca.jpg', NULL, 'Public');
+(14, 14, 'Workshop Mixte', 'girls and boys', '2025-02-26 00:35:00', '2025-02-27 19:40:00', 'Dance Lab', 'Presentiel', '/uploads/couple-danseur-oriental-homme-femme-mixte-male-67bcf43a6b9ca.jpg', NULL, 'Public'),
+(20, 29, 'Open Door Day', 'Only womens', '2025-03-08 13:08:00', '2025-03-08 20:08:00', 'Smart Gym', 'Presentiel', '/uploads/Sans-titre-2023-03-07T160454-956-67c6288815d18.jpg', NULL, 'Private'),
+(21, 29, '2h 100% Pilate', 'Défiez votre corps et votre esprit avec \"2h 100% Pilate\" le 5 mars 2025 à 17h02 au California Gym !  Une séance intensive de deux heures entièrement dédiée à la méthode Pilates pour renforcer votre corps en profondeur et améliorer votre posture.  Inscrive', '2025-03-05 17:02:00', '2025-03-05 18:02:00', 'California Gym', 'Presentiel', '/uploads/IMG-1280-scaled-67c7245dbd8e6.jpg', NULL, 'Public'),
+(24, 10, 'Tournois', 'Préparez-vous pour le Tournoi à la FreeTime Academy le 16 mars 2025 à 15h56 !  Amusement et compétition garantis !', '2025-03-16 15:56:00', '2025-03-16 20:57:00', 'FreeTime academy', 'Presentiel', '/uploads/truth-english-football-hero-67c8667380d10.jpg', NULL, 'Public');
 
 -- --------------------------------------------------------
 
@@ -244,8 +249,7 @@ CREATE TABLE `gamifications` (
 --
 
 INSERT INTO `gamifications` (`id`, `type_abonnement`, `nom`, `description`, `type`, `condition_gamification`) VALUES
-(1, 2, '-20% Formation Symfony', '-20%', 'Reduction', 100),
-(2, 1, '1 mois SyncYLinkY premium Gratuit', '1 mois SyncYLinkY premium Gratuit', 'Recompense', 200);
+(5, 3, '1 mois SyncYLinkY premium Gratuit', '1 mois SyncYLinkY premium Gratuit', 'Recompense', 100);
 
 -- --------------------------------------------------------
 
@@ -268,7 +272,7 @@ CREATE TABLE `inscription_abonnement` (
 --
 
 INSERT INTO `inscription_abonnement` (`id`, `user_id`, `abonnement_id`, `subscribed_at`, `expired_at`, `mode_paiement`, `renouvellement_auto`) VALUES
-(2, 1, 2, '2025-02-26 00:22:11', '2025-03-26 00:22:11', 'Flouci', 0);
+(8, 1, 3, '2025-03-05 15:51:07', '2025-04-05 17:10:46', 'Carte Bancaire', 0);
 
 -- --------------------------------------------------------
 
@@ -332,9 +336,11 @@ INSERT INTO `membre_comunity` (`id`, `id_user_id`, `status`, `date_adhesion`, `c
 (17, 1, 'owner', '2025-02-21 19:57:35', 14),
 (18, 2, 'moderator', '2025-02-21 19:57:47', 14),
 (20, 4, 'membre', '2025-02-21 20:01:00', 14),
-(26, 1, 'membre', '2025-02-21 23:09:32', 7),
-(36, 1, 'membre', '2025-02-28 23:41:18', 10),
-(37, 4, 'membre', '2025-03-01 02:59:08', 10);
+(37, 4, 'membre', '2025-03-01 02:59:08', 10),
+(40, 2, 'membre', '2025-03-03 17:20:27', 1),
+(42, 1, 'owner', '2025-03-03 23:04:56', 29),
+(43, 4, 'membre', '2025-03-04 23:03:33', 29),
+(44, 1, 'membre', '2025-03-05 00:13:04', 10);
 
 -- --------------------------------------------------------
 
@@ -365,7 +371,15 @@ INSERT INTO `messages` (`id`, `user_id`, `chat_room_id`, `content`, `sent_at`) V
 (9, 4, 10, 'Rest one place in team', '2025-03-01 04:02:55'),
 (10, 1, 10, 'in', '2025-03-01 04:10:49'),
 (11, 4, 10, '❤️', '2025-03-01 04:13:35'),
-(12, 1, 3, 'Rihanna - Pon de Replay (Sico Vox Afro House Remix) [UNRELEASED]', '2025-03-01 04:39:42');
+(12, 1, 3, 'Rihanna - Pon de Replay (Sico Vox Afro House Remix) [UNRELEASED]', '2025-03-01 04:39:42'),
+(13, 1, 10, 'what about today ? ', '2025-03-03 00:13:24'),
+(14, 1, 1, 'need jouer p50', '2025-03-03 17:19:30'),
+(15, 1, 1, '❤️', '2025-03-03 17:19:33'),
+(16, 1, 1, '🥰🤩d', '2025-03-03 17:19:40'),
+(17, 4, 10, 'no match today ? 😡', '2025-03-05 00:13:27'),
+(18, 1, 10, 'Oppss', '2025-03-05 00:14:09'),
+(19, 4, 10, '❤️', '2025-03-05 00:16:49'),
+(20, 1, 10, '❤️', '2025-03-05 17:12:38');
 
 -- --------------------------------------------------------
 
@@ -386,6 +400,28 @@ CREATE TABLE `messenger_messages` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `participation_event`
+--
+
+CREATE TABLE `participation_event` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `event_id` int(11) DEFAULT NULL,
+  `type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `participation_event`
+--
+
+INSERT INTO `participation_event` (`id`, `user_id`, `event_id`, `type`) VALUES
+(10, 2, 21, 'Participate'),
+(15, 4, 21, 'Participate'),
+(16, 1, 24, 'Participate');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `post`
 --
 
@@ -395,16 +431,19 @@ CREATE TABLE `post` (
   `content` varchar(255) NOT NULL,
   `file` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-  `update_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+  `update_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+  `titre` varchar(255) NOT NULL,
+  `visibility` varchar(20) NOT NULL DEFAULT 'public'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `post`
 --
 
-INSERT INTO `post` (`id`, `user_id`, `content`, `file`, `created_at`, `update_at`) VALUES
-(1, 1, 'First Post SyncYLinkY', '/uploads/logo-building-67bfb949bd833.jpg', '2025-02-27 02:00:57', '2025-02-27 02:00:57'),
-(2, 2, 'Seconde Post', NULL, '2025-02-27 15:52:44', '2025-02-27 15:52:44');
+INSERT INTO `post` (`id`, `user_id`, `content`, `file`, `created_at`, `update_at`, `titre`, `visibility`) VALUES
+(1, 1, 'First Post SyncYLinkY', '/uploads/logo-building-67bfb949bd833.jpg', '2025-02-27 02:00:57', '2025-02-27 02:00:57', '', 'public'),
+(2, 2, 'Seconde Post', NULL, '2025-02-27 15:52:44', '2025-02-27 15:52:44', '', 'public'),
+(11, 1, 'New Event', '/uploads/qrcode-29-67c8d73b2ccd3.svg', '2025-03-05 23:59:07', '2025-03-05 23:59:07', 'New Community', 'public');
 
 -- --------------------------------------------------------
 
@@ -420,6 +459,29 @@ CREATE TABLE `reaction` (
   `type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `reaction`
+--
+
+INSERT INTO `reaction` (`id`, `post_id`, `comment_id`, `user_id`, `type`) VALUES
+(10, 11, NULL, 6, 'like'),
+(11, 11, NULL, 1, 'like');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reset_password_request`
+--
+
+CREATE TABLE `reset_password_request` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `selector` varchar(20) NOT NULL,
+  `hashed_token` varchar(100) NOT NULL,
+  `requested_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+  `expires_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -428,7 +490,7 @@ CREATE TABLE `reaction` (
 
 CREATE TABLE `share` (
   `id` int(11) NOT NULL,
-  `post_id` int(11) DEFAULT NULL,
+  `post_id` int(11) NOT NULL,
   `shared_from_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `create_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
@@ -449,17 +511,29 @@ CREATE TABLE `user` (
   `firstname` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `date_ob` date NOT NULL,
-  `gender` varchar(255) NOT NULL
+  `gender` varchar(255) NOT NULL,
+  `points` int(11) NOT NULL,
+  `pp` varchar(255) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `banned` tinyint(1) NOT NULL,
+  `google_authenticator_secret` varchar(255) DEFAULT NULL,
+  `is_google_authenticator_enabled` tinyint(1) NOT NULL,
+  `google_id` varchar(255) DEFAULT NULL,
+  `is_verified` tinyint(1) NOT NULL,
+  `verification_token` varchar(255) DEFAULT NULL,
+  `last_activity_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `role`, `password`, `name`, `firstname`, `username`, `date_ob`, `gender`) VALUES
-(1, 'menzah.galaxy@gmail.com', 'ROLE_ADMIN', '$2y$13$LYBMdNkPukzOMk.wU3xw7eY47H1NXuVV6KJCiFU/htdZvII4mZruS', 'limam', 'youssef', 'Limam', '2000-07-04', 'homme'),
-(2, 'kosontini@gmail.com', 'ROLE_USER', '$2y$13$ef1yGBcdCcBDPxjuRmlkk.kj9BlxibnyNgsR8EMMVPpIUHmQKEt.C', 'tijani', 'kosontini', 'kson', '2001-12-13', 'autres'),
-(4, 'user1@syncylinky.tn', 'ROLE_USER', '$2y$13$WkzyxrNw5U7Xy3Y4G8fameJHKv9H9u9VJEC7Q29LIhRu51iMAr8BS', 'user', '1', 'User 1', '1957-03-17', 'autres');
+INSERT INTO `user` (`id`, `email`, `role`, `password`, `name`, `firstname`, `username`, `date_ob`, `gender`, `points`, `pp`, `is_active`, `banned`, `google_authenticator_secret`, `is_google_authenticator_enabled`, `google_id`, `is_verified`, `verification_token`, `last_activity_at`) VALUES
+(1, 'menzah.galaxy@gmail.com', 'ROLE_ADMIN', '$2y$13$53ZNbGfMrLeV.Mrn/.H6HeZLkD33ZBt2EaWl.2JbYNGCPJfglxmty', 'limam', 'youssef', 'Limam', '2000-07-04', 'homme', 100, '/uploads/profile/TOD_1230.JPG', 1, 0, NULL, 0, NULL, 0, NULL, NULL),
+(2, 'kosontini@gmail.com', 'ROLE_USER', '$2y$13$ef1yGBcdCcBDPxjuRmlkk.kj9BlxibnyNgsR8EMMVPpIUHmQKEt.C', 'tijani', 'kosontini', 'kson', '2001-12-13', 'autres', 30, '/assets/images/avatars/avatar-2.jpg', 1, 0, NULL, 0, NULL, 0, NULL, NULL),
+(4, 'user1@syncylinky.tn', 'ROLE_USER', '$2y$13$WkzyxrNw5U7Xy3Y4G8fameJHKv9H9u9VJEC7Q29LIhRu51iMAr8BS', 'user', '1', 'User 1', '1957-03-17', 'autres', 30, '/assets/images/avatars/avatar-2.jpg', 0, 0, NULL, 0, NULL, 0, NULL, NULL),
+(5, 'user2@gmail.com', 'ROLE_SUPER_ADMIN', 'User123@', 'user 2', 'user 2', 'user 2', '2000-03-08', 'homme', 0, NULL, 1, 0, NULL, 0, NULL, 0, NULL, NULL),
+(6, 'limam.youssef.tn@gmail.com', 'ROLE_SUPER_ADMIN', '$2y$13$jr8ZqWiVSlfklguVQfE0MOIVqxhUxqGX3uREHaICLx/ObAeVVmz1m', 'Ali', 'Mehrezi', 'Ali Mehrezi', '1963-06-03', 'homme', 0, '/assets/images/avatars/avatar-1.jpg', 1, 0, NULL, 0, NULL, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -482,7 +556,12 @@ INSERT INTO `user_categories` (`user_id`, `categories_id`) VALUES
 (2, 1),
 (2, 3),
 (4, 2),
-(4, 18);
+(4, 18),
+(5, 13),
+(5, 17),
+(5, 18),
+(6, 2),
+(6, 18);
 
 -- --------------------------------------------------------
 
@@ -502,7 +581,8 @@ CREATE TABLE `ville` (
 --
 
 INSERT INTO `ville` (`id`, `nom`, `description`, `position`) VALUES
-(1, 'Sidi bou said', 'Description Description Description Description', 'Tunis Tunis Tunis');
+(1, 'Sidi bou said', 'Description Description Description Description', 'Tunis Tunis Tunis'),
+(2, 'Sousse', 'Sousse', 'Sousse Sousse Sousse');
 
 -- --------------------------------------------------------
 
@@ -520,7 +600,7 @@ CREATE TABLE `visitors` (
 --
 
 INSERT INTO `visitors` (`id`, `nbr_visitors`) VALUES
-(1, 161);
+(1, 488);
 
 --
 -- Index pour les tables déchargées
@@ -594,7 +674,7 @@ ALTER TABLE `gamifications`
 ALTER TABLE `inscription_abonnement`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `UNIQ_26D8E52FA76ED395` (`user_id`),
-  ADD UNIQUE KEY `UNIQ_26D8E52FF1D74413` (`abonnement_id`);
+  ADD KEY `IDX_26D8E52FF1D74413` (`abonnement_id`);
 
 --
 -- Index pour la table `lieu_culturels`
@@ -636,6 +716,14 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
 
 --
+-- Index pour la table `participation_event`
+--
+ALTER TABLE `participation_event`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_3472872CA76ED395` (`user_id`),
+  ADD KEY `IDX_3472872C71F7E88B` (`event_id`);
+
+--
 -- Index pour la table `post`
 --
 ALTER TABLE `post`
@@ -650,6 +738,13 @@ ALTER TABLE `reaction`
   ADD KEY `IDX_A4D707F74B89032C` (`post_id`),
   ADD KEY `IDX_A4D707F7F8697D13` (`comment_id`),
   ADD KEY `IDX_A4D707F7A76ED395` (`user_id`);
+
+--
+-- Index pour la table `reset_password_request`
+--
+ALTER TABLE `reset_password_request`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_7CE748AA76ED395` (`user_id`);
 
 --
 -- Index pour la table `share`
@@ -695,7 +790,7 @@ ALTER TABLE `visitors`
 -- AUTO_INCREMENT pour la table `abonnements`
 --
 ALTER TABLE `abonnements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `categories`
@@ -707,43 +802,43 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `chat_rooms`
 --
 ALTER TABLE `chat_rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `chat_room_membres`
 --
 ALTER TABLE `chat_room_membres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `community`
 --
 ALTER TABLE `community`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT pour la table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT pour la table `gamifications`
 --
 ALTER TABLE `gamifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `inscription_abonnement`
 --
 ALTER TABLE `inscription_abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `lieu_culturels`
@@ -761,13 +856,13 @@ ALTER TABLE `media`
 -- AUTO_INCREMENT pour la table `membre_comunity`
 --
 ALTER TABLE `membre_comunity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT pour la table `messenger_messages`
@@ -776,16 +871,28 @@ ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `participation_event`
+--
+ALTER TABLE `participation_event`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT pour la table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `reaction`
 --
 ALTER TABLE `reaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT pour la table `reset_password_request`
+--
+ALTER TABLE `reset_password_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `share`
@@ -797,13 +904,13 @@ ALTER TABLE `share`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `ville`
 --
 ALTER TABLE `ville`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `visitors`
@@ -851,14 +958,14 @@ ALTER TABLE `events`
 -- Contraintes pour la table `gamifications`
 --
 ALTER TABLE `gamifications`
-  ADD CONSTRAINT `FK_DB1F936B2811BE9E` FOREIGN KEY (`type_abonnement`) REFERENCES `abonnements` (`id`);
+  ADD CONSTRAINT `FK_DB1F936B2811BE9E` FOREIGN KEY (`type_abonnement`) REFERENCES `abonnements` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `inscription_abonnement`
 --
 ALTER TABLE `inscription_abonnement`
   ADD CONSTRAINT `FK_26D8E52FA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `FK_26D8E52FF1D74413` FOREIGN KEY (`abonnement_id`) REFERENCES `abonnements` (`id`);
+  ADD CONSTRAINT `FK_26D8E52FF1D74413` FOREIGN KEY (`abonnement_id`) REFERENCES `abonnements` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `lieu_culturels`
@@ -887,6 +994,13 @@ ALTER TABLE `messages`
   ADD CONSTRAINT `FK_DB021E96A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
+-- Contraintes pour la table `participation_event`
+--
+ALTER TABLE `participation_event`
+  ADD CONSTRAINT `FK_3472872C71F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
+  ADD CONSTRAINT `FK_3472872CA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
 -- Contraintes pour la table `post`
 --
 ALTER TABLE `post`
@@ -901,10 +1015,16 @@ ALTER TABLE `reaction`
   ADD CONSTRAINT `FK_A4D707F7F8697D13` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`id`);
 
 --
+-- Contraintes pour la table `reset_password_request`
+--
+ALTER TABLE `reset_password_request`
+  ADD CONSTRAINT `FK_7CE748AA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
 -- Contraintes pour la table `share`
 --
 ALTER TABLE `share`
-  ADD CONSTRAINT `FK_EF069D5A4B89032C` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
+  ADD CONSTRAINT `FK_EF069D5A4B89032C` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_EF069D5A5919D5BC` FOREIGN KEY (`shared_from_id`) REFERENCES `share` (`id`),
   ADD CONSTRAINT `FK_EF069D5AA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
