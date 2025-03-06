@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use FOS\UserBundle\Model\User as BaseUser;
+use League\OAuth2\Client\Provider\GoogleUser;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -60,6 +61,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private ?string $username = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isActive = true; // Par défaut, l'utilisateur est actif
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotNull(message: "La date de naissance est requise.")]
     #[Assert\LessThan("-18 years", message: "Vous devez avoir au moins 18 ans.")]
@@ -400,6 +414,130 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $banned = false;
+
+    public function isBanned(): bool
+    {
+        return $this->banned;
+    }
+
+    public function setBanned(bool $banned): self
+    {
+        $this->banned = $banned;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $googleAuthenticatorSecret = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isGoogleAuthenticatorEnabled = false;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $googleId = null;
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): self
+    {
+        $this->googleId = $googleId;
+        return $this;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): self
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+        return $this;
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return $this->isGoogleAuthenticatorEnabled;
+    }
+
+    public function setGoogleAuthenticatorEnabled(bool $isGoogleAuthenticatorEnabled): self
+    {
+        $this->isGoogleAuthenticatorEnabled = $isGoogleAuthenticatorEnabled;
+        return $this;
+    }
+
+    // Méthode pour hydrater l'utilisateur à partir des données Google
+    public function updateFromGoogleUser(GoogleUser $googleUser): self
+    {
+        $this->setGoogleId($googleUser->getId());
+        $this->setEmail($googleUser->getEmail());
+        $this->setUsername($googleUser->getName());
+
+        // Vous pouvez ajouter d'autres champs selon les besoins
+        return $this;
+    }
+
+
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $verificationToken = null;
+
+    // ...
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+        return $this;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
+    }
+
+    public function setVerificationToken(?string $verificationToken): self
+    {
+        $this->verificationToken = $verificationToken;
+        return $this;
+    }
+
+
+    public function setIsGoogleAuthenticatorEnabled(bool $isGoogleAuthenticatorEnabled): static
+    {
+        $this->isGoogleAuthenticatorEnabled = $isGoogleAuthenticatorEnabled;
+
+        return $this;
+    }
+
+    // src/Entity/User.php
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastActivityAt = null;
+
+// Getter et Setter pour lastActivityAt
+    public function getLastActivityAt(): ?\DateTimeInterface
+    {
+        return $this->lastActivityAt;
+    }
+
+    public function setLastActivityAt(?\DateTimeInterface $lastActivityAt): self
+    {
+        $this->lastActivityAt = $lastActivityAt;
         return $this;
     }
 }

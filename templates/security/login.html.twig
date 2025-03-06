@@ -16,6 +16,7 @@
                 </a>
 
 
+
                 <!-- En-tête -->
                 <div>
                     <h2 class="text-2xl font-semibold mb-1.5">Sign in to your account</h2>
@@ -32,6 +33,7 @@
                             {{ error.messageKey|trans(error.messageData, 'security') }}
                         </div>
                     {% endif %}
+
 
                     {% if app.user %}
                         <div class="mb-3 text-green-800 dark:text-green-400">
@@ -56,17 +58,30 @@
                     </div>
 
                     <!-- Password -->
-                    <div>
-                        <label for="password" class="block mb-2">Password</label>
+                    <div class="relative w-full">
+                        <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-3 flex items-center text-gray-600 dark:text-gray-300" >
+                              👁
+                        </button>
                         <input
                                 type="password"
                                 name="password"
                                 id="password"
                                 autocomplete="current-password"
-                                required
-                                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                        >
+
+                                class="w-full px-4 py-2.5 pr-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+
                     </div>
+
+                    <script>
+                        function togglePassword() {
+                            var passwordInput = document.getElementById("password");
+                            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+                        }
+                    </script>
+
+
+
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
@@ -81,7 +96,7 @@
                             >
                             <label for="remember_me" class="text-sm font-normal">Remember me</label>
                         </div>
-                        <a href="" class="text-sm text-blue-700 hover:text-blue-900 dark:text-blue-400">Forgot password?</a>
+                        <a href={{ path('app_forgot_password_request') }} class="text-sm text-blue-700 hover:text-blue-900 dark:text-blue-400">Forgot password?</a>
                     </div>
 
                     <!-- Submit -->
@@ -101,7 +116,7 @@
                             <ion-icon name="logo-facebook" class="text-xl"></ion-icon>
                             Facebook
                         </a>
-                        <a href="" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#EA4335] rounded-lg transition-all hover:bg-[#D33828]">
+                        <a href="https://127.0.0.1:8000/connect/google" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#EA4335] rounded-lg transition-all hover:bg-[#D33828]">
                             <ion-icon name="logo-google" class="text-xl"></ion-icon>
                             Google
                         </a>

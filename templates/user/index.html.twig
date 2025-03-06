@@ -33,6 +33,21 @@
                     <td>{{ user.gender }}</td>
                     <td>{{ user.dateOB|date('d-m-Y') }}</td>
                     <td>
+                        {% if app.user and 'ROLE_SUPER_ADMIN' in app.user.roles %}
+                            {% if 'ROLE_SUPER_ADMIN' not in user.roles %} {# Ne pas bannir un autre SUPER_ADMIN #}
+                                {% if not user.banned %}
+                                    <a href="{{ path('user_ban', {id: user.id}) }}" class="btn btn-danger">Bannir</a>
+                                {% else %}
+                                    <span class="text-danger">Banni</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted">SUPER_ADMIN</span>
+                            {% endif %}
+                        {% else %}
+                            {% if user.banned %}
+                                <span class="text-danger">Banni</span>
+                            {% endif %}
+                        {% endif %}
                         <a href="{{ path('app_user_edit', {id: user.id}) }}">
                             <button type="button" class="btn btn-link btn-simple-primary">
                                 <i class="la la-edit"></i>

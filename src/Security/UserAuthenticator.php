@@ -2,11 +2,13 @@
 
 namespace App\Security;
 
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
@@ -15,6 +17,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -22,40 +26,68 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private UserRepository $userRepository
+    ) {
     }
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->getPayload()->getString('email');
+        if ($request->attributes->get('_route') === self::OAUTH_GOOGLE_ROUTE) {
+            // Authentification OAuth
+            $email = $request->query->get('email');
+            return new Passport(
+                new UserBadge($email, function($userIdentifier) {
+                    $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
 
-        $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+                    if ($user && $user->isBanned()) {
+                        throw new CustomUserMessageAuthenticationException('Votre compte a été banni. Contactez un administrateur.');
+                    }
 
-        return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($request->getPayload()->getString('password')),
-            [
-                new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
-                new RememberMeBadge(),
-            ]
-        );
+                    return $user;
+                }),
+                new PasswordCredentials('') // Pas de mot de passe pour OAuth
+            );
+        } else {
+            // Authentification traditionnelle (email/mot de passe)
+            $email = $request->getPayload()->getString('email');
+            $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+
+            return new Passport(
+                new UserBadge($email, function($userIdentifier) {
+                    $user = $this->userRepository->findOneBy(['email' => $userIdentifier]);
+
+                    if ($user && $user->isBanned()) {
+                        throw new CustomUserMessageAuthenticationException('Votre compte a été banni. Contactez un administrateur.');
+                    }
+
+                    return $user;
+                }),
+                new PasswordCredentials($request->getPayload()->getString('password')),
+                [
+                    new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
+                    new RememberMeBadge(),
+                ]
+            );
+        }
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Redirection vers la page cible si elle est définie
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // Récupération de l'utilisateur authentifié
-        $user = $token->getUser();
-
         // Vérification du rôle et redirection appropriée
-        if ($user->getRole() === 'ROLE_USER') {
-            return new RedirectResponse($this->urlGenerator->generate('home'));
-        } elseif ($user->getRole() === 'ROLE_ADMIN' || $user->getRole() === 'ROLE_SUPER_ADMIN') {
+        $user = $token->getUser();
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('app_admin'));
+        } elseif (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return new RedirectResponse($this->urlGenerator->generate('app_admin'));
+        } elseif (in_array('ROLE_USER', $user->getRoles())) {
+            return new RedirectResponse($this->urlGenerator->generate('home'));
         }
 
         // Redirection par défaut
@@ -67,4 +99,10 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
+    public function start(Request $request, AuthenticationException $authException = null): Response
+    {
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+    }
+
 }

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mx-auto mt-10">
+        <h1 class="text-2xl font-bold mb-5">Configuration de l'authentification à deux facteurs</h1>
+
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <p class="mb-4">Scannez ce QR code avec Google Authenticator :</p>
+
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code 2FA">
+
+            <form method="POST" action="{{ path('two_factor_verify') }}" class="mt-5">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="code">
+                        Code de vérification
+                    </label>
+                    <input
+                            type="text"
+                            name="code"
+                            required
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+                            placeholder="Entrez le code à 6 chiffres"
+                    >
+                </div>
+
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Vérifier et activer
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

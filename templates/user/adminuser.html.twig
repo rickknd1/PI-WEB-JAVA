@@ -4,30 +4,156 @@
     <div class="main-panel">
         <div class="content">
             <div class="container-fluid">
+                <!-- Section de Statistiques -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Users</h5>
+                                <p class="card-text display-4">{{ totalUsers }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Active Users</h5>
+                                <p class="card-text display-4">{{ activeUsers }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-danger text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Banned Users</h5>
+                                <p class="card-text display-4">{{ bannedUsers }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section de Graphiques -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">User Growth Over Time</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="userGrowthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section des Dernières Activités -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Recent Activities</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for user in recentActivities %}
+                                        <li class="list-group-item">
+                                            <strong>{{ user.username }}</strong> - Dernière activité le {{ user.lastActivityAt|date('Y-m-d H:i') }}
+                                        </li>
+                                    {% else %}
+                                        <li class="list-group-item">Aucune activité récente.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section des Notifications -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Notifications</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>Warning!</strong> 2 users have been banned in the last 7 days.
+                                </div>
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Info:</strong> System update scheduled for tomorrow at 2 AM.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section des Widgets Rapides -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Add New User</h5>
+                                <a href="{{ path('app_user_new') }}" class="btn btn-success btn-lg btn-block">Add User</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Manage Roles</h5>
+                                <a href="" class="btn btn-primary btn-lg btn-block">Roles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">System Settings</h5>
+                                <a href="" class="btn btn-secondary btn-lg btn-block">Settings</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section principale (liste des utilisateurs) -->
                 <div class="row">
                     <div class="{% if app.request.attributes.get('_route') starts with 'users.edit' %}col-md-10{% else %}col-md-7{% endif %}">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">{% block titleUser %}{% endblock %}</div>
-                                <p class="card-category">{% block nbruser %}{% endblock %}</p>
+                                <div class="card-title">{% block titleUser %}Liste des utilisateurs{% endblock %}</div>
+                                <p class="card-category">Total Users: {{ users.getTotalItemCount }}</p>
                             </div>
                             <div class="card-body" style="overflow-x: auto;">
                                 {% block userEdit %}{% endblock %}
-                                {% block user %}{% endblock %}
+                                {% block user %}
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Email</th>
+                                            <th>Username</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in users %}
+                                            <tr>
+                                                <td>{{ user.id }}</td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-primary btn-sm btn-hover-effect">Edit</a>
+                                                    <a href="{{ path('app_user_delete', {id: user.id}) }}" class="btn btn-danger btn-sm btn-hover-effect">Delete</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endblock %}
                             </div>
                             <div class="card-footer">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
+                                <nav aria-label="Page navigation">
+                                    {{ knp_pagination_render(users) }}
                                 </nav>
                             </div>
                         </div>
@@ -39,7 +165,13 @@
                                     <h4 class="card-title">Add User</h4>
                                 </div>
                                 <div class="card-body">
-                                    {% block adduser %}{% endblock %}
+                                    {% block adduser %}
+                                        {{ form_start(form) }}
+                                        {{ form_widget(form) }}
+                                        <button type="submit" class="btn btn-success btn-hover-effect">Créer</button>
+                                        <a href="{{ path('user.admin') }}" class="btn btn-secondary btn-hover-effect">Annuler</a>
+                                        {{ form_end(form) }}
+                                    {% endblock %}
                                 </div>
                             </div>
                         </div>
@@ -50,78 +182,112 @@
     </div>
 
     <style>
-        /* Style de base pour le tableau */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9em;
-            font-family: sans-serif;
-            min-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Style pour l'en-tête du tableau */
-        table thead tr {
-            background-color: #009879;
-            color: #ffffff;
-            text-align: left;
-        }
-
-        /* Style pour les cellules de l'en-tête et du corps */
-        table th,
-        table td {
-            padding: 12px 15px;
-        }
-
-        /* Style pour les lignes du corps du tableau */
-        table tbody tr {
-            border-bottom: 1px solid #dddddd;
-        }
-
-        /* Changement de couleur au survol des lignes */
-        table tbody tr:hover {
-            background-color: #f5f5f5;
-            cursor: pointer;
-        }
-
-        /* Style pour les lignes paires */
-        table tbody tr:nth-of-type(even) {
-            background-color: #f3f3f3;
-        }
-
-        /* Style pour la dernière ligne */
-        table tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
-        }
-
-        /* Style pour les boutons de pagination */
+        /* Style de base pour la pagination */
         .pagination {
+            display: flex;
+            justify-content: center;
             margin-top: 20px;
         }
 
         .pagination .page-item {
             margin: 0 5px;
+            list-style: none;
         }
 
         .pagination .page-link {
+            display: block;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
             color: #009879;
+            background-color: white;
             border: 1px solid #009879;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
+        /* Style pour le bouton actif */
         .pagination .page-item.active .page-link {
             background-color: #009879;
             border-color: #009879;
             color: white;
         }
 
+        /* Style pour le survol des boutons */
         .pagination .page-link:hover {
             background-color: #009879;
             color: white;
         }
+
+        /* Style pour les boutons "Previous" et "Next" */
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-item:not(.disabled) .page-link:hover {
+            background-color: #007f63;
+            border-color: #007f63;
+        }
+
+        /* Style pour les boutons avec icônes (si vous utilisez des icônes) */
+        .pagination .page-link i {
+            margin: 0 4px;
+        }
+
+        /* Styles pour les cartes de statistiques */
+        .card.bg-primary, .card.bg-success, .card.bg-danger {
+            color: white;
+        }
+
+        .card.bg-primary .card-title, .card.bg-success .card-title, .card.bg-danger .card-title {
+            font-size: 1.2rem;
+        }
+
+        .card.bg-primary .card-text, .card.bg-success .card-text, .card.bg-danger .card-text {
+            font-size: 2rem;
+        }
+
+        /* Styles pour les alertes */
+        .alert {
+            margin-bottom: 1rem;
+        }
+
+        /* Styles pour les widgets rapides */
+        .card .btn-block {
+            margin-top: 1rem;
+        }
     </style>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Graphique de croissance des utilisateurs
+        const ctx = document.getElementById('userGrowthChart').getContext('2d');
+        const userGrowthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chartLabels|json_encode|raw }}, // Ex: ['Jan', 'Feb', 'Mar', ...]
+                datasets: [{
+                    label: 'Number of Users',
+                    data: {{ chartData|json_encode|raw }}, // Ex: [10, 20, 30, ...]
+                    borderColor: '#009879',
+                    backgroundColor: 'rgba(0, 152, 121, 0.1)',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
         // Ajouter un effet de survol sur les lignes du tableau
         document.addEventListener('DOMContentLoaded', function() {
             const rows = document.querySelectorAll('table tbody tr');
