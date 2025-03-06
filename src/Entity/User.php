@@ -118,6 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $participationEvents;
 
     #[ORM\Column(type: "integer")]
+    #[Assert\GreaterThanOrEqual(0)]
     private ?int $points = 0;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

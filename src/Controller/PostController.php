@@ -11,6 +11,7 @@ use App\Repository\CommentRepository;
 use App\Repository\EventsRepository;
 use App\Repository\GamificationsRepository;
 use App\Repository\CommunityRepository;
+use App\Repository\InscriptionAbonnementRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Repository\VisitorsRepository;
@@ -31,7 +32,8 @@ final class PostController extends AbstractController
     #[Route(name: 'app_post_index',methods: ['GET', 'POST'])]
     public function index(PostRepository $postRepository,CommentRepository $commentRepository,VisitorsRepository $repository,
                           EntityManagerInterface $em,Request $request,SluggerInterface $slugger,UserRepository $userRepository,
-                            ChatRoomMembresRepository $chatRoomMembresRepository,EventsRepository $eventsRepository,GamificationsRepository $gamificationsRepository
+                            ChatRoomMembresRepository $chatRoomMembresRepository,EventsRepository $eventsRepository,GamificationsRepository $gamificationsRepository,
+    InscriptionAbonnementRepository $inscriptionAbonnementRepository
     ): Response
     {
         // Récupérer les visiteurs existants
@@ -95,6 +97,7 @@ final class PostController extends AbstractController
         $events = $eventsRepository->findEventsByUserCommunities($user->getId());
 
         $gamifications = $gamificationsRepository->findAll();
+        $inscrit = $inscriptionAbonnementRepository->findAll();
         return $this->render('post/feed.html.twig', [
             'posts' => $postRepository->findAll(),
             'comments' => $comments,
@@ -104,6 +107,7 @@ final class PostController extends AbstractController
             'userchats' => $userchats,
             'events' => $events,
             'gamifications' => $gamifications,
+            'inscrit' => $inscrit,
         ]);
     }
 

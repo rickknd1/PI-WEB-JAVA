@@ -193,6 +193,29 @@ final class ChatRoomsController extends AbstractController{
         }
 
     }
+    #[Route('/leave/chat/{id}', name: 'leave.chatroom', requirements: ['id' => '\d+'])]
+    public function leaveChatRoom(ChatRooms $chatroom, EntityManagerInterface $em, Request $request): Response
+    {
+        $referer = $request->headers->get('referer');
+        $user = $this->getUser();
+
+        $chatRoomMembre = $em->getRepository(ChatRoomMembres::class)->findOneBy([
+            'chatRoom' => $chatroom,
+            'user' => $user
+        ]);
+
+        if ($chatRoomMembre) {
+            $em->remove($chatRoomMembre);
+            $em->flush();
+            $user->decrementPoints(10);
+        }
+        if ($referer) {
+            return $this->redirectToRoute('chatroom.front');
+        } else {
+            return $this->redirectToRoute('access_denied');
+        }
+    }
+
 
     #[Route('/chat/{id}', name: 'chatroom.chat', requirements: ['id'=>'\d+'])]
     public function show(int $id,ChatRoomMembresRepository $chatRoomMembresRepository,ChatRoomsRepository $chatRoomsRepository,
@@ -212,6 +235,21 @@ final class ChatRoomsController extends AbstractController{
             'allmessages' => $allmessages,
         ]);
     }
+    #[Route('/chat', name: 'chatroom.front')]
+    public function showfront(ChatRoomMembresRepository $chatRoomMembresRepository,ChatRoomsRepository $chatRoomsRepository,
+                         MessagesRepository $messagesRepository): Response
+    {
+
+        $user = $this->getUser();
+        $userchats = $chatRoomMembresRepository->findBy(['user' => $user]);
+        $allmessages = $messagesRepository->findAll();
+        return $this->render('chat_rooms/chat_front.html.twig', [
+            'user' => $user,
+            'userchats' => $userchats,
+            'allmessages' => $allmessages,
+        ]);
+    }
+
     #[Route('/message/{id}', name: 'send.msg', requirements: ['id'=>'\d+'], methods: ['POST'])]
     public function send(int $id,Request $request, ChatRoomsRepository $chatRoomsRepository, EntityManagerInterface $em): Response
     {

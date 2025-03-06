@@ -1,0 +1,81 @@
+{% extends 'home/home.html.twig' %}
+
+{% block chat %}
+    <div class="relative overflow-hidden border -m-2.5 dark:border-slate-700">
+
+    <div class="flex bg-white dark:bg-dark2">
+
+        <!-- sidebar -->
+        <div class="md:w-[360px] relative border-r dark:border-slate-700">
+
+            <div id="side-chat" class="top-0 left-0 max-md:fixed max-md:w-5/6 max-md:h-screen bg-white z-50 max-md:shadow max-md:-translate-x-full dark:bg-dark2">
+
+                <!-- heading title -->
+                <div class="p-4 border-b dark:border-slate-700">
+
+                    <div class="flex mt-2 items-center justify-between">
+
+                        <h1 class="text-2xl font-bold text-black ml-1 dark:text-white"> Chats </h1>
+
+                            <!-- right action buttons -->
+                            <div class="flex items-center gap-2.5">
+
+                                <!-- mobile toggle menu -->
+                                <button type="button" class="md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full">
+                                    <ion-icon name="chevron-down-outline"></ion-icon>
+                                </button>
+
+                            </div>
+
+                    </div>
+                    <br>
+                    <br>
+
+                </div>
+
+
+                <!-- users list -->
+                <div class="space-y-2 p-2 overflow-y-auto md:h-[calc(100vh-204px)] h-[calc(100vh-130px)]">
+                    <br>
+                    {% for chat in userchats %}
+                        {% set chatMessages = allmessages|filter(m => m.chatRoom.id == chat.chatRoom.id) %}
+                        <a href="{{path('chatroom.chat',{id:chat.chatRoom.id})}}" class="relative flex items-center gap-4 p-2 duration-200 rounded-xl hover:bg-secondery">
+                            <div class="relative w-14 h-14 shrink-0">
+                                <img src="{{ chat.chatRoom.cover }}" alt="" class="object-cover w-full h-full rounded-full">
+                                <div class="w-4 h-4 absolute bottom-0 right-0  bg-green-500 rounded-full border border-white dark:border-slate-800"></div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ chat.chatRoom.nom }}</div>
+                                    <div class="text-xs font-light text-gray-500 dark:text-white/70">{% if chatMessages is not empty %}{{ chatMessages|last.sentAt|date('H:i') }}{% else %}{% endif %}</div>
+                                    <div class="text-xs font-light text-gray-500 dark:text-white/70">@{{ chat.chatRoom.community.nom }}</div>
+                                </div>
+                                <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{% if chatMessages is not empty %} <span class="text-xs font-light text-gray-500 dark:text-white/70"> {{ chatMessages|last.user.username }}</span> : {{ chatMessages|last.content }}{% else %}No Messages{% endif %}</div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!-- overly -->
+            <div id="side-chat" class="bg-slate-100/40 backdrop-blur w-full h-full dark:bg-slate-800/40 z-40 fixed inset-0 max-md:-translate-x-full md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full"></div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        window.addEventListener('load', function() {
+            // Get the last message element by its ID or class
+            var lastMessage = document.querySelector('.message:last-child');
+
+            if (lastMessage) {
+                lastMessage.scrollIntoView({
+                    behavior: 'smooth',  // Smooth scrolling
+                    block: 'end'         // Scroll to the bottom of the message
+                });
+            }
+        });
+    </script>
+
+{% endblock %}

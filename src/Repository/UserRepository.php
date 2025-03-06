@@ -41,6 +41,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+    public function search(string $searchTerm): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username LIKE :searchTerm OR u.email LIKE :searchTerm OR u.name LIKE :searchTerm OR u.firstname LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findRecentActivities(int $limit = 10): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.lastActivityAt', 'DESC') // Remplacez "lastActivityAt" par le champ approprié
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 
 
 //    /**

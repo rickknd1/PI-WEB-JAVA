@@ -17,40 +17,12 @@
 
                         <h1 class="text-2xl font-bold text-black ml-1 dark:text-white"> Chats </h1>
 
-                            <!-- right action buttons -->
-                            <div class="flex items-center gap-2.5">
 
-
-                                <button class="group">
-                                    <ion-icon name="settings-outline" class="text-2xl flex group-aria-expanded:rotate-180"></ion-icon>
-                                </button>
-                                <div  class="md:w-[270px] w-full" uk-dropdown="pos: bottom-left; offset:10; animation: uk-animation-slide-bottom-small">
-                                    <nav>
-                                        <a href="#"> <ion-icon class="text-2xl shrink-0 -ml-1" name="checkmark-outline"></ion-icon> Mark all as read </a>
-                                        <a href="#"> <ion-icon class="text-2xl shrink-0 -ml-1" name="notifications-outline"></ion-icon> notifications setting </a>
-                                        <a href="#"> <ion-icon class="text-xl shrink-0 -ml-1" name="volume-mute-outline"></ion-icon> Mute notifications </a>
-                                    </nav>
-                                </div>
-
-                                <button class="">
-                                    <ion-icon name="checkmark-circle-outline" class="text-2xl flex"></ion-icon>
-                                </button>
-
-                                <!-- mobile toggle menu -->
-                                <button type="button" class="md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full">
-                                    <ion-icon name="chevron-down-outline"></ion-icon>
-                                </button>
-
-                            </div>
 
                     </div>
 
-                    <!-- search -->
-                    <div class="relative mt-4">
-                        <div class="absolute left-3 bottom-1/2 translate-y-1/2 flex"><ion-icon name="search" class="text-xl"></ion-icon></div>
-                        <input type="text" placeholder="Search" class="w-full !pl-10 !py-2 !rounded-lg">
-                    </div>
-
+                    <br>
+                    <br>
                 </div>
 
 
@@ -291,7 +263,8 @@
                         </div>
                     </li>
                     <li> <button type="button" class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-secondery"> <ion-icon name="flag-outline" class="text-2xl"></ion-icon> Report     </button></li>
-                    <li> <button type="button" class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-red-50 text-red-500"> <ion-icon name="trash-outline" class="text-2xl"></ion-icon> Delete Chat   </button> </li>
+                    <li> <button type="button" class="flex items-center gap-5 rounded-md p-3 w-full hover:bg-red-50 text-red-500"> <ion-icon name="trash-outline" class="text-2xl"></ion-icon>
+                            <a href="{{ path('leave.chatroom',{id:chat.id}) }}">Leave Chat</a>   </button> </li>
                 </ul>
 
                 <!-- close button -->

@@ -25,7 +25,7 @@ final class AdminController extends AbstractController{
         }
 
         $user = $this->getUser();
-        if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (in_array('ROLE_USER', $user->getRoles())) {
             return $this->redirectToRoute('access_denied');
         }
 

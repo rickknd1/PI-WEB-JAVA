@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Security\GoogleUserProvider;
 use League\OAuth2\Client\Provider\GoogleUser;

@@ -25,6 +25,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    public const OAUTH_GOOGLE_ROUTE = 'app_google_oauth';
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,

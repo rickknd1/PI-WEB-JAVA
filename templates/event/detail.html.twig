@@ -115,7 +115,20 @@
                     </a>
                 {% endif %}
                 <button type="button" class="rounded-lg bg-secondery flex px-2.5 py-2 dark:bg-dark3">
-                    <ion-icon name="arrow-redo-outline" class="text-xl"></ion-icon>
+                    <a href="#" onclick="copyCurrentLink(event)">
+                        <ion-icon name="arrow-redo-outline" class="text-xl"></ion-icon>
+                    </a>
+                    <script>
+                        function copyCurrentLink(event) {
+                            event.preventDefault();
+                            const currentURL = window.location.href;
+                            navigator.clipboard.writeText(currentURL).then(() => {
+                                alert("Link copied to clipboard!");
+                            }).catch(err => {
+                                console.error("Failed to copy link: ", err);
+                            });
+                        }
+                    </script>
                 </button>
 
                 <div>

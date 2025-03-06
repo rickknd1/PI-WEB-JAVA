@@ -29,6 +29,9 @@ final class UserController extends AbstractController
         $query = $userRepository->createQueryBuilder('u')->getQuery();
         $users = $paginator->paginate($query, $request->query->getInt('page', 1), 3);
 
+        $user = $this->getUser();
+        $users_all = $userRepository->findAll();
+
         // Statistiques
         $totalUsers = $userRepository->count([]);
         $activeUsers = $userRepository->count(['isActive' => true]);
@@ -42,17 +45,17 @@ final class UserController extends AbstractController
         $recentActivities = $userRepository->findRecentActivities(10);
 
         // Créez une nouvelle instance de l'entité User
-        $user = new User();
+        $us = new User();
 
         // Créez le formulaire
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $us);
 
         // Traitez la soumission du formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Enregistrez l'utilisateur en base de données
-            $entityManager->persist($user);
+            $entityManager->persist($us);
             $entityManager->flush();
 
             // Redirigez vers la même page après la création
@@ -61,13 +64,15 @@ final class UserController extends AbstractController
 
         return $this->render('user/index.html.twig', [
             'form' => $form->createView(),
-            'users' => $users,
             'totalUsers' => $totalUsers,
             'activeUsers' => $activeUsers,
             'bannedUsers' => $bannedUsers,
             'chartLabels' => $chartLabels,
             'chartData' => $chartData,
             'recentActivities' => $recentActivities,
+            'user' => $user,
+            'users_all' => $users_all,
+            'users'=>$users
         ]);
     }
 
@@ -115,14 +120,42 @@ final class UserController extends AbstractController
         Request $request,
         User $user,
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        UserRepository $userRepository,
+        PaginatorInterface $paginator
     ): Response {
+        $referer = $request->headers->get('referer');
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $totalUsers = $userRepository->count([]);
+        $activeUsers = $userRepository->count(['isActive' => true]);
+        $bannedUsers = $userRepository->count(['banned' => true]);
+        $recentActivities = $userRepository->findRecentActivities(10);
+
+        $query = $userRepository->createQueryBuilder('u')->getQuery();
+        $users = $paginator->paginate($query, $request->query->getInt('page', 1), 3);
+        $users_all = $userRepository->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleProfilePicture($form, $user, $slugger);
+            $coverFile = $form->get('pp')->getData();
+            if ($coverFile) {
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
 
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'File upload failed!');
+                    return $this->redirect($referer);
+                }
+
+                $user->setPp('/uploads/' . $newFilename);
+            }
             $entityManager->flush();
 
             $this->addFlash('success', 'Utilisateur modifié avec succès');
@@ -132,6 +165,12 @@ final class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'totalUsers' => $totalUsers,
+            'activeUsers' => $activeUsers,
+            'bannedUsers' => $bannedUsers,
+            'recentActivities' => $recentActivities,
+            'users' => $users,
+            'users_all' => $users_all,
         ]);
     }
 
@@ -156,43 +195,6 @@ final class UserController extends AbstractController
         return $this->redirectToRoute('user.admin', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * Méthode pour gérer l'upload de la photo de profil
-     */
-    private function handleProfilePicture($form, User $user, SluggerInterface $slugger): void
-    {
-        /** @var UploadedFile $pp */
-        $pp = $form->get('pp')->getData();
-
-        // Si une image a été uploadée
-        if ($pp) {
-            // Supprimer l'ancienne photo si elle existe et qu'on est en édition
-            if ($user->getPp()) {
-                $oldFilePath = $this->getParameter('profile_pictures_directory') . '/' . $user->getPp();
-                if (file_exists($oldFilePath)) {
-                    unlink($oldFilePath);
-                }
-            }
-
-            $originalFilename = pathinfo($pp->getClientOriginalName(), PATHINFO_FILENAME);
-            // Sécurisation du nom de fichier
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pp->guessExtension();
-
-            // Déplacer le fichier dans le répertoire où sont stockées les photos de profil
-            try {
-                $pp->move(
-                    $this->getParameter('profile_pictures_directory'),
-                    $newFilename
-                );
-
-                // Mettre à jour l'entité avec le nom du fichier
-                $user->setPp($newFilename);
-            } catch (FileException $e) {
-                $this->addFlash('error', 'Une erreur est survenue lors de l"upload de l"image');
-            }
-        }
-    }
     #[Route('/admin/user/{id}/ban', name: 'user_ban')]
     public function banUser(User $user, EntityManagerInterface $em): Response
     {
@@ -205,6 +207,52 @@ final class UserController extends AbstractController
 
         $this->addFlash('success', 'L\'utilisateur a été banni avec succès.');
         return $this->redirectToRoute('user.admin'); // Redirigez vers la liste des utilisateurs
+    }
+    #[Route('/profile', name: 'profile')]
+    public function profile(EntityManagerInterface $em,Request $request, SluggerInterface $slugger): Response
+    {
+        $referer = $request->headers->get('referer');
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        $originalCover=$user->getPp();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $coverFile = $form->get('pp')->getData();
+            if ($coverFile) {
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $coverFile->guessExtension();
+
+                try {
+                    $coverFile->move(
+                        $this->getParameter('cover_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'File upload failed!');
+                    return $this->redirect($referer);
+                }
+
+                if ($user->getPp()) {
+                    $oldFilePath = $this->getParameter('cover_directory') . DIRECTORY_SEPARATOR . basename($user->getPp());
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+                $user->setPp('/uploads/' . $newFilename);
+            }else{
+                $user->setPp($originalCover);
+            }
+            $em->flush();
+
+            $this->addFlash('success', 'Utilisateur modifié avec succès');
+            return $this->redirect($referer);
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 
 }

@@ -20,8 +20,10 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '2203a247e6fda86070a5e4e07aed533a' => __DIR__ . '/..' . '/symfony/clock/Resources/now.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         'e4c9b2466af4057cc73ca0bb2fbccd8a' => __DIR__ . '/..' . '/google-gemini-php/client/src/Gemini.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
@@ -95,6 +97,7 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
             'Symfony\\Component\\Messenger\\Bridge\\Doctrine\\' => 44,
             'Symfony\\Component\\Messenger\\' => 28,
             'Symfony\\Component\\Mercure\\' => 26,
+            'Symfony\\Component\\Mailer\\Bridge\\Google\\' => 39,
             'Symfony\\Component\\Mailer\\' => 25,
             'Symfony\\Component\\Intl\\' => 23,
             'Symfony\\Component\\HttpKernel\\' => 29,
@@ -129,6 +132,7 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
             'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Symfony\\Bridge\\Monolog\\' => 23,
             'Symfony\\Bridge\\Doctrine\\' => 24,
+            'SymfonyCasts\\Bundle\\ResetPassword\\' => 34,
             'Stripe\\' => 7,
             'Stof\\DoctrineExtensionsBundle\\' => 30,
             'StellaMaris\\Clock\\' => 18,
@@ -162,6 +166,7 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         ),
         'L' => 
         array (
+            'League\\OAuth2\\Client\\' => 21,
             'Lcobucci\\JWT\\' => 13,
             'Lcobucci\\Clock\\' => 15,
         ),
@@ -169,6 +174,7 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             'Knp\\Component\\' => 14,
             'Knp\\Bundle\\PaginatorBundle\\' => 27,
+            'KnpU\\OAuth2ClientBundle\\' => 24,
         ),
         'J' => 
         array (
@@ -177,9 +183,13 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         'H' => 
         array (
             'Http\\Discovery\\' => 15,
+            'HWI\\Bundle\\OAuthBundle\\' => 23,
         ),
         'G' => 
         array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
             'Gemini\\Symfony\\' => 15,
             'Gemini\\' => 7,
             'Gedmo\\' => 6,
@@ -436,6 +446,10 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             0 => __DIR__ . '/..' . '/symfony/mercure/src',
         ),
+        'Symfony\\Component\\Mailer\\Bridge\\Google\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/google-mailer',
+        ),
         'Symfony\\Component\\Mailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/mailer',
@@ -572,6 +586,10 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             0 => __DIR__ . '/..' . '/symfony/doctrine-bridge',
         ),
+        'SymfonyCasts\\Bundle\\ResetPassword\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfonycasts/reset-password-bundle/src',
+        ),
         'Stripe\\' => 
         array (
             0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
@@ -645,6 +663,11 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
+        'League\\OAuth2\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
+        ),
         'Lcobucci\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
@@ -661,6 +684,10 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         array (
             0 => __DIR__ . '/..' . '/knplabs/knp-paginator-bundle/src',
         ),
+        'KnpU\\OAuth2ClientBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/knpuniversity/oauth2-client-bundle/src',
+        ),
         'JMS\\TranslationBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/jms/translation-bundle',
@@ -668,6 +695,22 @@ class ComposerStaticInit5ce90d8f6656bdd035ec0a9679a6128c
         'Http\\Discovery\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/discovery/src',
+        ),
+        'HWI\\Bundle\\OAuthBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hwi/oauth-bundle/src',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
         'Gemini\\Symfony\\' => 
         array (

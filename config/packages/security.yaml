@@ -23,7 +23,7 @@ security:
             custom_authenticators:
                 - App\Security\UserAuthenticator
 
-            # Configuration OAuth
+            #Configuration OAuth
             oauth:
                 resource_owners:
                     google: "/login/check-google"

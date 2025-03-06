@@ -5,7 +5,13 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Form\PostType;
+use App\Repository\ChatRoomMembresRepository;
+use App\Repository\ChatRoomsRepository;
 use App\Repository\CommentRepository;
+use App\Repository\EventsRepository;
+use App\Repository\GamificationsRepository;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,29 +89,32 @@ final class CommentController extends AbstractController
     }
 
     #[Route('/post/{id}/comment', name: 'app_comment')]
-    public function comment(Post $post, Request $request, EntityManagerInterface $em,UserRepository $userRepository): Response
+    public function comment(Post $post, Request $request,UserRepository $userRepository, GamificationsRepository$gamificationsRepository,EntityManagerInterface $em,PostRepository $rep,ChatRoomMembresRepository $chatRoomMembresRepository,EventsRepository $eventsRepository): Response
     {
+        // Récupérer le contenu du commentaire depuis la requête
         $content = $request->request->get('content');
-        //$user = $this->getUser();
 
-        $user = $userRepository->findAll();
+        // Assurez-vous que l'utilisateur est authentifié
+        $user = $this->getUser();  // Vous utilisez ici l'utilisateur connecté
 
-        //if (!$user) {
-            //return $this->redirectToRoute('app_login');
-        //}
+        if ($user && $content) {
+            $comment = new Comment();
+            $comment->setPost($post);
+            $comment->setContent($content);
+            $comment->setUser($user); // L'utilisateur connecté
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setUpdatedAt(new \DateTimeImmutable());
 
-        $comment = new Comment();
-        $comment->setPost($post);
-        $comment->setContent($content);
-        $comment->setUser($user[0]); // Si l'utilisateur est connecté
-        $comment->setCreatedAt(new \DateTimeImmutable());
-        $comment->setUpdatedAt(new \DateTimeImmutable());
+            // Persist et flush pour enregistrer le commentaire dans la base de données
+            $em->persist($comment);
+            $em->flush();
 
-        $em->persist($comment);
-        $em->flush();
+            $this->addFlash('success', 'Commentaire ajouté avec succès !');
+        }
 
-        $this->addFlash('success', 'Commentaire ajouté avec succès !');
-        return $this->redirectToRoute('app_post_index');
 
+        // Rediriger ou renvoyer la vue avec les commentaires
+        return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

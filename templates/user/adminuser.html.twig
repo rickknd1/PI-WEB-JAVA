@@ -32,20 +32,6 @@
                     </div>
                 </div>
 
-                <!-- Section de Graphiques -->
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title">User Growth Over Time</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="userGrowthChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Section des Dernières Activités -->
                 <div class="row mb-4">
                     <div class="col-md-12">
@@ -121,7 +107,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">{% block titleUser %}Liste des utilisateurs{% endblock %}</div>
-                                <p class="card-category">Total Users: {{ users.getTotalItemCount }}</p>
+                                <p class="card-category">Total Users: {{ users_all|length }}</p>
                             </div>
                             <div class="card-body" style="overflow-x: auto;">
                                 {% block userEdit %}{% endblock %}
@@ -263,60 +249,4 @@
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Graphique de croissance des utilisateurs
-        const ctx = document.getElementById('userGrowthChart').getContext('2d');
-        const userGrowthChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: {{ chartLabels|json_encode|raw }}, // Ex: ['Jan', 'Feb', 'Mar', ...]
-                datasets: [{
-                    label: 'Number of Users',
-                    data: {{ chartData|json_encode|raw }}, // Ex: [10, 20, 30, ...]
-                    borderColor: '#009879',
-                    backgroundColor: 'rgba(0, 152, 121, 0.1)',
-                    fill: true,
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Ajouter un effet de survol sur les lignes du tableau
-        document.addEventListener('DOMContentLoaded', function() {
-            const rows = document.querySelectorAll('table tbody tr');
-
-            rows.forEach(row => {
-                row.addEventListener('mouseenter', () => {
-                    row.style.backgroundColor = '#e0f7fa'; // Couleur de survol
-                });
-
-                row.addEventListener('mouseleave', () => {
-                    row.style.backgroundColor = ''; // Revenir à la couleur d'origine
-                });
-            });
-        });
-
-        // Exemple de fonction pour trier le tableau par colonne
-        function sortTable(columnIndex) {
-            const table = document.querySelector('table');
-            const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-
-            rows.sort((a, b) => {
-                const aValue = a.querySelectorAll('td')[columnIndex].textContent;
-                const bValue = b.querySelectorAll('td')[columnIndex].textContent;
-                return aValue.localeCompare(bValue);
-            });
-
-            // Réorganiser les lignes dans le tbody
-            rows.forEach(row => tbody.appendChild(row));
-        }
-    </script>
 {% endblock %}
