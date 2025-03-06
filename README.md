@@ -67,6 +67,10 @@ Users can receive suggestions based on their interests.
 ### - Weather
 - Showing temperature and weather conditions for each event.
 
+### - Events
+- Intrested or Going.
+- Countdown system.
+
 ### - Chatroom for Community Members
 - Only community members can join and participate in the chat.
 - Users can send and receive messages with support for emojis.
