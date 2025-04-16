@@ -115,3 +115,61 @@
     -fx-background-color: #28a745;
     -fx-text-fill: white;
 }
+
+.toggle-button {
+    -fx-min-width: 60px;
+    -fx-pref-width: 60px;
+}
+
+.password-container {
+    -fx-spacing: 5px;
+    -fx-alignment: center-left;
+}
+
+/* Style pour le bouton œil */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 4px;
+    -fx-cursor: hand;
+}
+
+.icon-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 3px;
+}
+
+/* Style optionnel pour le champ texte visible */
+.password-textfield {
+    -fx-font-family: monospace;
+}
+
+/* Bouton œil */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 4px;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.icon-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 3px;
+}
+
+/* Champ mot de passe visible */
+.password-textfield {
+    -fx-font-family: monospace;
+}
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.icon-button:hover {
+    -fx-opacity: 0.8;
+}
+
+.icon-button:pressed {
+    -fx-opacity: 0.6;
+}

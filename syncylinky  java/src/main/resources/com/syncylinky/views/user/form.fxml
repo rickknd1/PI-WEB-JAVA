@@ -3,47 +3,139 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
 
-<?import javafx.util.Callback?>
+<?import java.lang.String?>
+
 <VBox xmlns="http://javafx.com/javafx/11.0.1"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.syncylinky.controllers.UserFormController"
-      spacing="10" style="-fx-padding: 20px;">
+      spacing="10"
+      style="-fx-padding: 20px;"
+      prefWidth="600"
+      prefHeight="700"
+      stylesheets="@/com/syncylinky/css/styles.css">
 
-    <Label text="User Form" styleClass="form-title" />
+    <Label text="User Form" styleClass="form-title">
+        <font>
+            <Font name="System Bold" size="18.0"/>
+        </font>
+        <VBox.margin>
+            <Insets bottom="10"/>
+        </VBox.margin>
+    </Label>
 
-    <GridPane styleClass="form-container" hgap="15" vgap="15">
-        <Label text="Email:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-        <TextField fx:id="emailField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+        <GridPane styleClass="form-container" hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="200" prefWidth="300" />
+            </columnConstraints>
+            <padding>
+                <Insets right="10"/>
+            </padding>
 
-        <Label text="Password:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-        <PasswordField fx:id="passwordField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+            <!-- Email -->
+            <Label text="Email:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <TextField fx:id="emailField" promptText="user@example.com"/>
+                <Label fx:id="emailErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-        <Label text="Username:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-        <TextField fx:id="usernameField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
-        <Label text="Name:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-        <TextField fx:id="nameField" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+            <!-- Password -->
+            <Label text="Password:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <HBox spacing="0" alignment="CENTER_LEFT">
+                    <PasswordField fx:id="passwordField" promptText="At least 8 characters" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="showPasswordButton" styleClass="icon-button"
+                            style="-fx-background-color: transparent; -fx-padding: 5;">
+                        <graphic>
+                            <Label fx:id="passwordVisibilityIcon" text="👁️‍🗨️" style="-fx-font-size: 16px;"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+                <TextField fx:id="visiblePasswordField" promptText="At least 8 characters" visible="false"/>
+                <Label fx:id="passwordErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-        <Label text="Firstname:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-        <TextField fx:id="firstnameField" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+            <!-- Username -->
+            <Label text="Username:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <TextField fx:id="usernameField" promptText="3-30 characters"/>
+                <Label fx:id="usernameErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-        <Label text="Date of Birth:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-        <DatePicker fx:id="dateOBPicker" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+            <!-- Name -->
+            <Label text="Last Name:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                <TextField fx:id="nameField" promptText="2-50 characters"/>
+                <Label fx:id="nameErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-        <Label text="Gender:" styleClass="form-label" GridPane.rowIndex="6" GridPane.columnIndex="0" />
-        <ComboBox fx:id="genderComboBox" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            <!-- Firstname -->
+            <Label text="First Name:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="4" GridPane.columnIndex="1">
+                <TextField fx:id="firstnameField" promptText="2-50 characters"/>
+                <Label fx:id="firstnameErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-        <Label text="Role:" styleClass="form-label" GridPane.rowIndex="7" GridPane.columnIndex="0" />
-        <ComboBox fx:id="roleComboBox" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+            <!-- Date of Birth -->
+            <Label text="Date of Birth:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                <DatePicker fx:id="dateOBPicker" />
+                <Label fx:id="dateOBErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-        <Label text="Interests:" styleClass="form-label" GridPane.rowIndex="8" GridPane.columnIndex="0" />
-        <ListView fx:id="interestsListView" GridPane.rowIndex="8" GridPane.columnIndex="1"
-                  style="-fx-pref-height: 150px;"/>
-    </GridPane>
+            <!-- Gender -->
+            <Label text="Gender:" styleClass="form-label" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="6" GridPane.columnIndex="1">
+                <ComboBox fx:id="genderComboBox" maxWidth="Infinity" promptText="Select gender">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Homme" />
+                            <String fx:value="Femme" />
+                            <String fx:value="Autre" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Label fx:id="genderErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
 
-    <HBox spacing="15" alignment="CENTER_RIGHT">
-        <Button text="Cancel" styleClass="button" fx:id="cancelButton" onAction="#handleCancel" />
-        <Button text="Save" styleClass="button button-success" fx:id="saveButton" onAction="#handleSave" />
+            <!-- Role -->
+            <Label text="Role:" styleClass="form-label" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+            <VBox spacing="2" GridPane.rowIndex="7" GridPane.columnIndex="1">
+                <ComboBox fx:id="roleComboBox" maxWidth="Infinity" promptText="Select role">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="ROLE_USER" />
+                            <String fx:value="ROLE_ADMIN" />
+                            <String fx:value="ROLE_SUPER_ADMIN" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Label fx:id="roleErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
+
+            <!-- Interests -->
+            <Label text="Interests (select 2-4):" styleClass="form-label" GridPane.rowIndex="8" GridPane.columnIndex="0"
+                   GridPane.valignment="TOP">
+                <padding>
+                    <Insets top="5" />
+                </padding>
+            </Label>
+            <VBox spacing="2" GridPane.rowIndex="8" GridPane.columnIndex="1">
+                <ListView fx:id="interestsListView" prefHeight="150" />
+                <Label fx:id="interestsErrorLabel" textFill="RED" visible="false" wrapText="true"/>
+            </VBox>
+        </GridPane>
+    </ScrollPane>
+
+    <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 15 0 0 0;">
+        <Button text="Cancel" styleClass="button" fx:id="cancelButton"
+                onAction="#handleCancel" cancelButton="true"/>
+        <Button text="Save" styleClass="button button-success" fx:id="saveButton"
+                onAction="#handleSave" defaultButton="true"/>
     </HBox>
 </VBox>

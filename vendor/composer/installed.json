@@ -476,7 +476,7 @@
             },
             "time": "2025-01-21T13:21:31+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Common\\DataFixtures\\": "src"
@@ -841,7 +841,7 @@
             },
             "time": "2024-12-05T18:35:55+00:00",
             "type": "symfony-bundle",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Bundle\\FixturesBundle\\": "src"
@@ -1885,7 +1885,7 @@
                     "dev-main": "1.x-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Endroid\\Installer\\": "src"
@@ -2025,7 +2025,7 @@
                     "dev-main": "6.x-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Endroid\\QrCodeBundle\\": "src/"
