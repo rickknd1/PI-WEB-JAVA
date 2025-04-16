@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.syncylinky.controllers.MainController" stylesheets="@styles.css">
+    <top>
+        <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+            <Label text="SyncYLinkY Admin" />
+            <MenuBar style="-fx-background-color: transparent;">
+                <menus>
+                    <Menu text="Dashboard">
+                        <items>
+                            <MenuItem text="Overview" />
+                        </items>
+                    </Menu>
+                    <Menu text="Users">
+                        <items>
+                            <MenuItem fx:id="usersMenuItem" text="Manage Users" onAction="#handleUsersMenuClick" />
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+        </HBox>
+    </top>
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-padding: 15px;" prefWidth="200">
+            <Button text="Dashboard" styleClass="button" />
+            <Button text="Users" styleClass="button" />
+            <Button text="Categories" styleClass="button" />
+            <Button text="Communities" styleClass="button" />
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentPane" style="-fx-padding: 20px;" />
+    </center>
+</BorderPane>
