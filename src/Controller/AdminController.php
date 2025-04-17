@@ -30,7 +30,7 @@ final class AdminController extends AbstractController{
         }
 
         $visitors = $repository->findAll();
-        $nbr = $visitors[0]->getNbrVisitors();
+        $nbr = 1;
 
         $communitiesFront = $communityRepository->findBy(['statut' => 0]);
         $owners = $membreComunityRepository->findOwnersForNoActiveCommunities();

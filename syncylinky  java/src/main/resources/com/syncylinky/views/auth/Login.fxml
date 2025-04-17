@@ -1,26 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.Line?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1"
+<HBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.syncylinky.controllers.AuthController"
-      spacing="10" alignment="CENTER">
+      fx:controller="com.syncylinky.controllers.LoginController"
+      style="-fx-background-color: white;">
 
-    <Label styleClass="title" text="Connexion" />
+    <!-- Left side - Orange panel -->
+    <VBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #FF6A00; -fx-padding: 40px 60px;" HBox.hgrow="ALWAYS" prefWidth="500">
+        <!-- Logo -->
+        <HBox alignment="CENTER_LEFT">
+            <ImageView fitWidth="180" fitHeight="50" preserveRatio="true">
+                <image>
+                    <Image url="@/com/syncylinky/images/logo_typo_blue.svg"/>
+                </image>
+            </ImageView>
+        </HBox>
 
-    <TextField fx:id="emailField" promptText="Email" />
-    <PasswordField fx:id="passwordField" promptText="Mot de passe" />
+        <Region prefHeight="40" />
 
-    <Button defaultButton="true" onAction="#handleLogin" text="Se connecter" />
-    <Button onAction="#showRegister" text="Créer un compte" />
+        <!-- Title -->
+        <Text text="Sign in to your account" fill="white" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
 
-    <stylesheets>
-        <URL value="@../../../css/auth.css" />
-    </stylesheets>
-</VBox>
+        <!-- Register link -->
+        <HBox alignment="CENTER_LEFT" spacing="5">
+            <Text text="If you haven't signed up yet." fill="white" style="-fx-font-size: 14px;"/>
+            <Hyperlink text="Register here!" style="-fx-text-fill: #0072FF; -fx-underline: false; -fx-font-size: 14px;"/>
+        </HBox>
+
+        <Region prefHeight="20" />
+
+        <!-- Form -->
+        <VBox spacing="15" alignment="CENTER_LEFT">
+            <!-- Email -->
+            <Label text="Email address" textFill="white" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="emailField" promptText="Enter your email"
+                       style="-fx-background-color: #333743; -fx-text-fill: white; -fx-prompt-text-fill: #9CA0AA;
+                             -fx-background-radius: 5px; -fx-pref-width: 350px; -fx-pref-height: 40px; -fx-padding: 5px 10px;"/>
+
+            <!-- Password -->
+            <Label text="Password" textFill="white" style="-fx-font-weight: bold; -fx-padding: 10px 0 0 0;"/>
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <StackPane>
+                    <!-- Les deux champs superposés pour la transition fluide -->
+                    <PasswordField fx:id="passwordField" promptText="Enter your password"
+                                   style="-fx-background-color: #333743; -fx-text-fill: white; -fx-prompt-text-fill: #9CA0AA;
+                                         -fx-background-radius: 5px; -fx-pref-width: 320px; -fx-pref-height: 40px; -fx-padding: 5px 10px;"/>
+
+                    <TextField fx:id="visiblePasswordField" promptText="Enter your password" visible="false" managed="false"
+                               style="-fx-background-color: #333743; -fx-text-fill: white; -fx-prompt-text-fill: #9CA0AA;
+                                     -fx-background-radius: 5px; -fx-pref-width: 320px; -fx-pref-height: 40px; -fx-padding: 5px 10px;"/>
+                </StackPane>
+
+                <!-- Bouton pour afficher/masquer le mot de passe -->
+                <Button fx:id="togglePasswordBtn" text="👁️" onAction="#togglePasswordVisibility"
+                        style="-fx-background-color: #333743; -fx-text-fill: white; -fx-font-size: 14px;
+                              -fx-background-radius: 5px; -fx-pref-height: 40px;"/>
+            </HBox>
+
+            <!-- Remember me & Forgot password -->
+            <HBox spacing="120" alignment="CENTER_LEFT" style="-fx-padding: 5px 0;">
+                <HBox alignment="CENTER_LEFT" spacing="5">
+                    <CheckBox style="-fx-text-fill: white;" text="Remember me"/>
+                </HBox>
+                <Hyperlink text="Forgot password?" style="-fx-text-fill: #0072FF; -fx-underline: false;"/>
+            </HBox>
+
+            <!-- Sign in button -->
+            <Button text="Sign in" onAction="#handleLogin"
+                    style="-fx-background-color: #304FFE; -fx-text-fill: white; -fx-font-weight: bold;
+                           -fx-pref-width: 350px; -fx-pref-height: 40px; -fx-background-radius: 5px; -fx-padding: 8px;"/>
+        </VBox>
+
+        <Region prefHeight="20" />
+
+        <!-- Separator -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Line endX="50" style="-fx-stroke: white; -fx-opacity: 0.5;"/>
+            <Text text="Or continue with" fill="white" style="-fx-opacity: 0.8;"/>
+            <Line endX="50" style="-fx-stroke: white; -fx-opacity: 0.5;"/>
+        </HBox>
+
+        <!-- Social buttons -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <Button style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 4px; -fx-text-fill: white; -fx-padding: 8px 20px;">
+                <graphic>
+                    <HBox spacing="10" alignment="CENTER">
+                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                            <image>
+                                <Image url="https://img.icons8.com/ios-filled/50/FFFFFF/facebook-new.png"/>
+                            </image>
+                        </ImageView>
+                        <Text text="Facebook" fill="white"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 4px; -fx-text-fill: white; -fx-padding: 8px 20px;">
+                <graphic>
+                    <HBox spacing="10" alignment="CENTER">
+                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                            <image>
+                                <Image url="https://img.icons8.com/ios-filled/50/FFFFFF/google-logo.png"/>
+                            </image>
+                        </ImageView>
+                        <Text text="Google" fill="white"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
+
+    <!-- Right side - Blue panel -->
+    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #0072C6; -fx-padding: 40px;" HBox.hgrow="ALWAYS" prefWidth="500">
+        <!-- Logo -->
+        <StackPane>
+            <ImageView fitWidth="300" fitHeight="100" preserveRatio="true">
+                <image>
+                    <Image url="@/com/syncylinky/images/logo_typo_blue.svg"/>
+                </image>
+            </ImageView>
+        </StackPane>
+
+        <!-- Tagline -->
+        <Text text="Connect With Friends" fill="white" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-padding: 20px 0;"/>
+
+        <!-- Description -->
+        <Text text="Share your best moments and stay connected with your community."
+              fill="white" style="-fx-font-size: 16px; -fx-text-alignment: center; -fx-wrap-text: true;" wrappingWidth="400"/>
+    </VBox>
+</HBox>

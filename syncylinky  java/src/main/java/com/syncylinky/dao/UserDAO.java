@@ -298,4 +298,38 @@ public class UserDAO {
             pstmt.executeUpdate();
         }
     }
+
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM user WHERE email = ?";
+        User user = null;
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("role"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("firstname"),
+                        rs.getString("username"),
+                        rs.getDate("date_ob").toLocalDate(),
+                        rs.getString("gender"),
+                        rs.getBoolean("banned"),
+                        rs.getBoolean("is_verified")
+                );
+
+                loadUserInterests(conn, user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 }

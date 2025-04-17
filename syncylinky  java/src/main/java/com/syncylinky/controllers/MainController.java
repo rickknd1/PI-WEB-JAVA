@@ -1,5 +1,6 @@
 package com.syncylinky.controllers;
 
+import com.syncylinky.models.User;
 import com.syncylinky.utils.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +14,21 @@ import java.io.IOException;
 public class MainController {
     @FXML
     private StackPane contentPane;
+    private User currentUser;
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        // Vous pouvez ajouter des vérifications de rôle ici
+        if ("ROLE_USER".equals(user.getRole())) {
+            showAlert("Accès refusé", "Vous n'avez pas les droits nécessaires", Alert.AlertType.ERROR);
+            // Fermer l'application ou revenir à la page de login
+        }
+    }
 
     @FXML
-    private void handleUsersMenuClick(ActionEvent event) {
+    private void handleUsersMenuClick() {
         try {
-            System.out.println("Attempting to load users view...");
+            // Correction du chemin avec le slash initial
             Parent usersView = FXMLLoader.load(getClass().getResource("/com/syncylinky/views/user/list.fxml"));
             contentPane.getChildren().clear();
             contentPane.getChildren().add(usersView);
@@ -38,17 +49,5 @@ public class MainController {
 
 
 
-    public void handleUsersMenuClick(javafx.event.ActionEvent actionEvent) {
-        {
-            try {
-                System.out.println("Loading users view..."); // Debug
-                Parent usersView = FXMLLoader.load(getClass().getResource("/com/syncylinky/views/user/list.fxml"));
-                contentPane.getChildren().clear();
-                contentPane.getChildren().add(usersView);
-            } catch (IOException e) {
-                System.err.println("Error loading users view:");
-                e.printStackTrace();
-            }
-        }
-    }
+
 }

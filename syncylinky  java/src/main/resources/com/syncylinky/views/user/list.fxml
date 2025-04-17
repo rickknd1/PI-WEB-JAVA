@@ -3,34 +3,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<VBox xmlns="http://javafx.com/javafx/11.0.1"
+
+<VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.syncylinky.controllers.UserController"
-      spacing="20" style="-fx-padding: 20px;">
+      spacing="20"
+      style="-fx-padding: 20px;"
+      alignment="CENTER">
 
-    <HBox spacing="20" alignment="CENTER_LEFT">
-        <Label text="Users Management" styleClass="form-title" />
-        <Button text="Add New User" onAction="#handleAddUser" styleClass="button button-success" />
+    <HBox spacing="20" alignment="CENTER">
+        <Label text="Users Management" styleClass="form-title"/>
+        <Button text="Add New User" onAction="#handleAddUser" styleClass="button button-success"/>
+        <Button text="Export Users" onAction="#handleExportUsers" styleClass="button"/>
     </HBox>
 
     <TableView fx:id="usersTable" styleClass="table-view">
         <columns>
             <TableColumn text="ID" prefWidth="50">
-                <cellValueFactory><PropertyValueFactory property="id" /></cellValueFactory>
+                <cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
             </TableColumn>
             <TableColumn text="Email" prefWidth="250">
-                <cellValueFactory><PropertyValueFactory property="email" /></cellValueFactory>
+                <cellValueFactory><PropertyValueFactory property="email"/></cellValueFactory>
             </TableColumn>
             <TableColumn text="Name" prefWidth="150">
-                <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>
+                <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
             </TableColumn>
             <TableColumn text="Role" prefWidth="120">
-                <cellValueFactory><PropertyValueFactory property="role" /></cellValueFactory>
+                <cellValueFactory><PropertyValueFactory property="role"/></cellValueFactory>
             </TableColumn>
-            <TableColumn text="Status" prefWidth="100" fx:id="statusColumn" />
-            <TableColumn text="Actions" prefWidth="200" fx:id="actionsColumn" />
+            <TableColumn text="Status" prefWidth="100" fx:id="statusColumn"/>
+            <TableColumn text="Actions" prefWidth="200" fx:id="actionsColumn"/>
         </columns>
     </TableView>
 </VBox>

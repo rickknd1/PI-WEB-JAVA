@@ -173,3 +173,93 @@
 .icon-button:pressed {
     -fx-opacity: 0.6;
 }
+
+.password-toggle-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 3px;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+
+.password-toggle-btn:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Ajoutez ceci à styles.css */
+.grid-pane {
+    -fx-alignment: center;
+}
+
+.form-field {
+    -fx-pref-width: 200px;
+}
+
+.login-button {
+    -fx-pref-width: 200px;
+    -fx-padding: 8px 16px;
+}
+
+/* styles.css */
+
+/* Login page specific styles */
+.login-container {
+    -fx-background-color: #ffffff;
+    -fx-padding: 40px;
+    -fx-alignment: center;
+}
+
+.login-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10px 0;
+}
+
+.login-subtitle {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 14px;
+}
+
+.login-form {
+    -fx-padding: 20px 0;
+    -fx-spacing: 15px;
+}
+
+.login-field {
+    -fx-pref-width: 300px;
+    -fx-padding: 8px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: #d1d5db;
+}
+
+.login-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 300px;
+    -fx-padding: 8px;
+    -fx-background-radius: 4px;
+}
+
+.social-button {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px 20px;
+}
+
+.social-button:hover {
+    -fx-background-color: #f9fafb;
+}
+
+.separator-line {
+    -fx-stroke: #d1d5db;
+    -fx-stroke-width: 1px;
+}
+
+.login-footer {
+    -fx-padding: 40px 0 0 0;
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+}

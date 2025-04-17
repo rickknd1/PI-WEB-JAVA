@@ -2,6 +2,7 @@ package com.syncylinky.controllers;
 
 import com.syncylinky.models.User;
 import com.syncylinky.services.UserService;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,6 +21,10 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class UserController {
     @FXML private TableView<User> usersTable;
@@ -29,6 +34,7 @@ public class UserController {
 
     private final UserService userService = new UserService();
     private final ObservableList<User> users = FXCollections.observableArrayList();
+    private final Button banBtn = new Button();
 
     @FXML
     public void initialize() {
@@ -38,60 +44,50 @@ public class UserController {
 
 
     private void setupTableColumns() {
-        // Colonne Status personnalisée
-        statusColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    User user = getTableRow().getItem();
-                    setText(user.isBanned() ? "Banned" : "Active");
-                    setStyle(user.isBanned() ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
-                }
-            }
+        // Colonne Status
+        statusColumn.setCellValueFactory(cellData -> {
+            User user = cellData.getValue();
+            return new SimpleStringProperty(user.isBanned() ? "Banni" : "Actif");
         });
 
-        // Colonne Actions personnalisée
-        actionsColumn.setCellFactory(new Callback<>() {
+        // Colonne Actions
+        actionsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button editBtn = new Button("Edit");
+            private final Button deleteBtn = new Button("Delete");
+            private final Button banBtn = new Button();
+
+            {
+                // Style de base
+                editBtn.getStyleClass().add("button");
+                deleteBtn.getStyleClass().add("button");
+                deleteBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
+                banBtn.getStyleClass().add("button");
+
+                // Actions
+                editBtn.setOnAction(event -> handleEditUser(getTableView().getItems().get(getIndex())));
+                deleteBtn.setOnAction(event -> handleDeleteUser(getTableView().getItems().get(getIndex())));
+                banBtn.setOnAction(event -> handleToggleBan(getTableView().getItems().get(getIndex())));
+            }
+
             @Override
-            public TableCell<User, Void> call(final TableColumn<User, Void> param) {
-                return new TableCell<>() {
-                    private final Button editBtn = new Button("Edit");
-                    private final Button deleteBtn = new Button("Delete");
-
-                    {
-                        // Style des boutons
-                        editBtn.getStyleClass().add("button");
-                        deleteBtn.getStyleClass().add("button");
-                        deleteBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
-
-                        // Actions des boutons
-                        editBtn.setOnAction(event -> {
-                            User user = getTableView().getItems().get(getIndex());
-                            handleEditUser(user);
-                        });
-
-                        deleteBtn.setOnAction(event -> {
-                            User user = getTableView().getItems().get(getIndex());
-                            handleDeleteUser(user);
-                        });
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    User user = getTableView().getItems().get(getIndex());
+                    if (user.isBanned()) {
+                        banBtn.setText("Unban");
+                        banBtn.setStyle("-fx-background-color: #28a745; -fx-text-fill: white;");
+                    } else {
+                        banBtn.setText("Ban");
+                        banBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
                     }
 
-                    @Override
-                    protected void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            HBox buttons = new HBox(5, editBtn, deleteBtn);
-                            buttons.setAlignment(Pos.CENTER);
-                            setGraphic(buttons);
-                        }
-                    }
-                };
+                    HBox buttons = new HBox(5, editBtn, deleteBtn, banBtn);
+                    buttons.setAlignment(Pos.CENTER);
+                    setGraphic(buttons);
+                }
             }
         });
     }
@@ -244,6 +240,83 @@ public class UserController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void handleExportUsers() {
+        try {
+            // Create a file chooser
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Export Users");
+            fileChooser.getExtensionFilters().addAll(
+                    new javafx.stage.FileChooser.ExtensionFilter("CSV Files", "*.csv"),
+                    new javafx.stage.FileChooser.ExtensionFilter("All Files", "*.*")
+            );
+
+            // Show save file dialog
+            java.io.File file = fileChooser.showSaveDialog(usersTable.getScene().getWindow());
+
+            if (file != null) {
+                // Write to CSV
+                try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
+                    // Write header
+                    writer.write("ID,Email,Name,Role,Status\n");
+
+                    // Write data
+                    for (User user : users) {
+                        String status = user.isBanned() ? "Banned" : "Active";
+                        writer.write(String.format("%d,%s,%s,%s,%s\n",
+                                user.getId(),
+                                escapeCSV(user.getEmail()),
+                                escapeCSV(user.getName()),
+                                escapeCSV(user.getRole()),
+                                status));
+                    }
+
+                    showAlert("Success", "Users exported successfully to " + file.getName(),
+                            Alert.AlertType.INFORMATION);
+                }
+            }
+        } catch (Exception e) {
+            showAlert("Error", "Failed to export users: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to properly escape CSV values
+    private String escapeCSV(String value) {
+        if (value == null) {
+            return "";
+        }
+        // If value contains comma, quote, or newline, wrap in quotes and escape internal quotes
+        if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+            return "\"" + value.replace("\"", "\"\"") + "\"";
+        }
+        return value;
+    }
+
+    @FXML
+    private void handleToggleBan(User user) {
+        boolean newBanStatus = !user.isBanned();
+        user.setBanned(newBanStatus);
+
+        if (userService.updateUser(user)) {
+            // Solution optimale: rafraîchir seulement la ligne modifiée
+            int index = usersTable.getItems().indexOf(user);
+            if (index >= 0) {
+                usersTable.getItems().set(index, user); // Force la mise à jour
+                usersTable.refresh(); // Rafraîchit la table
+            }
+
+            String message = newBanStatus
+                    ? "L'utilisateur a été banni avec succès."
+                    : "L'utilisateur a été débanni avec succès.";
+            showAlert("Succès", message, Alert.AlertType.INFORMATION);
+        } else {
+            showAlert("Erreur", "Échec de la mise à jour du statut de l'utilisateur.", Alert.AlertType.ERROR);
+            user.setBanned(!newBanStatus); // Annule le changement
+        }
     }
 
 

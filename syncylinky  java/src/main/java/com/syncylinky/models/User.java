@@ -39,7 +39,7 @@ public class User {
         this.username = username;
         this.dateOB = dateOB;
         this.gender = gender;
-        this.banned = false;  // Valeur par défaut : non banni
+        this.banned = banned;  // Valeur par défaut : non banni
         this.isVerified = true;  // Valeur par défaut : vérifié
         this.interests = new ArrayList<>();
         this.isActive = true;
