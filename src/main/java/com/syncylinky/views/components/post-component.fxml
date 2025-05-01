@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.syncylinky.controllers.PostController" spacing="10" styleClass="post-container"
+      prefWidth="600" maxWidth="600" minWidth="400">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15" />
+    </padding>
+
+    <!-- En-tête du post (auteur et timestamp) -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label fx:id="authorLabel" style="-fx-font-weight: bold; -fx-font-size: 14px;" onMouseClicked="#showOptionsMenu" />
+        <Label fx:id="timestampLabel" style="-fx-text-fill: #65676b; -fx-font-size: 12px;" />
+    </HBox>
+
+    <!-- Contenu du post -->
+    <Label fx:id="contentLabel" wrapText="true" style="-fx-font-size: 14px;" />
+
+    <!-- Image du post (si présente) -->
+    <ImageView fx:id="postImageView" fitWidth="560" preserveRatio="true" visible="false" managed="false" />
+
+    <!-- Compteur de likes -->
+    <HBox spacing="5" alignment="CENTER_LEFT">
+        <ImageView fx:id="reactionIcon" fitWidth="16" fitHeight="16" />
+        <Label fx:id="likeCountLabel" styleClass="like-count" />
+    </HBox>
+
+    <!-- Séparateur -->
+    <Separator />
+
+    <!-- Boutons d'interaction -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="likeButton" text="J'aime" onAction="#handleLike" styleClass="button" />
+        <Button text="Commenter" onAction="#showCommentDialog" styleClass="button" />
+        <Button text="Partager" onAction="#handleShare" styleClass="button" />
+    </HBox>
+
+    <!-- Séparateur -->
+    <Separator />
+
+    <!-- Conteneur pour les commentaires -->
+    <VBox fx:id="commentsContainer" spacing="5" />
+</VBox>

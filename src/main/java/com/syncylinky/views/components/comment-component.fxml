@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.syncylinky.controllers.CommentController" spacing="10" styleClass="comment-container">
+    <Label fx:id="commentLabel" wrapText="true" />
+    <Button fx:id="editButton" text="Modifier" onAction="#handleEdit" visible="false" styleClass="comment-button" />
+    <Button fx:id="deleteButton" text="Supprimer" onAction="#handleDelete" visible="false" styleClass="comment-button" />
+</HBox>

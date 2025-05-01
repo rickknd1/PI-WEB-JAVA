@@ -1,0 +1,46 @@
+.root {
+    -fx-background-color: #f0f2f5;
+}
+
+.post-container {
+    -fx-background-color: white;
+    -fx-border-color: #dddfe2;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #65676b;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #f2f3f5;
+}
+
+.comment-container {
+    -fx-background-color: #f0f2f5;
+    -fx-background-radius: 10px;
+    -fx-padding: 5px;
+}
+
+.comment-button {
+    -fx-background-color: #e7f3ff;
+    -fx-text-fill: #1b74e4;
+    -fx-font-size: 12px;
+}
+
+.comment-button:hover {
+    -fx-background-color: #d2e3fc;
+}
+
+.empty-label {
+    -fx-text-fill: #65676b;
+    -fx-font-size: 14px;
+}
+
+.like-count {
+    -fx-text-fill: #385898;
+    -fx-font-weight: bold;
+}

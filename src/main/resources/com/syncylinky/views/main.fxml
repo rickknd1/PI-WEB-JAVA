@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.syncylinky.controllers.MainController">
+    <top>
+        <ToolBar>
+            <Label text="SyncYLinky" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+            <Button text="Nouveau Post" onAction="#showPostDialog"/>
+            <Button text="Mes Posts" onAction="#handleViewUserPosts"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <StackPane>
+            <ScrollPane fx:id="scrollPane">
+                <VBox fx:id="feedContainer" spacing="20" style="-fx-padding: 10;"/>
+            </ScrollPane>
+            <ProgressIndicator fx:id="loadingIndicator" visible="false"/>
+        </StackPane>
+    </center>
+</BorderPane>
