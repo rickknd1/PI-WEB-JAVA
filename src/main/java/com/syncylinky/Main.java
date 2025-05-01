@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/syncylinky/views/main.fxml"));
         Scene scene = new Scene(root, 800, 600);
-        scene.getStylesheets().add(getClass().getResource("/com/syncylinky/css/main.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/syncylinky/views/main.css").toExternalForm());
         stage.setTitle("SyncYLinky");
         stage.setScene(scene);
         stage.show();

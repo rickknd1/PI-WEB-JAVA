@@ -233,7 +233,7 @@ public class MainController {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/syncylinky/css/main.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/syncylinky/views/main.css").toExternalForm());
         alert.showAndWait();
     }
 }

@@ -16,10 +16,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,12 +31,16 @@ public class PostController {
 
     @FXML private Label authorLabel;
     @FXML private Label timestampLabel;
-    @FXML private Label contentLabel;
+    @FXML private Text contentLabel;
     @FXML private ImageView postImageView;
     @FXML private VBox commentsContainer;
     @FXML private ImageView reactionIcon;
     @FXML private Label likeCountLabel;
+    @FXML private Label commentCountLabel;
     @FXML private Button likeButton;
+    @FXML private Button commentButton;
+    @FXML private Button shareButton;
+    @FXML private Button menuButton;
 
     private Post post;
     private PostService postService;
@@ -169,19 +175,25 @@ public class PostController {
     }
 
     private void loadReactions() {
-        Task<Void> task = new Task<>() {
+        Task<ReactionData> task = new Task<>() {
             @Override
-            protected Void call() throws SQLException {
+            protected ReactionData call() throws SQLException {
                 int likeCount = reactionService.getReactionCount(post.getId(), "like");
                 boolean userLiked = reactionService.hasUserReacted(post.getId(), SessionManager.getCurrentUserId() != null ? SessionManager.getCurrentUserId() : 0);
-                Platform.runLater(() -> {
-                    likeCountLabel.setText(likeCount + " J'aime");
-                    likeButton.setStyle(userLiked ? "-fx-text-fill: #1877f2;" : "");
-                    updateReactionIcon(likeCount > 0);
-                });
-                return null;
+                int commentCount = commentService.getCommentCount(post.getId());
+                return new ReactionData(likeCount, userLiked, commentCount);
             }
         };
+
+        task.setOnSucceeded(event -> {
+            Platform.runLater(() -> {
+                ReactionData data = task.getValue();
+                likeCountLabel.setText(data.likeCount + " J'aime");
+                commentCountLabel.setText(data.commentCount + " Commentaires");
+                likeButton.setStyle(data.userLiked ? "-fx-text-fill: #1877f2;" : "");
+                updateReactionIcon(data.likeCount > 0);
+            });
+        });
 
         task.setOnFailed(event -> {
             logger.error("Erreur lors du chargement des réactions", task.getException());
@@ -192,9 +204,8 @@ public class PostController {
     }
 
     @FXML
-    private void showOptionsMenu() {
+    private void showPostOptionsMenu() {
         ContextMenu menu = new ContextMenu();
-
         if (post.getUserId() != null && post.getUserId().equals(SessionManager.getCurrentUserId())) {
             MenuItem editItem = new MenuItem("Modifier");
             editItem.setOnAction(e -> editPost());
@@ -205,7 +216,11 @@ public class PostController {
             menu.getItems().addAll(editItem, deleteItem);
         }
 
-        menu.show(authorLabel, javafx.geometry.Side.BOTTOM, 0, 0);
+        MenuItem viewItem = new MenuItem("Afficher");
+        viewItem.setOnAction(e -> showAlert("Info", "Détails du post", "Titre: " + post.getTitre() + "\nContenu: " + post.getContent(), Alert.AlertType.INFORMATION));
+
+        menu.getItems().add(viewItem);
+        menu.show(menuButton, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
     private void editPost() {
@@ -267,7 +282,7 @@ public class PostController {
 
     private void updateReactionIcon(boolean hasLikes) {
         if (reactionIcon != null) {
-            String iconPath = hasLikes ? "/images/like-filled.png" : "/images/like-empty.png";
+            String iconPath = hasLikes ? "/com/syncylinky/images/like-filled.png" : "/com/syncylinky/images/like-empty.png";
             try {
                 reactionIcon.setImage(new Image(getClass().getResourceAsStream(iconPath)));
             } catch (Exception e) {
@@ -281,7 +296,25 @@ public class PostController {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/syncylinky/css/main.css").toExternalForm());
+        URL cssUrl = getClass().getResource("/com/syncylinky/views/main.css");
+        if (cssUrl != null) {
+            alert.getDialogPane().getStylesheets().add(cssUrl.toExternalForm());
+        } else {
+            logger.warn("Fichier main.css introuvable dans /com/syncylinky/views/");
+        }
         alert.showAndWait();
+    }
+
+    // Classe interne pour stocker les données de réaction
+    private static class ReactionData {
+        final int likeCount;
+        final boolean userLiked;
+        final int commentCount;
+
+        ReactionData(int likeCount, boolean userLiked, int commentCount) {
+            this.likeCount = likeCount;
+            this.userLiked = userLiked;
+            this.commentCount = commentCount;
+        }
     }
 }
