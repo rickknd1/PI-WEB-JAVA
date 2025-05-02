@@ -13,6 +13,11 @@
     -fx-font-size: 14px;
 }
 
+.empty-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
 /* Styles pour les boutons */
 .button {
     -fx-background-color: #f0f2f5;
@@ -37,12 +42,12 @@
 }
 
 /* Styles pour les alertes */
-.alert-title {
+.alert .header {
     -fx-font-weight: bold;
     -fx-font-size: 16px;
 }
 
-.alert-message {
+.alert .content {
     -fx-font-size: 14px;
 }
 
@@ -58,4 +63,54 @@
 .comment-container {
     -fx-background-color: #f9f9f9;
     -fx-padding: 5px;
+}
+
+/* Styles pour le label de comptage */
+.count-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555;
+}
+
+/* Styles pour la barre de recherche et les champs de texte */
+.text-field, .text-area {
+    -fx-background-color: #fff;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-border-radius: 3px;
+}
+
+/* Styles pour le ChoiceBox */
+.choice-box {
+    -fx-background-color: #fff;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-border-radius: 3px;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: #fff;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: #e4e6e9;
+}
+
+/* Styles pour le conteneur principal */
+.main-container {
+    -fx-background-color: #f0f2f5;
+}
+
+/* Styles pour l'indicateur de chargement */
+.progress-indicator {
+    -fx-progress-color: #1877f2;
+}
+
+/* Styles pour l'en-tête des recommandations */
+.recommendation-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding: 5px 0;
 }

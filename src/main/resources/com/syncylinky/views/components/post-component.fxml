@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-        <?import javafx.scene.control.*?>
-        <?import javafx.scene.image.*?>
-        <?import javafx.scene.layout.*?>
-        <?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
@@ -37,6 +37,7 @@
         <Button fx:id="commentButton" text="Commenter" onAction="#showCommentDialog"/>
         <Label fx:id="commentCountLabel" styleClass="count-label"/>
         <Button fx:id="shareButton" text="Partager" onAction="#handleShare"/>
+        <Label fx:id="shareCountLabel" styleClass="count-label"/>
     </HBox>
 
     <!-- Conteneur des commentaires -->

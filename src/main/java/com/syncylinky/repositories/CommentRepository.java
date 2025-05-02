@@ -25,13 +25,16 @@ public class CommentRepository {
      * @throws SQLException Si une erreur de base de données survient.
      */
     public void create(Comment comment) throws SQLException {
-        String sql = "INSERT INTO comment (post_id, user_id, content, created_at) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO comment (post_id, user_id, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
+        logger.debug("Exécution de la requête SQL : {}", sql);
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, comment.getPostId());
             stmt.setObject(2, comment.getUserId(), Types.INTEGER);
             stmt.setString(3, comment.getContent());
-            stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            LocalDateTime now = LocalDateTime.now();
+            stmt.setTimestamp(4, Timestamp.valueOf(now));
+            stmt.setTimestamp(5, Timestamp.valueOf(now)); // Définit updated_at égal à created_at
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {

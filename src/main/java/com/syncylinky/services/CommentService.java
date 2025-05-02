@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,6 +40,8 @@ public class CommentService {
             comment.setPostId(postId);
             comment.setUserId(userId);
             comment.setContent(content);
+            comment.setCreatedAt(LocalDateTime.now());
+            comment.setUpdatedAt(LocalDateTime.now());
             Validator.validateComment(comment);
             commentRepository.create(comment);
             logger.info("Commentaire créé pour le post {} par l'utilisateur {}", postId, userId != null ? userId : "anonyme");

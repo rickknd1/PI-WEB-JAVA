@@ -37,6 +37,7 @@ public class PostController {
     @FXML private ImageView reactionIcon;
     @FXML private Label likeCountLabel;
     @FXML private Label commentCountLabel;
+    @FXML private Label shareCountLabel;
     @FXML private Button likeButton;
     @FXML private Button commentButton;
     @FXML private Button shareButton;
@@ -73,6 +74,8 @@ public class PostController {
                 logger.error("Erreur lors du chargement de l'image pour le post {}", post.getId(), e);
             }
         }
+
+        shareCountLabel.setText("0 Partages");
     }
 
     @FXML
@@ -95,6 +98,11 @@ public class PostController {
 
     @FXML
     private void handleShare() {
+        if (SessionManager.getCurrentUserId() == null) {
+            showAlert("Erreur", "Connexion requise", "Vous devez être connecté pour partager un post.", Alert.AlertType.WARNING);
+            return;
+        }
+
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws SQLException {
@@ -103,9 +111,12 @@ public class PostController {
             }
         };
 
-        task.setOnSucceeded(event -> Platform.runLater(() -> showAlert("Succès", "Post partagé", "Le post a été partagé avec succès.", Alert.AlertType.INFORMATION)));
+        task.setOnSucceeded(event -> Platform.runLater(() -> {
+            showAlert("Succès", "Post partagé", "Le post a été partagé avec succès.", Alert.AlertType.INFORMATION);
+            loadReactions();
+        }));
         task.setOnFailed(event -> Platform.runLater(() -> {
-            logger.error("Erreur lors du partage du post", task.getException());
+            logger.error("Erreur lors du partage du post {}", post.getId(), task.getException());
             showAlert("Erreur", "Impossible de partager le post", task.getException().getMessage(), Alert.AlertType.ERROR);
         }));
         new Thread(task).start();
@@ -133,7 +144,10 @@ public class PostController {
             }));
             task.setOnFailed(event -> Platform.runLater(() -> {
                 logger.error("Erreur lors de l'ajout du commentaire", task.getException());
-                showAlert("Erreur", "Impossible d'ajouter le commentaire", task.getException().getMessage(), Alert.AlertType.ERROR);
+                String errorMessage = task.getException() instanceof IllegalArgumentException
+                        ? task.getException().getMessage()
+                        : "Une erreur est survenue lors de l'ajout du commentaire.";
+                showAlert("Erreur", "Impossible d'ajouter le commentaire", errorMessage, Alert.AlertType.ERROR);
             }));
             new Thread(task).start();
         });
@@ -181,7 +195,8 @@ public class PostController {
                 int likeCount = reactionService.getReactionCount(post.getId(), "like");
                 boolean userLiked = reactionService.hasUserReacted(post.getId(), SessionManager.getCurrentUserId() != null ? SessionManager.getCurrentUserId() : 0);
                 int commentCount = commentService.getCommentCount(post.getId());
-                return new ReactionData(likeCount, userLiked, commentCount);
+                int shareCount = shareService.getShareCount(post.getId());
+                return new ReactionData(likeCount, userLiked, commentCount, shareCount);
             }
         };
 
@@ -190,6 +205,7 @@ public class PostController {
                 ReactionData data = task.getValue();
                 likeCountLabel.setText(data.likeCount + " J'aime");
                 commentCountLabel.setText(data.commentCount + " Commentaires");
+                shareCountLabel.setText(data.shareCount + " Partages");
                 likeButton.setStyle(data.userLiked ? "-fx-text-fill: #1877f2;" : "");
                 updateReactionIcon(data.likeCount > 0);
             });
@@ -244,7 +260,10 @@ public class PostController {
             }));
             task.setOnFailed(event -> Platform.runLater(() -> {
                 logger.error("Erreur lors de la modification du post", task.getException());
-                showAlert("Erreur", "Impossible de modifier le post", task.getException().getMessage(), Alert.AlertType.ERROR);
+                String errorMessage = task.getException() instanceof IllegalArgumentException
+                        ? task.getException().getMessage()
+                        : "Une erreur est survenue lors de la modification du post.";
+                showAlert("Erreur", "Impossible de modifier le post", errorMessage, Alert.AlertType.ERROR);
             }));
             new Thread(task).start();
         });
@@ -305,16 +324,17 @@ public class PostController {
         alert.showAndWait();
     }
 
-    // Classe interne pour stocker les données de réaction
     private static class ReactionData {
         final int likeCount;
         final boolean userLiked;
         final int commentCount;
+        final int shareCount;
 
-        ReactionData(int likeCount, boolean userLiked, int commentCount) {
+        ReactionData(int likeCount, boolean userLiked, int commentCount, int shareCount) {
             this.likeCount = likeCount;
             this.userLiked = userLiked;
             this.commentCount = commentCount;
+            this.shareCount = shareCount;
         }
     }
 }

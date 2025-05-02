@@ -2,6 +2,7 @@ package com.syncylinky.repositories;
 
 import com.syncylinky.config.DatabaseConfig;
 import com.syncylinky.models.Post;
+import com.syncylinky.utils.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,6 +139,64 @@ public class PostRepository {
             throw e;
         }
         return posts;
+    }
+
+    public List<Post> findByKeyword(String keyword, Integer userId) throws SQLException {
+        List<Post> posts = new ArrayList<>();
+        String query = """
+            SELECT * FROM post 
+            WHERE (visibility = 'public' OR user_id = ?) 
+            AND (titre LIKE ? OR content LIKE ?)
+            """;
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            String searchPattern = "%" + keyword.trim() + "%";
+            pstmt.setObject(1, userId, Types.INTEGER);
+            pstmt.setString(2, searchPattern);
+            pstmt.setString(3, searchPattern);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(mapResultSetToPost(rs));
+                }
+            }
+            logger.debug("Récupéré {} posts pour la recherche '{}'", posts.size(), keyword);
+            return posts;
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la recherche des posts avec le mot-clé '{}'", keyword, e);
+            throw e;
+        }
+    }
+
+    public List<Post> findRecommendedPosts(int userId) throws SQLException {
+        List<Post> posts = new ArrayList<>();
+        String query = """
+            SELECT p.*, 
+                   COALESCE((SELECT COUNT(*) FROM reaction r WHERE r.post_id = p.id AND r.reaction_type = 'LIKE'), 0) as like_count,
+                   COALESCE((SELECT COUNT(*) FROM comment c WHERE c.post_id = p.id), 0) as comment_count
+            FROM post p
+            LEFT JOIN categories pc ON p.id = pc.post_id
+            WHERE (p.visibility = 'public' OR p.user_id = ? OR p.user_id IS NULL)
+            AND pc.category_id IN (SELECT category_id FROM categories WHERE user_id = ?)
+            ORDER BY (like_count + comment_count) DESC, p.created_at DESC
+            LIMIT 10
+            """;
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(mapResultSetToPost(rs));
+                }
+            }
+            logger.debug("Récupéré {} posts recommandés pour l'utilisateur {}", posts.size(), userId);
+            return posts;
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la récupération des posts recommandés pour l'utilisateur {}", userId, e);
+            throw new SQLException("Impossible de récupérer les posts recommandés : " + e.getMessage(), e);
+        }
     }
 
     private Post mapResultSetToPost(ResultSet rs) throws SQLException {

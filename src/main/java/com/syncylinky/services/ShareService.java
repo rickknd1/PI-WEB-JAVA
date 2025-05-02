@@ -23,17 +23,31 @@ public class ShareService {
             share.setUserId(userId);
             share.setSharedFromId(sharedFromId);
             shareRepository.sharePost(share);
+            logger.info("Post {} partagé avec succès par l'utilisateur {}", postId, userId);
         } catch (SQLException e) {
-            logger.error("Database error during post sharing: {}", postId, e);
+            logger.error("Erreur lors du partage du post {} par l'utilisateur {}", postId, userId, e);
             throw e;
         }
     }
 
     public List<Share> getSharesForPost(int postId) throws SQLException {
         try {
-            return shareRepository.findByPostId(postId);
+            List<Share> shares = shareRepository.findByPostId(postId);
+            logger.debug("Récupéré {} partages pour le post {}", shares.size(), postId);
+            return shares;
         } catch (SQLException e) {
-            logger.error("Database error during fetching shares for post: {}", postId, e);
+            logger.error("Erreur lors de la récupération des partages pour le post {}", postId, e);
+            throw e;
+        }
+    }
+
+    public int getShareCount(int postId) throws SQLException {
+        try {
+            int count = shareRepository.countByPostId(postId);
+            logger.debug("Nombre de partages pour le post {} : {}", postId, count);
+            return count;
+        } catch (SQLException e) {
+            logger.error("Erreur lors du comptage des partages pour le post {}", postId, e);
             throw e;
         }
     }
@@ -41,8 +55,9 @@ public class ShareService {
     public void unshare(int shareId, Integer userId) throws SQLException {
         try {
             shareRepository.unshare(shareId, userId);
+            logger.info("Partage {} supprimé avec succès pour l'utilisateur {}", shareId, userId);
         } catch (SQLException e) {
-            logger.error("Database error during unsharing: {}", shareId, e);
+            logger.error("Erreur lors de la suppression du partage {} pour l'utilisateur {}", shareId, userId, e);
             throw e;
         }
     }
