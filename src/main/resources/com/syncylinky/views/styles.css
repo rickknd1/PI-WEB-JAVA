@@ -1,0 +1,397 @@
+/* styles.css - Version optimisée */
+
+/* ========== BASE STYLES ========== */
+.root, .form-root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: #1C2526;
+}
+
+/* ========== FORM STYLES ========== */
+.form-root {
+    -fx-padding: 20px;
+}
+
+.form-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.form-container {
+    -fx-background-color: #2C3E50;
+    -fx-background-radius: 15px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.error-label {
+    -fx-text-fill: #FF4040;
+    -fx-font-size: 12px;
+}
+
+/* ========== INPUT STYLES ========== */
+.text-field, .password-field {
+    -fx-background-color: #34495E;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #9CA0AA;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+    -fx-border-color: #45556D;
+    -fx-border-radius: 5px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #FF6200;
+    -fx-border-width: 1px;
+}
+
+.combo-box, .date-picker {
+    -fx-background-color: #34495E;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 5px;
+    -fx-pref-height: 35px;
+    -fx-border-color: #45556D;
+    -fx-border-radius: 5px;
+}
+
+.combo-box .list-cell, .date-picker .text-field {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #34495E;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #34495E;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #3E5A7A;
+}
+
+.date-picker:focused {
+    -fx-border-color: #FF6200;
+    -fx-border-width: 1px;
+}
+
+.list-view {
+    -fx-background-color: #34495E;
+    -fx-background-radius: 5px;
+    -fx-border-color: #45556D;
+    -fx-border-radius: 5px;
+}
+
+.list-view .list-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #3E5A7A;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #FF6200;
+}
+
+/* ========== BUTTON STYLES ========== */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+}
+
+.icon-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.icon-button:hover .icon-label {
+    -fx-text-fill: #FF6200;
+}
+
+.cancel-button {
+    -fx-background-color: #34495E;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #3E5A7A;
+}
+
+.save-button {
+    -fx-background-color: #FF6200;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+}
+
+.save-button:hover {
+    -fx-background-color: #E55A00;
+}
+
+/* ========== SCROLL PANE STYLES ========== */
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ========== SECTION STYLES (from list.fxml) ========== */
+.section-box, .filter-section, .bulk-actions-section, .pagination-section {
+    -fx-background-color: #2C3E50;
+    -fx-background-radius: 15px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+/* ========== LABEL STYLES (from list.fxml) ========== */
+.section-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.filter-label, .section-label, .pagination-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.count-label {
+    -fx-text-fill: #D3D3D3;
+}
+
+.total-count-label {
+    -fx-text-fill: #FF6200;
+    -fx-font-weight: bold;
+}
+
+.placeholder-label {
+    -fx-text-fill: #D3D3D3;
+}
+
+/* ========== BUTTON STYLES (from list.fxml) ========== */
+.add-button, .apply-button {
+    -fx-background-color: #FF6200;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.add-button:hover, .apply-button:hover {
+    -fx-background-color: #E55A00;
+}
+
+.export-button, .reset-button {
+    -fx-background-color: #34495E;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.export-button:hover, .reset-button:hover {
+    -fx-background-color: #3E5A7A;
+}
+
+/* ========== CHECKBOX STYLES (from list.fxml) ========== */
+.checkbox {
+    -fx-text-fill: #D3D3D3;
+}
+
+/* ========== TEXT FIELD STYLES (from list.fxml) ========== */
+.text-field {
+    -fx-background-color: #34495E;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #9CA0AA;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+}
+
+/* ========== COMBOBOX STYLES (from list.fxml) ========== */
+.combo-box {
+    -fx-background-color: #34495E;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 5px;
+    -fx-pref-height: 35px;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #34495E;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #34495E;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #3E5A7A;
+}
+
+/* ========== TABLE STYLES (from list.fxml) ========== */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+.table-view .column-header {
+    -fx-background-color: #304FFE;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: #e0e0e0;
+    -fx-padding: 10px 5px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-padding: 10px 5px;
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-text-fill: #000000;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e3f2fd;
+}
+
+/* ========== ACTION BUTTONS (from list.fxml) ========== */
+.action-button {
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.delete-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c82333;
+}
+
+.ban-button {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: #212529;
+}
+
+.ban-button:hover {
+    -fx-background-color: #e0a800;
+}
+
+.unban-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+}
+
+.unban-button:hover {
+    -fx-background-color: #218838;
+}
+
+/* ========== PAGINATION (from list.fxml) ========== */
+.pagination {
+    -fx-page-information-visible: false;
+    -fx-padding: 10px 0;
+}
+
+.pagination .pagination-control {
+    -fx-background-color: transparent;
+}
+
+.pagination .button {
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+    -fx-text-fill: #000000;
+    -fx-effect: none;
+}
+
+.pagination .button:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.pagination .button:selected {
+    -fx-background-color: #304FFE;
+    -fx-text-fill: white;
+}
+
+.pagination .left-arrow, .pagination .right-arrow {
+    -fx-background-color: #304FFE;
+    -fx-shape: null;
+    -fx-background-radius: 4px;
+    -fx-text-fill: white;
+}
+
+/* ========== STATUS BADGES (from list.fxml) ========== */
+.status-active {
+    -fx-text-fill: #28a745;
+    -fx-font-weight: bold;
+}
+
+.status-banned {
+    -fx-text-fill: #dc3545;
+    -fx-font-weight: bold;
+}
+
+/* ========== CONTENT PANE (from list.fxml) ========== */
+.content-pane {
+    -fx-background-color: transparent;
+}
+
+/* ========== RESPONSIVE ADJUSTMENTS (from list.fxml) ========== */
+@media (max-width: 800px) {
+    .table-view .table-cell {
+        -fx-padding: 8px 3px;
+        -fx-font-size: 12px;
+    }
+
+    .action-button {
+        -fx-padding: 3px 6px;
+        -fx-font-size: 11px;
+    }
+
+    .filter-section HBox {
+        -fx-spacing: 8px;
+    }
+}
+
+/* ========== UTILITY CLASSES (from list.fxml) ========== */
+.bold-text {
+    -fx-font-weight: bold;
+}
+
+.shadow-sm {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+.rounded {
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}

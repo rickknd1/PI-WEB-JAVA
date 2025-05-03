@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.syncylinky.controllers.FeedController"
+            style="-fx-background-color: #1C2526;"
+            prefHeight="600"
+            prefWidth="800">
+    <stylesheets>
+        <URL value="@/com/syncylinky/views/styles.css"/>
+    </stylesheets>
+
+    <!-- Barre Latérale Gauche -->
+    <left>
+        <VBox style="-fx-background-color: linear-gradient(to bottom, #2C3E50, #1C2526); -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);"
+              prefWidth="200"
+              spacing="8"
+              maxWidth="Infinity">
+            <!-- Logo -->
+            <Text text="SYNCYLINKY"
+                  style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-fill: #FF6200; -fx-font-family: 'Segoe UI';">
+                <VBox.margin>
+                    <Insets top="15" right="10" bottom="20" left="10"/>
+                </VBox.margin>
+            </Text>
+
+            <!-- Menu de Navigation -->
+            <VBox spacing="5">
+                <Button text="Feed"
+                        onAction="#navigateToFeed"
+                        style="-fx-background-color: rgba(255,98,0,0.2); -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-font-weight: bold; -fx-background-radius: 8px;"
+                        maxWidth="Infinity">
+                    <padding>
+                        <Insets top="8" right="15" bottom="8" left="15"/>
+                    </padding>
+                </Button>
+                <Button text="Messages"
+                        onAction="#navigateToMessages"
+                        style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                        maxWidth="Infinity">
+                    <padding>
+                        <Insets top="8" right="15" bottom="8" left="15"/>
+                    </padding>
+                </Button>
+                <Button text="Community"
+                        onAction="#navigateToCommunity"
+                        style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                        maxWidth="Infinity">
+                    <padding>
+                        <Insets top="8" right="15" bottom="8" left="15"/>
+                    </padding>
+                </Button>
+                <Button text="Vibe"
+                        onAction="#navigateToVibe"
+                        style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                        maxWidth="Infinity">
+                    <padding>
+                        <Insets top="8" right="15" bottom="8" left="15"/>
+                    </padding>
+                </Button>
+                <Button text="My Community"
+                        onAction="#navigateToMyCommunity"
+                        style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                        maxWidth="Infinity">
+                    <padding>
+                        <Insets top="8" right="15" bottom="8" left="15"/>
+                    </padding>
+                </Button>
+                <Button text="Pages"
+                        onAction="#navigateToPages"
+                        style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                        maxWidth="Infinity">
+                    <padding>
+                        <Insets top="8" right="15" bottom="8" left="15"/>
+                    </padding>
+                </Button>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Separator style="-fx-background-color: #3D5466; -fx-opacity: 0.5;">
+                <padding>
+                    <Insets top="5" bottom="10"/>
+                </padding>
+            </Separator>
+
+            <Button text="My Account"
+                    onAction="#viewUserInfo"
+                    style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                    maxWidth="Infinity">
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+            <Button text="Upgrade"
+                    onAction="#navigateToUpgrade"
+                    style="-fx-background-color: #304FFE; -fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px; -fx-font-weight: bold;"
+                    maxWidth="Infinity">
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+            <Button text="Feedback"
+                    onAction="#navigateToFeedback"
+                    style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;"
+                    maxWidth="Infinity">
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+        </VBox>
+    </left>
+
+    <!-- Barre Supérieure -->
+    <top>
+        <HBox style="-fx-background-color: #2C3E50; -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"
+              alignment="CENTER_LEFT"
+              spacing="15">
+            <!-- Barre de Recherche -->
+            <HBox style="-fx-background-color: #34495E; -fx-background-radius: 20px;" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="0" right="10" bottom="0" left="15"/>
+                </padding>
+                <TextField fx:id="searchField"
+                           promptText="Search Friends, videos..."
+                           style="-fx-background-color: transparent; -fx-text-fill: #FFFFFF; -fx-prompt-text-fill: #9CA0AA;"
+                           prefWidth="400"/>
+                <Button fx:id="searchButton"
+                        text="🔍"
+                        onAction="#handleSearch"
+                        style="-fx-background-color: transparent; -fx-text-fill: #9CA0AA;"/>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Profil Utilisateur -->
+            <VBox fx:id="userProfileBox"
+                  style="-fx-background-color: #34495E; -fx-padding: 8px 15px; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);"
+                  onMouseClicked="#toggleUserMenu">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <StackPane style="-fx-background-color: #FF6200; -fx-background-radius: 50%;" minWidth="32" minHeight="32" maxWidth="32" maxHeight="32"/>
+                    <VBox>
+                        <Label fx:id="usernameLabel" text="Username"
+                               style="-fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+                        <Label fx:id="emailLabel" text="Email"
+                               style="-fx-text-fill: #D3D3D3; -fx-font-size: 12px;"/>
+                        <Label fx:id="roleLabel" text="Role"
+                               style="-fx-text-fill: #00CED1; -fx-font-size: 12px;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Icône de Notification -->
+            <StackPane>
+                <Button fx:id="notificationButton"
+                        text="0"
+                        onAction="#showNotifications"
+                        style="-fx-background-color: #FF4500; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 32; -fx-min-height: 32; -fx-max-width: 32; -fx-max-height: 32;"/>
+                <Label fx:id="notificationCountLabel" text="0" style="-fx-text-fill: #FFFFFF;"/>
+            </StackPane>
+        </HBox>
+    </top>
+
+    <!-- Section Centrale (Feed Dynamique) -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #1C2526; -fx-background: #1C2526; -fx-border-color: transparent;">
+            <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30px 20px;">
+                <!-- Zone pour Créer une Publication -->
+                <VBox spacing="15" style="-fx-background-color: #2C3E50; -fx-background-radius: 15px; -fx-padding: 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);" prefWidth="550" maxWidth="600">
+                    <Label text="Create Post" style="-fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+                    <TextField fx:id="newPostField" promptText="What's on your mind?"
+                               style="-fx-background-color: #34495E; -fx-text-fill: #FFFFFF; -fx-prompt-text-fill: #9CA0AA; -fx-background-radius: 10px; -fx-padding: 10px;"
+                               prefWidth="480"/>
+                    <HBox spacing="10">
+                        <Button text="📷 Photo"
+                                style="-fx-background-color: #34495E; -fx-text-fill: #FFFFFF; -fx-background-radius: 5px;"
+                                HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="8" right="15" bottom="8" left="15"/>
+                            </padding>
+                        </Button>
+                        <Button text="📍 Location"
+                                style="-fx-background-color: #34495E; -fx-text-fill: #FFFFFF; -fx-background-radius: 5px;"
+                                HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="8" right="15" bottom="8" left="15"/>
+                            </padding>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Post" onAction="#handleNewPost"
+                                style="-fx-background-color: #FF6200; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 5px;"
+                                HBox.hgrow="NEVER">
+                            <padding>
+                                <Insets top="8" right="25" bottom="8" left="25"/>
+                            </padding>
+                        </Button>
+                    </HBox>
+                </VBox>
+                <!-- Conteneur pour le Feed -->
+                <VBox fx:id="feedContainer" alignment="CENTER" spacing="10"/>
+                <!-- Conteneur pour les Publications Recommandées -->
+                <VBox fx:id="recommendedContainer" alignment="CENTER" spacing="10"/>
+                <!-- Indicateur de Chargement -->
+                <ProgressIndicator fx:id="loadingIndicator" visible="false"/>
+                <!-- Bouton Retour -->
+                <Button fx:id="backButton" text="Retour" onAction="#handleBack" disable="true"/>
+                <!-- Bouton Recommandations -->
+                <Button fx:id="recommendedButton" text="Voir Recommandations" onAction="#handleShowRecommended"/>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

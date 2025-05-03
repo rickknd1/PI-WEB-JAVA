@@ -49,6 +49,7 @@ public class PostController {
     private ReactionService reactionService;
     private ShareService shareService;
 
+    @FXML
     public void initializeData(Post post, PostService postService, CommentService commentService,
                                ReactionService reactionService, ShareService shareService) {
         this.post = post;
@@ -62,95 +63,117 @@ public class PostController {
     }
 
     private void updateUI() {
-        authorLabel.setText("Utilisateur #" + (post.getUserId() != null ? post.getUserId() : "Anonyme"));
-        timestampLabel.setText(post.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-        contentLabel.setText(post.getTitre() + "\n" + post.getContent());
+        try {
+            authorLabel.setText("Utilisateur #" + (post.getUserId() != null ? post.getUserId() : "Anonyme"));
+            timestampLabel.setText(post.getCreatedAt() != null
+                    ? post.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                    : "Inconnu");
+            String titre = post.getTitre() != null ? post.getTitre() : "";
+            String content = post.getContent() != null ? post.getContent() : "";
+            contentLabel.setText(titre + (titre.isEmpty() ? "" : "\n") + content);
 
-        if (post.getFile() != null && !post.getFile().isEmpty()) {
-            try {
-                postImageView.setImage(new Image("file:" + post.getFile()));
-                postImageView.setVisible(true);
-            } catch (Exception e) {
-                logger.error("Erreur lors du chargement de l'image pour le post {}", post.getId(), e);
+            if (post.getFile() != null && !post.getFile().isEmpty()) {
+                try {
+                    postImageView.setImage(new Image("file:" + post.getFile()));
+                    postImageView.setVisible(true);
+                } catch (Exception e) {
+                    logger.error("Erreur lors du chargement de l'image pour le post {}", post.getId(), e);
+                    postImageView.setVisible(false);
+                }
+            } else {
+                postImageView.setVisible(false);
             }
-        }
 
-        shareCountLabel.setText("0 Partages");
+            shareCountLabel.setText("0 Partages");
+        } catch (Exception e) {
+            logger.error("Erreur lors de la mise à jour de l'UI pour le post {}", post.getId(), e);
+            showAlert("Erreur", "Mise à jour de l'interface", "Impossible de mettre à jour l'affichage du post.", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     private void handleLike() {
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() throws SQLException {
-                reactionService.toggleReaction(post.getId(), SessionManager.getCurrentUserId(), "like");
-                return null;
-            }
-        };
+        try {
+            int userId = SessionManager.getInstance().getCurrentUserId();
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws SQLException {
+                    reactionService.toggleReaction(post.getId(), userId, "like");
+                    return null;
+                }
+            };
 
-        task.setOnSucceeded(event -> Platform.runLater(this::loadReactions));
-        task.setOnFailed(event -> Platform.runLater(() -> {
-            logger.error("Erreur lors de l'enregistrement de la réaction", task.getException());
-            showAlert("Erreur", "Impossible d'enregistrer la réaction", task.getException().getMessage(), Alert.AlertType.ERROR);
-        }));
-        new Thread(task).start();
+            task.setOnSucceeded(event -> Platform.runLater(this::loadReactions));
+            task.setOnFailed(event -> Platform.runLater(() -> {
+                logger.error("Erreur lors de l'enregistrement de la réaction pour le post {}", post.getId(), task.getException());
+                showAlert("Erreur", "Impossible d'enregistrer la réaction", task.getException().getMessage(), Alert.AlertType.ERROR);
+            }));
+            new Thread(task).start();
+        } catch (IllegalStateException e) {
+            showAlert("Erreur", "Connexion requise", "Vous devez être connecté pour aimer un post.", Alert.AlertType.WARNING);
+        }
     }
 
     @FXML
     private void handleShare() {
-        if (SessionManager.getCurrentUserId() == null) {
-            showAlert("Erreur", "Connexion requise", "Vous devez être connecté pour partager un post.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() throws SQLException {
-                shareService.sharePost(post.getId(), SessionManager.getCurrentUserId(), null);
-                return null;
-            }
-        };
-
-        task.setOnSucceeded(event -> Platform.runLater(() -> {
-            showAlert("Succès", "Post partagé", "Le post a été partagé avec succès.", Alert.AlertType.INFORMATION);
-            loadReactions();
-        }));
-        task.setOnFailed(event -> Platform.runLater(() -> {
-            logger.error("Erreur lors du partage du post {}", post.getId(), task.getException());
-            showAlert("Erreur", "Impossible de partager le post", task.getException().getMessage(), Alert.AlertType.ERROR);
-        }));
-        new Thread(task).start();
-    }
-
-    @FXML
-    private void showCommentDialog() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Nouveau Commentaire");
-        dialog.setHeaderText("Ajouter un commentaire");
-        dialog.setContentText("Votre commentaire:");
-
-        dialog.showAndWait().ifPresent(commentText -> {
+        try {
+            int userId = SessionManager.getInstance().getCurrentUserId();
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws SQLException {
-                    commentService.createComment(post.getId(), SessionManager.getCurrentUserId(), commentText);
+                    shareService.sharePost(post.getId(), userId, null);
                     return null;
                 }
             };
 
             task.setOnSucceeded(event -> Platform.runLater(() -> {
-                showAlert("Succès", "Commentaire ajouté", "Votre commentaire a été publié.", Alert.AlertType.INFORMATION);
-                loadComments();
+                showAlert("Succès", "Post partagé", "Le post a été partagé avec succès.", Alert.AlertType.INFORMATION);
+                loadReactions();
             }));
             task.setOnFailed(event -> Platform.runLater(() -> {
-                logger.error("Erreur lors de l'ajout du commentaire", task.getException());
-                String errorMessage = task.getException() instanceof IllegalArgumentException
-                        ? task.getException().getMessage()
-                        : "Une erreur est survenue lors de l'ajout du commentaire.";
-                showAlert("Erreur", "Impossible d'ajouter le commentaire", errorMessage, Alert.AlertType.ERROR);
+                logger.error("Erreur lors du partage du post {}", post.getId(), task.getException());
+                showAlert("Erreur", "Impossible de partager le post", task.getException().getMessage(), Alert.AlertType.ERROR);
             }));
             new Thread(task).start();
-        });
+        } catch (IllegalStateException e) {
+            showAlert("Erreur", "Connexion requise", "Vous devez être connecté pour partager un post.", Alert.AlertType.WARNING);
+        }
+    }
+
+    @FXML
+    private void showCommentDialog() {
+        try {
+            int userId = SessionManager.getInstance().getCurrentUserId();
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Nouveau Commentaire");
+            dialog.setHeaderText("Ajouter un commentaire");
+            dialog.setContentText("Votre commentaire:");
+
+            dialog.showAndWait().ifPresent(commentText -> {
+                Task<Void> task = new Task<>() {
+                    @Override
+                    protected Void call() throws SQLException {
+                        commentService.createComment(post.getId(), userId, commentText);
+                        return null;
+                    }
+                };
+
+                task.setOnSucceeded(event -> Platform.runLater(() -> {
+                    showAlert("Succès", "Commentaire ajouté", "Votre commentaire a été publié.", Alert.AlertType.INFORMATION);
+                    loadComments();
+                }));
+                task.setOnFailed(event -> Platform.runLater(() -> {
+                    logger.error("Erreur lors de l'ajout du commentaire pour le post {}", post.getId(), task.getException());
+                    String errorMessage = task.getException() instanceof IllegalArgumentException
+                            ? task.getException().getMessage()
+                            : "Une erreur est survenue lors de l'ajout du commentaire.";
+                    showAlert("Erreur", "Impossible d'ajouter le commentaire", errorMessage, Alert.AlertType.ERROR);
+                }));
+                new Thread(task).start();
+            });
+        } catch (IllegalStateException e) {
+            showAlert("Erreur", "Connexion requise", "Vous devez être connecté pour commenter un post.", Alert.AlertType.WARNING);
+        }
     }
 
     private void loadComments() {
@@ -161,29 +184,27 @@ public class PostController {
             }
         };
 
-        task.setOnSucceeded(event -> {
-            Platform.runLater(() -> {
-                commentsContainer.getChildren().clear();
-                List<Comment> comments = task.getValue();
-                for (Comment comment : comments) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/syncylinky/views/components/comment-component.fxml"));
-                        HBox commentNode = loader.load();
-                        CommentController controller = loader.getController();
-                        controller.initializeData(comment, commentService, this::loadComments);
-                        commentsContainer.getChildren().add(commentNode);
-                    } catch (IOException e) {
-                        logger.error("Erreur lors du chargement du commentaire {}", comment.getId(), e);
-                        showAlert("Erreur", "Impossible de charger le commentaire", e.getMessage(), Alert.AlertType.ERROR);
-                    }
+        task.setOnSucceeded(event -> Platform.runLater(() -> {
+            commentsContainer.getChildren().clear();
+            List<Comment> comments = task.getValue();
+            for (Comment comment : comments) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/syncylinky/views/components/comment-component.fxml"));
+                    HBox commentNode = loader.load();
+                    CommentController controller = loader.getController();
+                    controller.initializeData(comment, commentService, this::loadComments);
+                    commentsContainer.getChildren().add(commentNode);
+                } catch (IOException e) {
+                    logger.error("Erreur lors du chargement du commentaire {} pour le post {}", comment.getId(), post.getId(), e);
+                    showAlert("Erreur", "Impossible de charger le commentaire", e.getMessage(), Alert.AlertType.ERROR);
                 }
-            });
-        });
+            }
+        }));
 
-        task.setOnFailed(event -> {
-            logger.error("Erreur lors du chargement des commentaires", task.getException());
-            Platform.runLater(() -> showAlert("Erreur", "Impossible de charger les commentaires", task.getException().getMessage(), Alert.AlertType.ERROR));
-        });
+        task.setOnFailed(event -> Platform.runLater(() -> {
+            logger.error("Erreur lors du chargement des commentaires pour le post {}", post.getId(), task.getException());
+            showAlert("Erreur", "Impossible de charger les commentaires", task.getException().getMessage(), Alert.AlertType.ERROR);
+        }));
 
         new Thread(task).start();
     }
@@ -193,28 +214,32 @@ public class PostController {
             @Override
             protected ReactionData call() throws SQLException {
                 int likeCount = reactionService.getReactionCount(post.getId(), "like");
-                boolean userLiked = reactionService.hasUserReacted(post.getId(), SessionManager.getCurrentUserId() != null ? SessionManager.getCurrentUserId() : 0);
+                boolean userLiked = false;
+                try {
+                    int userId = SessionManager.getInstance().getCurrentUserId();
+                    userLiked = reactionService.hasUserReacted(post.getId(), userId);
+                } catch (IllegalStateException e) {
+                    logger.debug("No user logged in, skipping user reaction check for post {}", post.getId());
+                }
                 int commentCount = commentService.getCommentCount(post.getId());
                 int shareCount = shareService.getShareCount(post.getId());
                 return new ReactionData(likeCount, userLiked, commentCount, shareCount);
             }
         };
 
-        task.setOnSucceeded(event -> {
-            Platform.runLater(() -> {
-                ReactionData data = task.getValue();
-                likeCountLabel.setText(data.likeCount + " J'aime");
-                commentCountLabel.setText(data.commentCount + " Commentaires");
-                shareCountLabel.setText(data.shareCount + " Partages");
-                likeButton.setStyle(data.userLiked ? "-fx-text-fill: #1877f2;" : "");
-                updateReactionIcon(data.likeCount > 0);
-            });
-        });
+        task.setOnSucceeded(event -> Platform.runLater(() -> {
+            ReactionData data = task.getValue();
+            likeCountLabel.setText(data.likeCount + " J'aime");
+            commentCountLabel.setText(data.commentCount + " Commentaires");
+            shareCountLabel.setText(data.shareCount + " Partages");
+            likeButton.setStyle(data.userLiked ? "-fx-text-fill: #1877f2;" : "");
+            updateReactionIcon(data.likeCount > 0);
+        }));
 
-        task.setOnFailed(event -> {
-            logger.error("Erreur lors du chargement des réactions", task.getException());
-            Platform.runLater(() -> showAlert("Erreur", "Impossible de charger les réactions", task.getException().getMessage(), Alert.AlertType.ERROR));
-        });
+        task.setOnFailed(event -> Platform.runLater(() -> {
+            logger.error("Erreur lors du chargement des réactions pour le post {}", post.getId(), task.getException());
+            showAlert("Erreur", "Impossible de charger les réactions", task.getException().getMessage(), Alert.AlertType.ERROR);
+        }));
 
         new Thread(task).start();
     }
@@ -222,25 +247,32 @@ public class PostController {
     @FXML
     private void showPostOptionsMenu() {
         ContextMenu menu = new ContextMenu();
-        if (post.getUserId() != null && post.getUserId().equals(SessionManager.getCurrentUserId())) {
-            MenuItem editItem = new MenuItem("Modifier");
-            editItem.setOnAction(e -> editPost());
+        try {
+            int userId = SessionManager.getInstance().getCurrentUserId();
+            if (post.getUserId() != null && post.getUserId().equals(userId)) {
+                MenuItem editItem = new MenuItem("Modifier");
+                editItem.setOnAction(e -> editPost());
 
-            MenuItem deleteItem = new MenuItem("Supprimer");
-            deleteItem.setOnAction(e -> deletePost());
+                MenuItem deleteItem = new MenuItem("Supprimer");
+                deleteItem.setOnAction(e -> deletePost());
 
-            menu.getItems().addAll(editItem, deleteItem);
+                menu.getItems().addAll(editItem, deleteItem);
+            }
+        } catch (IllegalStateException e) {
+            logger.debug("No user logged in, skipping edit/delete options for post {}", post.getId());
         }
 
         MenuItem viewItem = new MenuItem("Afficher");
-        viewItem.setOnAction(e -> showAlert("Info", "Détails du post", "Titre: " + post.getTitre() + "\nContenu: " + post.getContent(), Alert.AlertType.INFORMATION));
+        viewItem.setOnAction(e -> showAlert("Info", "Détails du post",
+                "Titre: " + (post.getTitre() != null ? post.getTitre() : "") +
+                        "\nContenu: " + (post.getContent() != null ? post.getContent() : ""), Alert.AlertType.INFORMATION));
 
         menu.getItems().add(viewItem);
         menu.show(menuButton, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
     private void editPost() {
-        TextInputDialog dialog = new TextInputDialog(post.getContent());
+        TextInputDialog dialog = new TextInputDialog(post.getContent() != null ? post.getContent() : "");
         dialog.setTitle("Modifier le post");
         dialog.setHeaderText("Modifiez votre publication");
 
@@ -259,7 +291,7 @@ public class PostController {
                 updateUI();
             }));
             task.setOnFailed(event -> Platform.runLater(() -> {
-                logger.error("Erreur lors de la modification du post", task.getException());
+                logger.error("Erreur lors de la modification du post {}", post.getId(), task.getException());
                 String errorMessage = task.getException() instanceof IllegalArgumentException
                         ? task.getException().getMessage()
                         : "Une erreur est survenue lors de la modification du post.";
@@ -280,7 +312,8 @@ public class PostController {
                 Task<Void> task = new Task<>() {
                     @Override
                     protected Void call() throws SQLException {
-                        postService.deletePost(post.getId(), SessionManager.getCurrentUserId() != null ? SessionManager.getCurrentUserId() : 0);
+                        int userId = SessionManager.getInstance().getCurrentUserId();
+                        postService.deletePost(post.getId(), userId);
                         return null;
                     }
                 };
@@ -291,7 +324,7 @@ public class PostController {
                     parent.getChildren().remove(authorLabel.getParent());
                 }));
                 task.setOnFailed(event -> Platform.runLater(() -> {
-                    logger.error("Erreur lors de la suppression du post", task.getException());
+                    logger.error("Erreur lors de la suppression du post {}", post.getId(), task.getException());
                     showAlert("Erreur", "Impossible de supprimer le post", task.getException().getMessage(), Alert.AlertType.ERROR);
                 }));
                 new Thread(task).start();
@@ -303,9 +336,10 @@ public class PostController {
         if (reactionIcon != null) {
             String iconPath = hasLikes ? "/com/syncylinky/images/like-filled.png" : "/com/syncylinky/images/like-empty.png";
             try {
-                reactionIcon.setImage(new Image(getClass().getResourceAsStream(iconPath)));
+                Image image = new Image(getClass().getResourceAsStream(iconPath));
+                reactionIcon.setImage(image);
             } catch (Exception e) {
-                logger.error("Erreur lors du chargement de l'icône de réaction", e);
+                logger.error("Erreur lors du chargement de l'icône de réaction pour le post {}", post.getId(), e);
             }
         }
     }
@@ -315,11 +349,11 @@ public class PostController {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        URL cssUrl = getClass().getResource("/com/syncylinky/views/main.css");
+        URL cssUrl = getClass().getResource("/com/syncylinky/css/main.css");
         if (cssUrl != null) {
             alert.getDialogPane().getStylesheets().add(cssUrl.toExternalForm());
         } else {
-            logger.warn("Fichier main.css introuvable dans /com/syncylinky/views/");
+            logger.warn("Fichier main.css introuvable dans /com/syncylinky/css/");
         }
         alert.showAndWait();
     }

@@ -1,0 +1,817 @@
+2025-05-02 11:02:58 ERROR [Thread-34] c.s.repositories.CommentRepository - Erreur lors de la cr�ation du commentaire pour le post 13
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:02:58 ERROR [Thread-34] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la cr�ation du commentaire pour le post 13
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:02:58 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:03:13 ERROR [Thread-35] c.syncylinky.services.CommentService - �chec de la validation lors de la cr�ation du commentaire : Le commentaire ne peut pas �tre vide.
+2025-05-02 11:03:13 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.lang.IllegalArgumentException: Le commentaire ne peut pas �tre vide.
+	at com.syncylinky.utils.Validator.validateComment(Validator.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:42)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:03:23 ERROR [Thread-37] c.s.repositories.CommentRepository - Erreur lors de la cr�ation du commentaire pour le post 13
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:03:23 ERROR [Thread-37] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la cr�ation du commentaire pour le post 13
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:03:24 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:00 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Tentative de suppression du commentaire 23
+2025-05-02 11:04:00 ERROR [Thread-39] c.s.repositories.CommentRepository - Erreur lors de la suppression du commentaire 23
+java.sql.SQLException: �chec de la suppression : commentaire non trouv� ou non autoris�
+	at com.syncylinky.repositories.CommentRepository.delete(CommentRepository.java:141)
+	at com.syncylinky.services.CommentService.deleteComment(CommentService.java:120)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:137)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:134)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:00 ERROR [Thread-39] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la suppression du commentaire 23
+java.sql.SQLException: �chec de la suppression : commentaire non trouv� ou non autoris�
+	at com.syncylinky.repositories.CommentRepository.delete(CommentRepository.java:141)
+	at com.syncylinky.services.CommentService.deleteComment(CommentService.java:120)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:137)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:134)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:00 ERROR [JavaFX Application Thread] c.s.controllers.CommentController - Erreur lors de la suppression du commentaire 23
+java.sql.SQLException: �chec de la suppression : commentaire non trouv� ou non autoris�
+	at com.syncylinky.repositories.CommentRepository.delete(CommentRepository.java:141)
+	at com.syncylinky.services.CommentService.deleteComment(CommentService.java:120)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:137)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:134)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:06 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Tentative de suppression du commentaire 23
+2025-05-02 11:04:06 ERROR [Thread-40] c.s.repositories.CommentRepository - Erreur lors de la suppression du commentaire 23
+java.sql.SQLException: �chec de la suppression : commentaire non trouv� ou non autoris�
+	at com.syncylinky.repositories.CommentRepository.delete(CommentRepository.java:141)
+	at com.syncylinky.services.CommentService.deleteComment(CommentService.java:120)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:137)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:134)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:06 ERROR [Thread-40] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la suppression du commentaire 23
+java.sql.SQLException: �chec de la suppression : commentaire non trouv� ou non autoris�
+	at com.syncylinky.repositories.CommentRepository.delete(CommentRepository.java:141)
+	at com.syncylinky.services.CommentService.deleteComment(CommentService.java:120)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:137)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:134)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:06 ERROR [JavaFX Application Thread] c.s.controllers.CommentController - Erreur lors de la suppression du commentaire 23
+java.sql.SQLException: �chec de la suppression : commentaire non trouv� ou non autoris�
+	at com.syncylinky.repositories.CommentRepository.delete(CommentRepository.java:141)
+	at com.syncylinky.services.CommentService.deleteComment(CommentService.java:120)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:137)
+	at com.syncylinky.controllers.CommentController$2.call(CommentController.java:134)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:04:59 ERROR [Thread-41] com.syncylinky.services.PostService - Validation failed for post creation: Le contenu du post ne peut pas �tre vide.
+2025-05-02 11:04:59 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors de la cr�ation du post
+java.lang.IllegalArgumentException: Le contenu du post ne peut pas �tre vide.
+	at com.syncylinky.utils.Validator.validatePost(Validator.java:18)
+	at com.syncylinky.services.PostService.createPost(PostService.java:22)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:164)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:161)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:06:20 ERROR [Thread-80] c.s.repositories.CommentRepository - Erreur lors de la cr�ation du commentaire pour le post 4
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:06:20 ERROR [Thread-80] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la cr�ation du commentaire pour le post 4
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:06:20 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.sql.SQLException: Field 'updated_at' doesn't have a default value
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:43)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:12:29 ERROR [Thread-28] c.s.repositories.CommentRepository - Erreur lors de la cr�ation du commentaire pour le post 19
+java.sql.SQLException: Parameter index out of range (5 > number of parameters, which is 4).
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.checkBounds(ClientPreparedStatement.java:1345)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.getCoreParameterIndex(ClientPreparedStatement.java:1358)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.setTimestamp(ClientPreparedStatement.java:1735)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:46)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:12:29 ERROR [Thread-28] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la cr�ation du commentaire pour le post 19
+java.sql.SQLException: Parameter index out of range (5 > number of parameters, which is 4).
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.checkBounds(ClientPreparedStatement.java:1345)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.getCoreParameterIndex(ClientPreparedStatement.java:1358)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.setTimestamp(ClientPreparedStatement.java:1735)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:46)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:12:29 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.sql.SQLException: Parameter index out of range (5 > number of parameters, which is 4).
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.checkBounds(ClientPreparedStatement.java:1345)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.getCoreParameterIndex(ClientPreparedStatement.java:1358)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.setTimestamp(ClientPreparedStatement.java:1735)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:46)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:12:41 ERROR [Thread-29] c.s.repositories.CommentRepository - Erreur lors de la cr�ation du commentaire pour le post 19
+java.sql.SQLException: Parameter index out of range (5 > number of parameters, which is 4).
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.checkBounds(ClientPreparedStatement.java:1345)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.getCoreParameterIndex(ClientPreparedStatement.java:1358)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.setTimestamp(ClientPreparedStatement.java:1735)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:46)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:12:41 ERROR [Thread-29] c.syncylinky.services.CommentService - Erreur de base de donn�es lors de la cr�ation du commentaire pour le post 19
+java.sql.SQLException: Parameter index out of range (5 > number of parameters, which is 4).
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.checkBounds(ClientPreparedStatement.java:1345)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.getCoreParameterIndex(ClientPreparedStatement.java:1358)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.setTimestamp(ClientPreparedStatement.java:1735)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:46)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:12:41 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.sql.SQLException: Parameter index out of range (5 > number of parameters, which is 4).
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.checkBounds(ClientPreparedStatement.java:1345)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.getCoreParameterIndex(ClientPreparedStatement.java:1358)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.setTimestamp(ClientPreparedStatement.java:1735)
+	at com.syncylinky.repositories.CommentRepository.create(CommentRepository.java:35)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:46)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:125)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:122)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 11:15:30 INFO  [Thread-28] c.syncylinky.services.CommentService - Commentaire cr�� pour le post 19 par l'utilisateur 1
+2025-05-02 11:15:41 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Tentative de suppression du commentaire 22
+2025-05-02 11:15:41 INFO  [Thread-30] c.syncylinky.services.CommentService - Commentaire 22 supprim� par l'utilisateur 1
+2025-05-02 11:15:42 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Commentaire 22 supprim� avec succ�s
+2025-05-02 11:38:48 INFO  [Thread-28] c.s.repositories.ShareRepository - Post 19 partag� par l'utilisateur 1
+2025-05-02 11:38:48 INFO  [Thread-28] c.syncylinky.services.ShareService - Post 19 partag� avec succ�s par l'utilisateur 1
+2025-05-02 11:39:01 INFO  [Thread-30] c.s.repositories.ShareRepository - Post 2 partag� par l'utilisateur 1
+2025-05-02 11:39:01 INFO  [Thread-30] c.syncylinky.services.ShareService - Post 2 partag� avec succ�s par l'utilisateur 1
+2025-05-02 11:47:25 INFO  [Thread-28] com.syncylinky.utils.Validator - Charg� 1 mots interdits depuis banned-words.txt
+2025-05-02 11:47:25 INFO  [Thread-28] c.syncylinky.services.CommentService - Commentaire cr�� pour le post 19 par l'utilisateur 1
+2025-05-02 11:47:59 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Tentative de suppression du commentaire 25
+2025-05-02 11:47:59 INFO  [Thread-59] c.syncylinky.services.CommentService - Commentaire 25 supprim� par l'utilisateur 1
+2025-05-02 11:48:00 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Commentaire 25 supprim� avec succ�s
+2025-05-02 11:59:16 INFO  [Thread-28] com.syncylinky.utils.Validator - Charg� 1 mots interdits depuis banned-words.txt
+2025-05-02 11:59:16 INFO  [Thread-28] c.syncylinky.services.CommentService - Commentaire cr�� pour le post 19 par l'utilisateur 1
+2025-05-02 11:59:22 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Tentative de suppression du commentaire 26
+2025-05-02 11:59:22 INFO  [Thread-30] c.syncylinky.services.CommentService - Commentaire 26 supprim� par l'utilisateur 1
+2025-05-02 11:59:23 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Commentaire 26 supprim� avec succ�s
+2025-05-02 11:59:45 INFO  [Thread-32] c.syncylinky.services.CommentService - Commentaire cr�� pour le post 19 par l'utilisateur 1
+2025-05-02 11:59:49 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Tentative de suppression du commentaire 27
+2025-05-02 11:59:49 INFO  [Thread-34] c.syncylinky.services.CommentService - Commentaire 27 supprim� par l'utilisateur 1
+2025-05-02 11:59:50 INFO  [JavaFX Application Thread] c.s.controllers.CommentController - Commentaire 27 supprim� avec succ�s
+2025-05-02 12:17:58 INFO  [Thread-28] com.syncylinky.services.PostService - Recherche effectu�e avec le mot-cl� 'sample' pour l'utilisateur 1, 8 r�sultats trouv�s
+2025-05-02 12:17:59 INFO  [Thread-45] com.syncylinky.services.PostService - Recherche effectu�e avec le mot-cl� 'sample' pour l'utilisateur 1, 8 r�sultats trouv�s
+2025-05-02 12:18:00 INFO  [Thread-46] com.syncylinky.services.PostService - Recherche effectu�e avec le mot-cl� 'sample' pour l'utilisateur 1, 8 r�sultats trouv�s
+2025-05-02 12:18:01 INFO  [Thread-47] com.syncylinky.services.PostService - Recherche effectu�e avec le mot-cl� 'sample' pour l'utilisateur 1, 8 r�sultats trouv�s
+2025-05-02 12:18:01 INFO  [Thread-48] com.syncylinky.services.PostService - Recherche effectu�e avec le mot-cl� 'sample' pour l'utilisateur 1, 8 r�sultats trouv�s
+2025-05-02 13:05:15 INFO  [Thread-28] com.syncylinky.services.PostService - Recherche effectu�e avec le mot-cl� 'post la' pour l'utilisateur 1, 1 r�sultats trouv�s
+2025-05-02 13:11:11 INFO  [Thread-32] com.syncylinky.utils.Validator - Charg� 1 mots interdits depuis banned-words.txt
+2025-05-02 13:11:11 ERROR [Thread-32] c.syncylinky.services.CommentService - �chec de la validation lors de la cr�ation du commentaire : Le commentaire ne peut pas �tre vide.
+2025-05-02 13:11:11 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors de l'ajout du commentaire
+java.lang.IllegalArgumentException: Le commentaire ne peut pas �tre vide.
+	at com.syncylinky.utils.Validator.validateComment(Validator.java:91)
+	at com.syncylinky.services.CommentService.createComment(CommentService.java:45)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:136)
+	at com.syncylinky.controllers.PostController$3.call(PostController.java:133)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:11:14 WARN  [Thread-33] c.s.repositories.ShareRepository - Partage d�j� existant pour le post 19 par l'utilisateur 1
+2025-05-02 13:11:14 ERROR [Thread-33] c.s.repositories.ShareRepository - Erreur lors du partage du post 19
+java.sql.SQLException: Vous avez d�j� partag� ce post.
+	at com.syncylinky.repositories.ShareRepository.sharePost(ShareRepository.java:30)
+	at com.syncylinky.services.ShareService.sharePost(ShareService.java:25)
+	at com.syncylinky.controllers.PostController$2.call(PostController.java:109)
+	at com.syncylinky.controllers.PostController$2.call(PostController.java:106)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:11:14 ERROR [Thread-33] c.syncylinky.services.ShareService - Erreur lors du partage du post 19 par l'utilisateur 1
+java.sql.SQLException: Vous avez d�j� partag� ce post.
+	at com.syncylinky.repositories.ShareRepository.sharePost(ShareRepository.java:30)
+	at com.syncylinky.services.ShareService.sharePost(ShareService.java:25)
+	at com.syncylinky.controllers.PostController$2.call(PostController.java:109)
+	at com.syncylinky.controllers.PostController$2.call(PostController.java:106)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:11:14 ERROR [JavaFX Application Thread] c.s.controllers.PostController - Erreur lors du partage du post 19
+java.sql.SQLException: Vous avez d�j� partag� ce post.
+	at com.syncylinky.repositories.ShareRepository.sharePost(ShareRepository.java:30)
+	at com.syncylinky.services.ShareService.sharePost(ShareService.java:25)
+	at com.syncylinky.controllers.PostController$2.call(PostController.java:109)
+	at com.syncylinky.controllers.PostController$2.call(PostController.java:106)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:14:31 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Table 'syncylinky.post_categories' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:14:31 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Table 'syncylinky.post_categories' doesn't exist
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'syncylinky.post_categories' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:14:31 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Table 'syncylinky.post_categories' doesn't exist
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Table 'syncylinky.post_categories' doesn't exist
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Table 'syncylinky.post_categories' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:17:35 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:17:35 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:17:35 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:18:54 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:18:54 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:18:54 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:20:08 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:20:08 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:20:08 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:20:19 ERROR [Thread-29] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:20:19 ERROR [Thread-29] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:20:19 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:124)
+	at com.syncylinky.controllers.FeedController$2.call(MainController.java:121)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:23:43 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:23:43 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:23:43 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:24:18 ERROR [Thread-89] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:24:18 ERROR [Thread-89] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:24:18 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:31:52 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:31:52 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:31:52 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:232)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:229)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:57:41 ERROR [Thread-4] c.s.repositories.PostRepository - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:231)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:228)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-02 13:57:41 ERROR [Thread-4] com.syncylinky.services.PostService - Erreur lors de la r�cup�ration des posts recommand�s pour l'utilisateur 1
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:231)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:228)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:57:41 ERROR [JavaFX Application Thread] c.s.controllers.MainController - Erreur lors du chargement des posts recommand�s
+java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:108)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:231)
+	at com.syncylinky.controllers.FeedController$3.call(MainController.java:228)
+	at javafx.graphics@21.0.2/javafx.concurrent.Task$TaskCallable.call(Task.java:1399)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.sql.SQLException: Impossible de r�cup�rer les posts recommand�s : Unknown column 'r.reaction_type' in 'where clause'
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:198)
+	at com.syncylinky.services.PostService.getRecommendedPosts(PostService.java:103)
+	... 5 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'r.reaction_type' in 'where clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972)
+	at com.syncylinky.repositories.PostRepository.findRecommendedPosts(PostRepository.java:189)
+	... 6 common frames omitted
+2025-05-02 13:57:59 INFO  [Thread-41] c.s.repositories.ShareRepository - Post 7 partag� par l'utilisateur 1
+2025-05-02 13:57:59 INFO  [Thread-41] c.syncylinky.services.ShareService - Post 7 partag� avec succ�s par l'utilisateur 1

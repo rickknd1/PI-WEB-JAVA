@@ -162,7 +162,7 @@ public class CommentController {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        URL cssUrl = getClass().getResource("/com/syncylinky/views/main.css");
+        URL cssUrl = getClass().getResource("/com/syncylinky/css/main.css");
         if (cssUrl != null) {
             alert.getDialogPane().getStylesheets().add(cssUrl.toExternalForm());
         } else {

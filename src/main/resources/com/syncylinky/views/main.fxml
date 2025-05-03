@@ -2,37 +2,328 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.syncylinky.controllers.MainController" spacing="10" styleClass="main-container">
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+<BorderPane stylesheets="@styles.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.syncylinky.controllers.FeedController"
+            prefWidth="1200" prefHeight="800"
+            style="-fx-background-color: #1C2526;">
 
-    <!-- Barre de recherche -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" promptText="Rechercher un post..." prefWidth="300"/>
-        <Button fx:id="searchButton" text="Rechercher" onAction="#handleSearch"/>
-    </HBox>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header" style="-fx-background-color: #2C3E50; -fx-padding: 10px 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);">
+            <ImageView fitWidth="180" fitHeight="45" preserveRatio="true">
+                <image>
+                    <Image url="@/com/syncylinky/images/logo_typo_blue.svg"/>
+                </image>
+            </ImageView>
 
-    <!-- Boutons d'action -->
-    <HBox spacing="10">
-        <Button fx:id="backButton" text="Retour" onAction="#handleBack" disable="true"/>
-        <Button text="Nouveau Post" onAction="#showPostDialog"/>
-        <Button text="Mes Posts" onAction="#handleViewUserPosts"/>
-        <Button fx:id="recommendedButton" text="Recommandations" onAction="#handleShowRecommended"/>
-    </HBox>
+            <Region HBox.hgrow="ALWAYS" />
 
-    <!-- Publications recommandées -->
-    <ScrollPane fitToWidth="true">
-        <VBox fx:id="recommendedContainer" spacing="10"/>
-    </ScrollPane>
+            <HBox alignment="CENTER_RIGHT" spacing="15">
+                <TextField promptText="Search..." prefWidth="250"
+                           style="-fx-background-color: #34495E; -fx-text-fill: #FFFFFF; -fx-prompt-text-fill: #9CA0AA; -fx-background-radius: 20px; -fx-padding: 5px 15px;"/>
 
-    <!-- Conteneur du feed -->
-    <ScrollPane fitToWidth="true">
-        <VBox fx:id="feedContainer" spacing="10">
-            <ProgressIndicator fx:id="loadingIndicator" visible="false"/>
+                <Button styleClass="icon-button" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <ImageView fitWidth="24" fitHeight="24">
+                            <Image url="https://static-00.iconduck.com/assets.00/notification-icon-922x1024-y2khlmns.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <MenuButton text="Admin" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;">
+                    <graphic>
+                        <ImageView fitWidth="32" fitHeight="32">
+                            <Image url="https://cdn0.iconfinder.com/data/icons/man-user-human-profile-avatar-business-person/100/09B-1User-512.png"/>
+                        </ImageView>
+                    </graphic>
+                    <items>
+                        <MenuItem text="Profile" />
+                        <MenuItem text="Settings" />
+                        <SeparatorMenuItem />
+                        <MenuItem text="Logout" onAction="#handleLogout" />
+                    </items>
+                </MenuButton>
+            </HBox>
+        </HBox>
+    </top>
+
+    <left>
+        <VBox prefWidth="250" spacing="5" style="-fx-background-color: linear-gradient(to bottom, #2C3E50, #1C2526); -fx-padding: 15px;" alignment="TOP_CENTER">
+            <Label text="ADMINISTRATION" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 0 0 10px 0; -fx-text-fill: #FF6200;"/>
+
+            <Button text="Dashboard" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handleDashboardClick"
+                    style="-fx-background-color: rgba(255,98,0,0.2); -fx-text-fill: #FFFFFF; -fx-alignment: BASELINE_LEFT; -fx-font-weight: bold; -fx-background-radius: 8px;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="https://www.freeiconspng.com/uploads/dashboard-icon-30.png"/>
+                    </ImageView>
+                </graphic>
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+
+            <TitledPane text="Users Management" expanded="false" style="-fx-text-fill: #D3D3D3; -fx-background-color: transparent;">
+                <VBox spacing="5">
+                    <Button text="All Users" styleClass="sidebar-sub-button" maxWidth="Infinity" onAction="#handleUsersMenuClick"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                    <Button text="Admins" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                    <Button text="Banned Users" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                    <Button text="Verification Requests" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="Content Management" expanded="false" style="-fx-text-fill: #D3D3D3; -fx-background-color: transparent;">
+                <VBox spacing="5">
+                    <Button text="Categories" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                    <Button text="Communities" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                    <Button text="Posts" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                    <Button text="Comments" styleClass="sidebar-sub-button" maxWidth="Infinity"
+                            style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                        <padding>
+                            <Insets top="8" right="15" bottom="8" left="15"/>
+                        </padding>
+                    </Button>
+                </VBox>
+            </TitledPane>
+
+            <Button text="Reports" styleClass="sidebar-button" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="https://cdn-icons-png.flaticon.com/512/3093/3093748.png"/>
+                    </ImageView>
+                </graphic>
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+
+            <Button text="Analytics" styleClass="sidebar-button" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="https://cdn-icons-png.freepik.com/512/1822/1822140.png"/>
+                    </ImageView>
+                </graphic>
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+
+            <Button text="Settings" styleClass="sidebar-button" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="https://www.iconpacks.net/icons/2/free-settings-icon-3110-thumb.png"/>
+                    </ImageView>
+                </graphic>
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Separator style="-fx-background-color: #3D5466; -fx-opacity: 0.5;">
+                <padding>
+                    <Insets top="5" bottom="10"/>
+                </padding>
+            </Separator>
+
+            <Button text="Logout" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handleLogout"
+                    style="-fx-background-color: transparent; -fx-text-fill: #D3D3D3; -fx-alignment: BASELINE_LEFT; -fx-background-radius: 8px;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="https://cdn1.iconfinder.com/data/icons/heroicons-ui/24/logout-512.png"/>
+                    </ImageView>
+                </graphic>
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+            </Button>
         </VBox>
-    </ScrollPane>
-</VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentPane">
+            <!-- Dashboard content (default view) -->
+            <VBox spacing="20" style="-fx-padding: 20px; -fx-background-color: #1C2526;">
+                <HBox spacing="20">
+                    <!-- Welcome message with platform stats -->
+                    <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-background-radius: 15px; -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <StackPane style="-fx-background-color: #FF6200; -fx-background-radius: 50%;" minWidth="64" minHeight="64" maxWidth="64" maxHeight="64">
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="https://cdn0.iconfinder.com/data/icons/man-user-human-profile-avatar-business-person/100/09B-1User-512.png"/>
+                                </ImageView>
+                            </StackPane>
+                            <VBox>
+                                <Label text="Welcome, Admin!" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                                <Label text="Last login: Today at 09:45 AM" style="-fx-text-fill: #D3D3D3;"/>
+                            </VBox>
+                        </HBox>
+
+                        <Separator style="-fx-background-color: #3D5466; -fx-opacity: 0.5;"/>
+
+                        <Label text="Platform Overview" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+
+                        <HBox spacing="30" alignment="CENTER">
+                            <VBox alignment="CENTER" spacing="5" styleClass="stat-box" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-padding: 15px;">
+                                <Label text="12,456" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FF6200;"/>
+                                <Label text="Total Users" style="-fx-text-fill: #D3D3D3;"/>
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="5" styleClass="stat-box" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-padding: 15px;">
+                                <Label text="1,293" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FF6200;"/>
+                                <Label text="New This Month" style="-fx-text-fill: #D3D3D3;"/>
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="5" styleClass="stat-box" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-padding: 15px;">
+                                <Label text="35" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FF6200;"/>
+                                <Label text="Communities" style="-fx-text-fill: #D3D3D3;"/>
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="5" styleClass="stat-box" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-padding: 15px;">
+                                <Label text="8,754" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FF6200;"/>
+                                <Label text="Posts Today" style="-fx-text-fill: #D3D3D3;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <!-- User Activity Chart -->
+                    <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-background-radius: 15px; -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <Label text="User Activity" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                        <AreaChart prefHeight="200" style="-fx-text-fill: #FFFFFF; -fx-background-color: transparent;">
+                            <xAxis>
+                                <CategoryAxis label="Date" style="-fx-tick-label-fill: #D3D3D3;"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="Users" style="-fx-tick-label-fill: #D3D3D3;"/>
+                            </yAxis>
+                        </AreaChart>
+                    </VBox>
+
+                    <!-- Content Distribution -->
+                    <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-background-radius: 15px; -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <Label text="Content Distribution" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                        <PieChart prefHeight="200" style="-fx-background-color: transparent; -fx-text-fill: #FFFFFF;"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <!-- Recent Activities -->
+                    <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-background-radius: 15px; -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Recent Activities" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="View All" styleClass="link-button" style="-fx-background-color: transparent; -fx-text-fill: #FF6200; -fx-font-weight: bold;"/>
+                        </HBox>
+
+                        <TableView prefHeight="200" style="-fx-background-color: #34495E; -fx-control-inner-background: #34495E; -fx-table-cell-border-color: #45556D;">
+                            <columns>
+                                <TableColumn text="User" prefWidth="150" style="-fx-text-fill: #FFFFFF;"/>
+                                <TableColumn text="Action" prefWidth="200" style="-fx-text-fill: #FFFFFF;"/>
+                                <TableColumn text="Target" prefWidth="150" style="-fx-text-fill: #FFFFFF;"/>
+                                <TableColumn text="Date" prefWidth="150" style="-fx-text-fill: #FFFFFF;"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <!-- System Alerts -->
+                    <VBox spacing="10" style="-fx-background-color: #2C3E50; -fx-background-radius: 15px; -fx-padding: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="System Alerts" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="3 new alerts" style="-fx-text-fill: #FF6200; -fx-font-weight: bold;"/>
+                        </HBox>
+
+                        <VBox spacing="10">
+                            <HBox spacing="10" style="-fx-background-color: #4A2F39; -fx-background-radius: 5px; -fx-padding: 10px;">
+                                <ImageView fitWidth="24" fitHeight="24">
+                                    <Image url="https://image.similarpng.com/file/similarpng/original-picture/2021/06/Warning-icon.-The-attention-icon.png"/>
+                                </ImageView>
+                                <VBox>
+                                    <Label text="High Report Volume" style="-fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                                    <Label text="Community 'TechTalk' has received 15 reports in the last hour" wrapText="true" style="-fx-text-fill: #D3D3D3;"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="10" style="-fx-background-color: #2C3F54; -fx-background-radius: 5px; -fx-padding: 10px;">
+                                <ImageView fitWidth="24" fitHeight="24">
+                                    <Image url="https://cdn-icons-png.flaticon.com/512/1/1176.png"/>
+                                </ImageView>
+                                <VBox>
+                                    <Label text="System Update" style="-fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                                    <Label text="New version of SyncYLinky will be deployed tonight at 2:00 AM" wrapText="true" style="-fx-text-fill: #D3D3D3;"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="10" style="-fx-background-color: #4F4731; -fx-background-radius: 5px; -fx-padding: 10px;">
+                                <ImageView fitWidth="24" fitHeight="24">
+                                    <Image url="https://static-00.iconduck.com/assets.00/notification-icon-922x1024-y2khlmns.png"/>
+                                </ImageView>
+                                <VBox>
+                                    <Label text="Verification Request" style="-fx-font-weight: bold; -fx-text-fill: #FFFFFF;"/>
+                                    <Label text="5 users awaiting verification approval" wrapText="true" style="-fx-text-fill: #D3D3D3;"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: #2C3E50; -fx-padding: 5px 15px; -fx-border-color: #3D5466; -fx-border-width: 1px 0 0 0;">
+            <Label text="© 2025 SyncYLinky. All rights reserved." style="-fx-text-fill: #D3D3D3;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="Version 1.0.0" style="-fx-text-fill: #D3D3D3;"/>
+        </HBox>
+    </bottom>
+</BorderPane>

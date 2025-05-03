@@ -6,17 +6,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.net.URL;
 
 public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/syncylinky/views/main.fxml"));
-        Scene scene = new Scene(root, 800, 600);
-        scene.getStylesheets().add(getClass().getResource("/com/syncylinky/views/main.css").toExternalForm());
-        stage.setTitle("SyncYLinky");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        // Correction du chemin avec le slash initial et vérification
+        System.out.println("Tentative de chargement du FXML...");
+        URL fxmlUrl = getClass().getResource("/com/syncylinky/views/auth/Login.fxml");
+        if (fxmlUrl == null) {
+            System.err.println("ERREUR: Fichier FXML introuvable !");
+            System.err.println("Recherché à: /com/syncylinky/views/auth/Login.fxml");
+            throw new RuntimeException("Fichier FXML introuvable");
+        }
+        System.out.println("FXML trouvé à: " + fxmlUrl);
+
+        Parent root = FXMLLoader.load(fxmlUrl);
+        primaryStage.setTitle("SyncYLinkY - Connexion");
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setMaximized(true);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

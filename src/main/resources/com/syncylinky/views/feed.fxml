@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.syncylinky.controllers" spacing="10" styleClass="main-container">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Barre de recherche -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Rechercher un post..." prefWidth="300"/>
+        <Button fx:id="searchButton" text="Rechercher" onAction="#handleSearch"/>
+    </HBox>
+
+    <!-- Boutons d'action -->
+    <HBox spacing="10">
+        <Button fx:id="backButton" text="Retour" onAction="#handleBack" disable="true"/>
+        <Button text="Nouveau Post" onAction="#showPostDialog"/>
+        <Button text="Mes Posts" onAction="#handleViewUserPosts"/>
+        <Button fx:id="recommendedButton" text="Recommandations" onAction="#handleShowRecommended"/>
+    </HBox>
+
+    <!-- Publications recommandées -->
+    <ScrollPane fitToWidth="true">
+        <VBox fx:id="recommendedContainer" spacing="10"/>
+    </ScrollPane>
+
+    <!-- Conteneur du feed -->
+    <ScrollPane fitToWidth="true">
+        <VBox fx:id="feedContainer" spacing="10">
+            <ProgressIndicator fx:id="loadingIndicator" visible="false"/>
+        </VBox>
+    </ScrollPane>
+</VBox>

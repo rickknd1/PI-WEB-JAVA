@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.syncylinky.controllers.UserController"
+            styleClass="root">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <top>
+        <VBox spacing="15">
+            <!-- Main title -->
+            <HBox spacing="20" alignment="CENTER_LEFT" styleClass="section-box">
+                <Label text="%users.management.title" styleClass="section-title"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="%users.add.button" onAction="#handleAddUser" styleClass="add-button">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="https://icons.veryicon.com/png/o/miscellaneous/program-module-logo/add-281.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%users.add.tooltip"/>
+                    </tooltip>
+                </Button>
+                <Button text="%users.export.csv.button" onAction="#handleExportUsers" styleClass="export-button">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="https://static-00.iconduck.com/assets.00/export-icon-1843x2048-ay2fifqo.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%users.export.csv.tooltip"/>
+                    </tooltip>
+                </Button>
+                <Button text="%users.export.pdf.button" onAction="#handleExportToPdf" styleClass="export-button">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Icon_pdf_file.svg/1805px-Icon_pdf_file.svg.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%users.export.pdf.tooltip"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+
+            <!-- Search and filters section -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filter-section">
+                <Label text="%users.filters.label" styleClass="filter-label"/>
+
+                <TextField fx:id="searchField" promptText="%users.search.placeholder" HBox.hgrow="ALWAYS" styleClass="text-field">
+                    <tooltip>
+                        <Tooltip text="%users.search.tooltip"/>
+                    </tooltip>
+                </TextField>
+
+                <Label text="%users.role.filter.label" styleClass="filter-label"/>
+                <ComboBox fx:id="roleFilter" prefWidth="150" styleClass="combo-box">
+                    <tooltip>
+                        <Tooltip text="%users.role.filter.tooltip"/>
+                    </tooltip>
+                </ComboBox>
+
+                <Label text="%users.status.filter.label" styleClass="filter-label"/>
+                <ComboBox fx:id="statusFilter" prefWidth="150" styleClass="combo-box">
+                    <tooltip>
+                        <Tooltip text="%users.status.filter.tooltip"/>
+                    </tooltip>
+                </ComboBox>
+
+                <Button text="%users.filters.apply.button" onAction="#handleSearchUsers" styleClass="apply-button">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="https://img.icons8.com/ios7/600/search.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%users.filters.apply.tooltip"/>
+                    </tooltip>
+                </Button>
+
+                <Button text="%users.filters.reset.button" onAction="#handleResetFilters" styleClass="reset-button">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="https://www.freeiconspng.com/thumbs/restart-icon/restart-icon-9.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%users.filters.reset.tooltip"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+
+            <!-- Bulk actions section -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="bulk-actions-section">
+                <Label text="%users.bulk.actions.label" styleClass="section-label"/>
+
+                <CheckBox fx:id="selectAllCheckBox" text="%users.bulk.select.all" onAction="#handleSelectAll" styleClass="checkbox">
+                    <tooltip>
+                        <Tooltip text="%users.bulk.select.all.tooltip"/>
+                    </tooltip>
+                </CheckBox>
+
+                <ComboBox fx:id="bulkActionComboBox" prefWidth="200" promptText="%users.bulk.action.choose" styleClass="combo-box">
+                    <tooltip>
+                        <Tooltip text="%users.bulk.action.tooltip"/>
+                    </tooltip>
+                </ComboBox>
+
+                <Button text="%users.bulk.apply.button" onAction="#handleBulkAction" styleClass="apply-button">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="https://static.thenounproject.com/png/2714905-200.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%users.bulk.apply.tooltip"/>
+                    </tooltip>
+                </Button>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Label fx:id="selectedCountLabel" text="%users.bulk.selected.count" styleClass="count-label"/>
+                <Label fx:id="userCountLabel" text="%users.total.count" styleClass="total-count-label"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <!-- Users table -->
+            <TableView fx:id="usersTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+                <columns>
+
+                    <TableColumn text="%users.table.email" prefWidth="250">
+                        <cellValueFactory><PropertyValueFactory property="email"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="%users.table.name" prefWidth="150">
+                        <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="%users.table.role" prefWidth="120">
+                        <cellValueFactory><PropertyValueFactory property="role"/></cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="%users.table.status" prefWidth="100" fx:id="statusColumn"/>
+                    <TableColumn text="%users.table.actions" prefWidth="200" fx:id="actionsColumn"/>
+                </columns>
+                <placeholder>
+                    <Label text="%users.table.no.data" styleClass="placeholder-label"/>
+                </placeholder>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
+
+            <!-- Pagination -->
+            <HBox spacing="15" alignment="CENTER" styleClass="pagination-section">
+                <Label text="%users.page.size.label" styleClass="pagination-label"/>
+                <ComboBox fx:id="pageSizeComboBox" prefWidth="80" styleClass="combo-box"/>
+                <Pagination fx:id="userPagination" maxPageIndicatorCount="5" HBox.hgrow="ALWAYS" styleClass="pagination"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <StackPane fx:id="contentPane" VBox.vgrow="NEVER" styleClass="content-pane"/>
+    </bottom>
+</BorderPane>
