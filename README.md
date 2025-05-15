@@ -1,4 +1,4 @@
-# PI‑WEB‑JAVA · Cultural Hub 🌍  
+# PI‑WEB‑JAVA · SYNKYLINKY 🌍  
 ![Build](https://img.shields.io/badge/build-passing-brightgreen) ![Symfony](https://img.shields.io/badge/symfony-7.x-black) ![License](https://img.shields.io/badge/license-academic-blue)
 
 > **Esprit School of Engineering** – 3ᵉ année (2024‑2025)  
